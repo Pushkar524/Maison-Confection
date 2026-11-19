@@ -1,10 +1,10 @@
 import { ArrowRight, BookOpen, Package, Ribbon } from 'lucide-react';
 import { motion, useScroll, useSpring, useTransform } from 'motion/react';
 import { useRef, useState } from 'react';
-import { ATELIER_PRODUCTS, CLIENT_STORIES } from '../data/atelierData';
+import { CLIENT_STORIES } from '../data/atelierData';
 import { AtelierProduct, ProductCategory, ScreenView } from '../types/atelier';
+import { CurioShelfShowcase } from './CurioShelfShowcase';
 import { GiftBox3DCanvas } from './GiftBox3DCanvas';
-import { ProductCard } from './ProductCard';
 
 interface HomeViewProps {
   favorites: string[];
@@ -47,11 +47,9 @@ export function HomeView({
   });
 
   const anatomyOpacity = useTransform(smoothOpenProgress, [0.16, 0.42, 0.96], [0, 1, 0.95]);
-
-  const visibleProducts =
-    activeCategory === 'All Curios'
-      ? ATELIER_PRODUCTS
-      : ATELIER_PRODUCTS.filter((p) => p.category === activeCategory);
+  // Preserve favorites prop compatibility with parent state
+  void favorites;
+  void onToggleFavorite;
 
   return (
     <div className="space-y-20 md:space-y-24">
@@ -173,19 +171,12 @@ export function HomeView({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {visibleProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              isFavorite={favorites.includes(product.id)}
-              onToggleFavorite={onToggleFavorite}
-              onSelectProduct={onSelectProduct}
-              onQuickPersonalize={onQuickPersonalize}
-              onQuickAdd={onQuickAdd}
-            />
-          ))}
-        </div>
+        <CurioShelfShowcase
+          activeCategory={activeCategory}
+          onQuickPersonalize={onQuickPersonalize}
+          onQuickAdd={onQuickAdd}
+          onSelectProduct={onSelectProduct}
+        />
 
         <div className="mt-10 flex justify-center">
           <button
@@ -245,7 +236,7 @@ export function HomeView({
                 </div>
 
                 <div className="space-y-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-[#241A1F] border border-[#3B2A32] flex items-center justify-center text-[#C9A25E]">
+                  <div className="w-10 h-10 rounded-xl bg-[#241A1F] border border-[#3B2A32] flex items-center justify-center text-[#F4C2D2]">
                     <Ribbon className="w-5 h-5" />
                   </div>
                   <h3 className="font-serif-editorial text-xl font-semibold text-[#FDF2F5]">

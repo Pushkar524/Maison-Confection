@@ -10,7 +10,6 @@ import { BespokeBuilderView } from './components/BespokeBuilderView';
 import { CatalogView } from './components/CatalogView';
 import { Footer } from './components/Footer';
 import { GiftBagDrawer } from './components/GiftBagDrawer';
-import { GiftBoxOutro } from './components/GiftBoxOutro';
 import { Header } from './components/Header';
 import { HomeView } from './components/HomeView';
 import { QuickPersonalizeModal } from './components/QuickPersonalizeModal';
@@ -210,8 +209,7 @@ export default function App() {
         )}
       </main>
 
-      <div className="relative z-10">
-        <GiftBoxOutro onNavigate={handleNavigate} />
+      <div className="relative z-10 mt-20 md:mt-24">
         <Footer onNavigate={handleNavigate} />
       </div>
 

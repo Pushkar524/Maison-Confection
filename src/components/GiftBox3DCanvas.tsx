@@ -49,13 +49,13 @@ function createLinenTextures(renderer: THREE.WebGLRenderer) {
   const bCtx = bumpCanvas.getContext('2d');
 
   if (aCtx && bCtx) {
-    aCtx.fillStyle = '#FCEAF0';
+    aCtx.fillStyle = '#EBBCCB';
     aCtx.fillRect(0, 0, 512, 512);
     bCtx.fillStyle = '#808080';
     bCtx.fillRect(0, 0, 512, 512);
 
     for (let i = 0; i < 512; i += 3) {
-      const shade = i % 6 === 0 ? 'rgba(218, 168, 186, 0.16)' : 'rgba(255, 250, 252, 0.25)';
+      const shade = i % 6 === 0 ? 'rgba(182, 118, 140, 0.22)' : 'rgba(255, 244, 248, 0.22)';
       aCtx.fillStyle = shade;
       aCtx.fillRect(i, 0, 1.5, 512);
       aCtx.fillRect(0, i, 512, 1.5);
@@ -89,16 +89,16 @@ function createInnerPaperTexture(renderer: THREE.WebGLRenderer): THREE.CanvasTex
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
   if (ctx) {
-    ctx.fillStyle = '#FFF7FA';
+    ctx.fillStyle = '#FAE7EE';
     ctx.fillRect(0, 0, 256, 256);
     for (let i = 0; i < 650; i++) {
       const x = (((Math.sin(i * 19.31) * 43758.54) % 1) + 1) % 1 * 256;
       const y = (((Math.sin(i * 73.17) * 43758.54) % 1) + 1) % 1 * 256;
-      ctx.fillStyle = i % 2 === 0 ? 'rgba(220, 175, 190, 0.14)' : 'rgba(201, 162, 94, 0.10)';
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(182, 118, 140, 0.14)' : 'rgba(255, 250, 252, 0.25)';
       ctx.fillRect(x, y, 2, 1);
     }
-    ctx.strokeStyle = 'rgba(201, 162, 94, 0.45)';
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(148, 86, 108, 0.35)';
+    ctx.lineWidth = 2;
     ctx.strokeRect(10, 10, 236, 236);
   }
   const tex = new THREE.CanvasTexture(canvas);
@@ -123,7 +123,6 @@ function createSatinBumpTexture(renderer: THREE.WebGLRenderer): THREE.CanvasText
       ctx.fillStyle = y % 6 === 0 ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
       ctx.fillRect(0, y, 256, 1);
     }
-    // Woven selvedge borders
     ctx.fillStyle = '#B8B8B8';
     ctx.fillRect(0, 0, 9, 256);
     ctx.fillRect(247, 0, 9, 256);
@@ -136,7 +135,7 @@ function createSatinBumpTexture(renderer: THREE.WebGLRenderer): THREE.CanvasText
   return tex;
 }
 
-/** Organic micro-pile crushed velvet bump + roughness textures (zero grid lines, zero plastic gloss) */
+/** Organic micro-pile crushed velvet bump + roughness textures */
 function createVelvetTextures(renderer: THREE.WebGLRenderer) {
   const size = 256;
   const bumpData = new Uint8Array(size * size * 4);
@@ -145,8 +144,7 @@ function createVelvetTextures(renderer: THREE.WebGLRenderer) {
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const idx = (y * size + x) * 4;
-      const hash =
-        (((Math.sin(x * 127.1 + y * 311.7) * 43758.5453) % 1) + 1) % 1;
+      const hash = (((Math.sin(x * 127.1 + y * 311.7) * 43758.5453) % 1) + 1) % 1;
       const swirl =
         0.5 +
         0.5 *
@@ -159,8 +157,7 @@ function createVelvetTextures(renderer: THREE.WebGLRenderer) {
       bumpData[idx + 2] = bumpVal;
       bumpData[idx + 3] = 255;
 
-      // High matte roughness (212..248 -> 0.83..0.97) with brushed pile variation
-      const roughVal = Math.round(212 + swirl * 22 + hash * 14);
+      const roughVal = Math.round(215 + swirl * 22 + hash * 14);
       roughData[idx] = roughVal;
       roughData[idx + 1] = roughVal;
       roughData[idx + 2] = roughVal;
@@ -184,12 +181,11 @@ function createVelvetTextures(renderer: THREE.WebGLRenderer) {
   return { bumpMap, roughnessMap };
 }
 
-/** Hand-crimped metallic foil tangent-space normal map + micro-roughness map */
+/** Hand-crimped rose-metallic foil normal & roughness maps */
 function createCrinkledFoilMaps(renderer: THREE.WebGLRenderer) {
   const size = 256;
   const height = new Float32Array(size * size);
 
-  // Faceted cellular crease heightfield
   const seeds: { x: number; y: number; nx: number; ny: number }[] = [];
   for (let i = 0; i < 64; i++) {
     const sx = ((((Math.sin(i * 12.9898) * 43758.5453) % 1) + 1) % 1) * size;
@@ -214,8 +210,8 @@ function createCrinkledFoilMaps(renderer: THREE.WebGLRenderer) {
         }
       }
       const seed = seeds[bestIdx];
-      const tilt = ((x - seed.x) * seed.nx + (y - seed.y) * seed.ny) * 0.045;
-      const micro = Math.sin(x * 0.45 + y * 0.3) * 0.12;
+      const tilt = ((x - seed.x) * seed.nx + (y - seed.y) * seed.ny) * 0.04;
+      const micro = Math.sin(x * 0.45 + y * 0.3) * 0.1;
       height[y * size + x] = tilt + micro;
     }
   }
@@ -230,8 +226,8 @@ function createCrinkledFoilMaps(renderer: THREE.WebGLRenderer) {
       const ym = (y - 1 + size) % size;
       const yp = (y + 1) % size;
 
-      const dX = (height[y * size + xp] - height[y * size + xm]) * 1.8;
-      const dY = (height[yp * size + x] - height[ym * size + x]) * 1.8;
+      const dX = (height[y * size + xp] - height[y * size + xm]) * 1.6;
+      const dY = (height[yp * size + x] - height[ym * size + x]) * 1.6;
       const len = Math.sqrt(dX * dX + dY * dY + 1);
 
       const idx = (y * size + x) * 4;
@@ -240,7 +236,7 @@ function createCrinkledFoilMaps(renderer: THREE.WebGLRenderer) {
       normalData[idx + 2] = Math.round(((1 / len) * 0.5 + 0.5) * 255);
       normalData[idx + 3] = 255;
 
-      const rVal = Math.round(58 + Math.min(85, Math.abs(dX + dY) * 95));
+      const rVal = Math.round(72 + Math.min(90, Math.abs(dX + dY) * 90));
       roughData[idx] = rVal;
       roughData[idx + 1] = rVal;
       roughData[idx + 2] = rVal;
@@ -264,7 +260,6 @@ function createCrinkledFoilMaps(renderer: THREE.WebGLRenderer) {
   return { normalMap, roughnessMap };
 }
 
-/** Baked almond-flour meringue micro-pore bump map for French macarons */
 function createMeringueBumpTexture(): THREE.DataTexture {
   const size = 128;
   const data = new Uint8Array(size * size * 4);
@@ -284,7 +279,6 @@ function createMeringueBumpTexture(): THREE.DataTexture {
   return tex;
 }
 
-/** Botanical rose petal albedo + matching radial vein bump map */
 function createPetalTextures(
   renderer: THREE.WebGLRenderer,
   baseHex: string,
@@ -302,9 +296,9 @@ function createPetalTextures(
 
   if (aCtx && bCtx) {
     const grad = aCtx.createLinearGradient(0, 256, 0, 0);
-    grad.addColorStop(0, '#FFF8FA');
-    grad.addColorStop(0.24, baseHex);
-    grad.addColorStop(0.82, tipHex);
+    grad.addColorStop(0, '#FDF1F5');
+    grad.addColorStop(0.28, baseHex);
+    grad.addColorStop(0.84, tipHex);
     grad.addColorStop(1, tipHex);
     aCtx.fillStyle = grad;
     aCtx.fillRect(0, 0, 256, 256);
@@ -312,10 +306,9 @@ function createPetalTextures(
     bCtx.fillStyle = '#808080';
     bCtx.fillRect(0, 0, 256, 256);
 
-    // Organic cellular mottling + radial botanical veins
     for (let i = -7; i <= 7; i++) {
       aCtx.strokeStyle =
-        Math.abs(i) <= 2 ? 'rgba(142, 45, 73, 0.16)' : 'rgba(158, 59, 88, 0.09)';
+        Math.abs(i) <= 2 ? 'rgba(130, 56, 82, 0.14)' : 'rgba(148, 72, 98, 0.08)';
       aCtx.lineWidth = Math.abs(i) <= 1 ? 1.5 : 1.0;
       aCtx.beginPath();
       aCtx.moveTo(128 + i * 3, 252);
@@ -330,11 +323,10 @@ function createPetalTextures(
       bCtx.stroke();
     }
 
-    // Soft velvety micro-grain
     for (let p = 0; p < 550; p++) {
       const px = (((Math.sin(p * 17.3) * 43758.54) % 1) + 1) % 1 * 256;
       const py = (((Math.sin(p * 63.7) * 43758.54) % 1) + 1) % 1 * 256;
-      aCtx.fillStyle = p % 2 === 0 ? 'rgba(255,255,255,0.08)' : 'rgba(142,45,73,0.05)';
+      aCtx.fillStyle = p % 2 === 0 ? 'rgba(255,255,255,0.08)' : 'rgba(130,56,82,0.05)';
       aCtx.fillRect(px, py, 2, 2);
       bCtx.fillStyle = p % 2 === 0 ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
       bCtx.fillRect(px, py, 1.5, 1.5);
@@ -358,8 +350,8 @@ function createContactShadowTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext('2d');
   if (ctx) {
     const grad = ctx.createRadialGradient(128, 128, 18, 128, 128, 124);
-    grad.addColorStop(0, 'rgba(22, 16, 19, 0.36)');
-    grad.addColorStop(0.55, 'rgba(74, 43, 54, 0.16)');
+    grad.addColorStop(0, 'rgba(28, 18, 23, 0.34)');
+    grad.addColorStop(0.55, 'rgba(74, 43, 54, 0.14)');
     grad.addColorStop(1, 'rgba(74, 43, 54, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 256, 256);
@@ -458,7 +450,6 @@ function createSatinRibbonStripGeometry(
   return geo;
 }
 
-/** Parametric 2D heart contour helper (used for both sculpted pillow heart & perimeter seam cord) */
 function getHeartContourPoint(theta: number, scale: number): { x: number; y: number } {
   const s = Math.sin(theta);
   const hx = (16 * s * s * s) / 34;
@@ -472,10 +463,13 @@ function getHeartContourPoint(theta: number, scale: number): { x: number; y: num
   return { x: hx * scale, y: hy * scale };
 }
 
-/** Sculpted, organically cushioned 3D pillow heart (replaces flat extruded plastic-looking slabs) */
+/**
+ * Watertight convex 3D pillow heart with verified outward-facing winding (a, b, c, a, c, d)
+ * so normals face strictly outward across front, equator, and back.
+ */
 function createSculptedPillowHeartGeometry(scale = 1): THREE.BufferGeometry {
   const radialSegs = 56;
-  const rings = 24; // 0 = front pole, rings = back pole
+  const rings = 24;
   const depthScale = 0.24 * scale;
 
   const positions: number[] = [];
@@ -486,7 +480,6 @@ function createSculptedPillowHeartGeometry(scale = 1): THREE.BufferGeometry {
     const phi = (rIdx / rings) * Math.PI;
     const sinPhi = Math.sin(phi);
     const cosPhi = Math.cos(phi);
-    // Smooth plump cushion radial curve with crisp tailored equator
     const r = Math.pow(sinPhi, 0.88);
 
     for (let aIdx = 0; aIdx <= radialSegs; aIdx++) {
@@ -497,12 +490,11 @@ function createSculptedPillowHeartGeometry(scale = 1): THREE.BufferGeometry {
       const px = pt.x * r;
       const py = pt.y * r;
 
-      // Natural dimple along the upper cleft crease & plump center lobes
       const cleftDimple =
         py > 0.04 * scale
-          ? Math.exp(-Math.pow(px / (0.14 * scale), 2)) * 0.24 * r
+          ? Math.exp(-Math.pow(px / (0.14 * scale), 2)) * 0.22 * r
           : 0;
-      const pz = cosPhi * depthScale * (1 - 0.18 * r * r) * (1 - cleftDimple);
+      const pz = cosPhi * depthScale * (1 - 0.16 * r * r) * (1 - cleftDimple);
 
       positions.push(px, py, pz);
       uvs.push(px / scale + 0.5, py / scale + 0.5);
@@ -516,7 +508,8 @@ function createSculptedPillowHeartGeometry(scale = 1): THREE.BufferGeometry {
       const b = a + 1;
       const c = a + rowLen + 1;
       const d = a + rowLen;
-      indices.push(a, d, c, a, c, b);
+      // Outward CCW winding when viewed from outside (+Z front, equator, -Z back)
+      indices.push(a, b, c, a, c, d);
     }
   }
 
@@ -529,19 +522,6 @@ function createSculptedPillowHeartGeometry(scale = 1): THREE.BufferGeometry {
   return geo;
 }
 
-/** Piped satin/gold cord seam tracing the sculpted heart equator */
-function createHeartSeamCordGeometry(scale = 1, tubeRadius = 0.015): THREE.TubeGeometry {
-  const pts: THREE.Vector3[] = [];
-  const steps = 48;
-  for (let i = 0; i < steps; i++) {
-    const theta = (i / steps) * Math.PI * 2;
-    const pt = getHeartContourPoint(theta, scale);
-    pts.push(new THREE.Vector3(pt.x, pt.y, 0));
-  }
-  const curve = new THREE.CatmullRomCurve3(pts, true);
-  return new THREE.TubeGeometry(curve, 64, tubeRadius, 8, true);
-}
-
 /** Sculpted French Macaron multi-part keepsake confection */
 function createMacaronGroup(
   shellMat: THREE.Material,
@@ -550,7 +530,6 @@ function createMacaronGroup(
 ): THREE.Group {
   const group = new THREE.Group();
 
-  // Domed almond-meringue shell profile via LatheGeometry
   const shellPts = [
     new THREE.Vector2(0.0, 0.0),
     new THREE.Vector2(0.24, 0.0),
@@ -562,7 +541,6 @@ function createMacaronGroup(
   const shellGeo = new THREE.LatheGeometry(shellPts, 32);
   disposables.push(shellGeo);
 
-  // Ruffled crispy "pied" (macaron foot) ring
   const footGeo = new THREE.TorusGeometry(0.236, 0.022, 8, 36);
   const fPos = footGeo.attributes.position;
   for (let i = 0; i < fPos.count; i++) {
@@ -600,7 +578,7 @@ function createMacaronGroup(
   return group;
 }
 
-/** Pleated gold paper baking cup + cocoa-dusted sculpted truffle praline */
+/** Pleated paper baking cup + cocoa-dusted sculpted truffle praline */
 function createTruffleBonbonGroup(
   cupMat: THREE.Material,
   truffleMat: THREE.Material,
@@ -609,7 +587,6 @@ function createTruffleBonbonGroup(
 ): THREE.Group {
   const group = new THREE.Group();
 
-  // Pleated foil paper cup (22 radial flutes)
   const cupGeo = new THREE.CylinderGeometry(0.2, 0.145, 0.125, 44, 1, true);
   const pos = cupGeo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
@@ -627,7 +604,6 @@ function createTruffleBonbonGroup(
   cupBaseGeo.rotateX(-Math.PI / 2);
   disposables.push(cupBaseGeo);
 
-  // Organic hand-rolled chocolate truffle dome
   const truffleGeo = new THREE.SphereGeometry(0.16, 28, 20);
   const tPos = truffleGeo.attributes.position;
   for (let i = 0; i < tPos.count; i++) {
@@ -640,7 +616,6 @@ function createTruffleBonbonGroup(
   truffleGeo.computeVertexNormals();
   disposables.push(truffleGeo);
 
-  // Piped decorative drizzle across truffle crown
   const drizzlePts: THREE.Vector3[] = [];
   for (let i = 0; i <= 24; i++) {
     const t = i / 24;
@@ -687,7 +662,6 @@ function createBotanicalPetalGeometry(scale = 1): THREE.BufferGeometry {
   return geo;
 }
 
-/** Tufted & gathered silk pillow cushion inside box */
 function createSilkCushionGeometry(width: number, depth: number): THREE.BufferGeometry {
   const geo = new THREE.PlaneGeometry(width, depth, 52, 52);
   geo.rotateX(-Math.PI / 2);
@@ -704,7 +678,6 @@ function createSilkCushionGeometry(width: number, depth: number): THREE.BufferGe
     const z = pos.getZ(i);
     const r = Math.sqrt(x * x + z * z);
 
-    // Subtle diamond silk tufting dimples + soft cushion crown
     let tuftDip = 0;
     for (let t = 0; t < tufts.length; t++) {
       const dx = x - tufts[t][0];
@@ -795,7 +768,7 @@ export function GiftBox3DCanvas({
     renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.04;
+    renderer.toneMappingExposure = 1.02;
     renderer.shadowMap.enabled = !isSoftwareGl;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
@@ -814,11 +787,11 @@ export function GiftBox3DCanvas({
     disposables.push(envTarget);
     pmremGenerator.dispose();
 
-    // Luxury Rose-Noir Studio Lighting (Soft warm key + diffused fill so organics don't look plastic)
+    // Soft Blush-Noir Studio Lighting
     const hemiLight = new THREE.HemisphereLight(0xfff6f9, 0xd4b6c3, 1.02);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff4ef, 2.05);
+    const keyLight = new THREE.DirectionalLight(0xfff5f2, 2.0);
     keyLight.position.set(5.4, 8.6, 5.2);
     keyLight.castShadow = !isSoftwareGl;
     keyLight.shadow.mapSize.set(1024, 1024);
@@ -838,7 +811,7 @@ export function GiftBox3DCanvas({
     fillLight.position.set(-5.0, 3.8, 4.2);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffd7e5, 1.3);
+    const rimLight = new THREE.DirectionalLight(0xffd7e5, 1.25);
     rimLight.position.set(-4.2, 4.8, -5.2);
     scene.add(rimLight);
 
@@ -849,8 +822,8 @@ export function GiftBox3DCanvas({
     const velvetTex = createVelvetTextures(renderer);
     const foilMaps = createCrinkledFoilMaps(renderer);
     const meringueBump = createMeringueBumpTexture();
-    const petalTexLight = createPetalTextures(renderer, '#F7D2DF', '#DE8BA7');
-    const petalTexDeep = createPetalTextures(renderer, '#F2B8CB', '#9E3B58');
+    const petalTexLight = createPetalTextures(renderer, '#F4C8D7', '#DC8FA8');
+    const petalTexDeep = createPetalTextures(renderer, '#EBB5C7', '#B35371');
     const contactTex = createContactShadowTexture();
     disposables.push(
       linenTex.map,
@@ -869,9 +842,9 @@ export function GiftBox3DCanvas({
       contactTex
     );
 
-    // Luxury Light Pink Linen + Inner Cotton Paper Lining Materials
+    // Unified Cohesive Luxury Blush-Pink + Espresso-Noir Materials (no jarring color soup)
     const linenOuterMat = new THREE.MeshStandardMaterial({
-      color: 0xfceaf0,
+      color: 0xf1cad7,
       map: linenTex.map,
       bumpMap: linenTex.bumpMap,
       bumpScale: 0.018,
@@ -879,7 +852,7 @@ export function GiftBox3DCanvas({
       metalness: 0.01,
     });
     const linenTrimMat = new THREE.MeshStandardMaterial({
-      color: 0xf3d5df,
+      color: 0xe4b1c3,
       map: linenTex.map,
       bumpMap: linenTex.bumpMap,
       bumpScale: 0.014,
@@ -887,126 +860,102 @@ export function GiftBox3DCanvas({
       metalness: 0.01,
     });
     const innerPaperMat = new THREE.MeshStandardMaterial({
-      color: 0xfff8fa,
+      color: 0xfbeaf0,
       map: innerPaperTex,
       roughness: 0.92,
       metalness: 0.0,
     });
     const silkLiningMat = new THREE.MeshPhysicalMaterial({
-      color: 0xf4c2d2,
+      color: 0xf0bccd,
       bumpMap: satinBump,
       bumpScale: 0.005,
       roughness: 0.56,
       metalness: 0.0,
-      specularIntensity: 0.28,
+      specularIntensity: 0.25,
       sheen: 1.0,
       sheenRoughness: 0.34,
       sheenColor: new THREE.Color(0xfff5f8),
     });
 
-    // Woven Satin Ribbon Materials (anisotropic sheen, zero plastic clearcoat)
+    // Deep Espresso-Noir & Blush Satin Ribbon Materials
     const noirSatinMat = new THREE.MeshPhysicalMaterial({
-      color: 0x1b1317,
+      color: 0x1c1217,
       bumpMap: satinBump,
       bumpScale: 0.01,
-      roughness: 0.42,
-      metalness: 0.04,
-      specularIntensity: 0.34,
+      roughness: 0.44,
+      metalness: 0.03,
+      specularIntensity: 0.32,
       sheen: 1.0,
-      sheenRoughness: 0.26,
-      sheenColor: new THREE.Color(0x7d5866),
+      sheenRoughness: 0.28,
+      sheenColor: new THREE.Color(0x6e4a58),
       anisotropy: 0.88,
       side: THREE.DoubleSide,
     });
     const blushSatinMat = new THREE.MeshPhysicalMaterial({
-      color: 0xf2b8cb,
+      color: 0xebb9ca,
       bumpMap: satinBump,
       bumpScale: 0.01,
-      roughness: 0.44,
+      roughness: 0.46,
       metalness: 0.02,
-      specularIntensity: 0.32,
+      specularIntensity: 0.28,
       sheen: 1.0,
-      sheenRoughness: 0.24,
+      sheenRoughness: 0.26,
       sheenColor: new THREE.Color(0xfff5f8),
       anisotropy: 0.85,
       side: THREE.DoubleSide,
     });
-    const champagneSatinMat = new THREE.MeshPhysicalMaterial({
-      color: 0xdfc28d,
+    const dustyRoseSatinMat = new THREE.MeshPhysicalMaterial({
+      color: 0x9c4561,
       bumpMap: satinBump,
       bumpScale: 0.01,
-      roughness: 0.42,
-      metalness: 0.06,
-      specularIntensity: 0.38,
+      roughness: 0.45,
+      metalness: 0.03,
+      specularIntensity: 0.3,
       sheen: 1.0,
-      sheenRoughness: 0.24,
-      sheenColor: new THREE.Color(0xfff6e5),
-      anisotropy: 0.9,
+      sheenRoughness: 0.26,
+      sheenColor: new THREE.Color(0xf4c2d2),
+      anisotropy: 0.85,
       side: THREE.DoubleSide,
     });
 
     const waxSealMat = new THREE.MeshPhysicalMaterial({
-      color: 0x161013,
+      color: 0x181014,
       roughness: 0.42,
       metalness: 0.04,
-      clearcoat: 0.28,
+      clearcoat: 0.26,
       clearcoatRoughness: 0.38,
     });
 
-    // Smooth brushed champagne gold for box lip & seam piping
-    const goldTrimMat = new THREE.MeshStandardMaterial({
-      color: 0xd9b675,
-      roughness: 0.28,
-      metalness: 0.88,
+    // Muted Rose-Champagne metallic (soft rose-bronze harmony instead of garish yellow gold)
+    const roseTrimMat = new THREE.MeshStandardMaterial({
+      color: 0xd4a6a8,
+      roughness: 0.34,
+      metalness: 0.78,
     });
 
-    // Crinkled tangent-normal-mapped confection foils (non-plastic faceted shimmer)
-    const goldCrinkleFoilMat = new THREE.MeshStandardMaterial({
-      color: 0xd9b36c,
+    // Crinkled tangent-normal-mapped Rose-Pearl Foil
+    const rosePearlCrinkleFoilMat = new THREE.MeshStandardMaterial({
+      color: 0xebc2cf,
       normalMap: foilMaps.normalMap,
       normalScale: new THREE.Vector2(0.85, 0.85),
       roughnessMap: foilMaps.roughnessMap,
-      roughness: 0.95,
-      metalness: 0.92,
-      envMapIntensity: 1.15,
+      roughness: 0.92,
+      metalness: 0.84,
+      envMapIntensity: 1.05,
     });
-    const roseGoldCrinkleFoilMat = new THREE.MeshStandardMaterial({
-      color: 0xe6adbd,
+    const darkRoseBronzeFoilMat = new THREE.MeshStandardMaterial({
+      color: 0xc2939c,
       normalMap: foilMaps.normalMap,
       normalScale: new THREE.Vector2(0.85, 0.85),
       roughnessMap: foilMaps.roughnessMap,
-      roughness: 0.95,
-      metalness: 0.88,
-      envMapIntensity: 1.12,
+      roughness: 0.92,
+      metalness: 0.86,
+      envMapIntensity: 1.08,
     });
 
-    // Crushed Velvet Keepsake Hearts (High roughness + zero specular hotspots + grazing sheen)
+    // Crushed Velvet Keepsake Hearts (Unified Espresso Noir, Deep Rose Plum, & Soft Blush)
     const velvetNoirHeartMat = new THREE.MeshPhysicalMaterial({
-      color: 0x1c1317,
-      bumpMap: velvetTex.bumpMap,
-      bumpScale: 0.014,
-      roughnessMap: velvetTex.roughnessMap,
-      roughness: 0.96,
-      metalness: 0.0,
-      specularIntensity: 0.12,
-      sheen: 1.0,
-      sheenRoughness: 0.52,
-      sheenColor: new THREE.Color(0x7c5563),
-    });
-    const velvetPlumHeartMat = new THREE.MeshPhysicalMaterial({
-      color: 0x8a2946,
-      bumpMap: velvetTex.bumpMap,
-      bumpScale: 0.014,
-      roughnessMap: velvetTex.roughnessMap,
-      roughness: 0.96,
-      metalness: 0.0,
-      specularIntensity: 0.12,
-      sheen: 1.0,
-      sheenRoughness: 0.52,
-      sheenColor: new THREE.Color(0xf4c2d2),
-    });
-    const velvetBlushHeartMat = new THREE.MeshPhysicalMaterial({
-      color: 0xf0b2c5,
+      color: 0x1e1318,
       bumpMap: velvetTex.bumpMap,
       bumpScale: 0.014,
       roughnessMap: velvetTex.roughnessMap,
@@ -1014,52 +963,76 @@ export function GiftBox3DCanvas({
       metalness: 0.0,
       specularIntensity: 0.1,
       sheen: 1.0,
+      sheenRoughness: 0.54,
+      sheenColor: new THREE.Color(0x75505e),
+    });
+    const velvetPlumHeartMat = new THREE.MeshPhysicalMaterial({
+      color: 0x7c3149,
+      bumpMap: velvetTex.bumpMap,
+      bumpScale: 0.014,
+      roughnessMap: velvetTex.roughnessMap,
+      roughness: 0.96,
+      metalness: 0.0,
+      specularIntensity: 0.1,
+      sheen: 1.0,
+      sheenRoughness: 0.52,
+      sheenColor: new THREE.Color(0xf4c2d2),
+    });
+    const velvetBlushHeartMat = new THREE.MeshPhysicalMaterial({
+      color: 0xebb7c8,
+      bumpMap: velvetTex.bumpMap,
+      bumpScale: 0.014,
+      roughnessMap: velvetTex.roughnessMap,
+      roughness: 0.96,
+      metalness: 0.0,
+      specularIntensity: 0.09,
+      sheen: 1.0,
       sheenRoughness: 0.5,
       sheenColor: new THREE.Color(0xfff5f8),
     });
 
-    // Artisanal Confection Materials (Matte Baked Meringue, Ganache, Cocoa Powder Dust)
+    // Artisanal Confection Materials (Rose Macarons & Espresso Truffles)
     const macaronRoseMat = new THREE.MeshPhysicalMaterial({
-      color: 0xf2b5c8,
+      color: 0xefb8ca,
       bumpMap: meringueBump,
       bumpScale: 0.012,
-      roughness: 0.82,
+      roughness: 0.84,
       metalness: 0.0,
-      specularIntensity: 0.14,
+      specularIntensity: 0.12,
       sheen: 0.25,
       sheenRoughness: 0.8,
       sheenColor: new THREE.Color(0xfff4f7),
     });
     const macaronNoirMat = new THREE.MeshPhysicalMaterial({
-      color: 0x261a1e,
+      color: 0x26191e,
       bumpMap: meringueBump,
       bumpScale: 0.012,
-      roughness: 0.8,
+      roughness: 0.82,
       metalness: 0.0,
-      specularIntensity: 0.16,
+      specularIntensity: 0.14,
       sheen: 0.22,
       sheenRoughness: 0.75,
       sheenColor: new THREE.Color(0x6e4e5a),
     });
     const ganacheFillingMat = new THREE.MeshStandardMaterial({
-      color: 0x45242d,
-      roughness: 0.42,
+      color: 0x3b1f28,
+      roughness: 0.45,
       metalness: 0.02,
     });
     const cocoaTruffleMat = new THREE.MeshPhysicalMaterial({
-      color: 0x2d181b,
+      color: 0x2b181d,
       bumpMap: velvetTex.bumpMap,
       bumpScale: 0.018,
       roughnessMap: velvetTex.roughnessMap,
       roughness: 1.0,
       metalness: 0.0,
       specularIntensity: 0.08,
-      sheen: 0.35,
+      sheen: 0.32,
       sheenRoughness: 0.85,
       sheenColor: new THREE.Color(0x70484e),
     });
 
-    // Organic Botanical Matte Rose Petals (Zero plastic specular)
+    // Organic Botanical Matte Rose Petals
     const petalLightMat = new THREE.MeshPhysicalMaterial({
       map: petalTexLight.map,
       bumpMap: petalTexLight.bumpMap,
@@ -1092,11 +1065,11 @@ export function GiftBox3DCanvas({
       silkLiningMat,
       noirSatinMat,
       blushSatinMat,
-      champagneSatinMat,
+      dustyRoseSatinMat,
       waxSealMat,
-      goldTrimMat,
-      goldCrinkleFoilMat,
-      roseGoldCrinkleFoilMat,
+      roseTrimMat,
+      rosePearlCrinkleFoilMat,
+      darkRoseBronzeFoilMat,
       velvetNoirHeartMat,
       velvetPlumHeartMat,
       velvetBlushHeartMat,
@@ -1142,7 +1115,7 @@ export function GiftBox3DCanvas({
     const boxH = 1.44;
     const wallT = 0.13;
 
-    // 1. Hollow Blush-Pink Linen Vessel with Cream-Paper Lined Interior
+    // 1. Hollow Blush-Pink Linen Vessel with Lined Interior (zero obstructing inner ribbon blocks!)
     const vesselGroup = new THREE.Group();
     giftBoxRoot.add(vesselGroup);
 
@@ -1180,11 +1153,11 @@ export function GiftBox3DCanvas({
 
     vesselGroup.add(wallFront, wallBack, wallLeft, wallRight);
 
-    // Interior Cotton-Rag Lining Panels (with subtle gold border)
+    // Interior Cotton-Rag Lining Panels
     const innerW = boxW - wallT * 2.02;
     const innerD = boxD - wallT * 2.02;
-    const innerPanelFBGeo = new THREE.PlaneGeometry(innerW, boxH - 0.16);
-    const innerPanelLRGeo = new THREE.PlaneGeometry(innerD, boxH - 0.16);
+    const innerPanelFBGeo = new THREE.PlaneGeometry(innerW, boxH - 0.14);
+    const innerPanelLRGeo = new THREE.PlaneGeometry(innerD, boxH - 0.14);
     disposables.push(innerPanelFBGeo, innerPanelLRGeo);
 
     const inFront = new THREE.Mesh(innerPanelFBGeo, innerPaperMat);
@@ -1200,24 +1173,24 @@ export function GiftBox3DCanvas({
     inRight.rotation.y = -Math.PI / 2;
     vesselGroup.add(inFront, inBack, inLeft, inRight);
 
-    // Champagne Gold Inner Rim Trim
-    const rimFBGeo = new THREE.BoxGeometry(boxW - wallT * 1.6, 0.025, 0.028);
-    const rimLRGeo = new THREE.BoxGeometry(0.028, 0.025, boxD - wallT * 1.6);
-    const rimF = new THREE.Mesh(rimFBGeo, goldTrimMat);
-    rimF.position.set(0, boxH + 0.005, boxD / 2 - wallT);
-    const rimB = new THREE.Mesh(rimFBGeo, goldTrimMat);
-    rimB.position.set(0, boxH + 0.005, -boxD / 2 + wallT);
-    const rimL = new THREE.Mesh(rimLRGeo, goldTrimMat);
-    rimL.position.set(-boxW / 2 + wallT, boxH + 0.005, 0);
-    const rimR = new THREE.Mesh(rimLRGeo, goldTrimMat);
-    rimR.position.set(boxW / 2 - wallT, boxH + 0.005, 0);
+    // Subtle Muted Blush-Rose Inner Rim Trim (flush on top wall edge, never floating)
+    const rimFBGeo = new THREE.BoxGeometry(boxW - wallT * 0.4, 0.018, 0.04);
+    const rimLRGeo = new THREE.BoxGeometry(0.04, 0.018, boxD - wallT * 0.4);
+    const rimF = new THREE.Mesh(rimFBGeo, linenTrimMat);
+    rimF.position.set(0, boxH + 0.004, boxD / 2 - wallT * 0.5);
+    const rimB = new THREE.Mesh(rimFBGeo, linenTrimMat);
+    rimB.position.set(0, boxH + 0.004, -boxD / 2 + wallT * 0.5);
+    const rimL = new THREE.Mesh(rimLRGeo, linenTrimMat);
+    rimL.position.set(-boxW / 2 + wallT * 0.5, boxH + 0.004, 0);
+    const rimR = new THREE.Mesh(rimLRGeo, linenTrimMat);
+    rimR.position.set(boxW / 2 - wallT * 0.5, boxH + 0.004, 0);
     vesselGroup.add(rimF, rimB, rimL, rimR);
     disposables.push(rimFBGeo, rimLRGeo);
 
     // Tufted & Pleated Rose Silk Cushioning Inside Box
     const silkBedGeo = createSilkCushionGeometry(boxW - wallT * 2.05, boxD - wallT * 2.05);
     const silkBed = new THREE.Mesh(silkBedGeo, silkLiningMat);
-    silkBed.position.y = 0.56;
+    silkBed.position.y = 0.62;
     silkBed.receiveShadow = !isSoftwareGl;
     vesselGroup.add(silkBed);
     disposables.push(silkBedGeo);
@@ -1227,23 +1200,23 @@ export function GiftBox3DCanvas({
     vesselGroup.add(confectionGroup);
 
     const macaronRose = createMacaronGroup(macaronRoseMat, ganacheFillingMat, disposables);
-    macaronRose.position.set(-0.66, 0.69, 0.58);
-    macaronRose.rotation.set(0.18, 0.4, -0.14);
+    macaronRose.position.set(-0.64, 0.76, 0.56);
+    macaronRose.rotation.set(0.16, 0.35, -0.12);
     confectionGroup.add(macaronRose);
 
     const macaronNoir = createMacaronGroup(macaronNoirMat, macaronRoseMat, disposables);
-    macaronNoir.position.set(0.68, 0.69, -0.54);
-    macaronNoir.rotation.set(-0.15, -0.5, 0.16);
+    macaronNoir.position.set(0.66, 0.76, -0.52);
+    macaronNoir.rotation.set(-0.14, -0.45, 0.14);
     confectionGroup.add(macaronNoir);
 
     const truffleConfigs = [
-      { pos: [0.66, 0.63, 0.6], rotY: 0.4, body: cocoaTruffleMat, drizzle: roseGoldCrinkleFoilMat },
-      { pos: [-0.66, 0.63, -0.58], rotY: -0.6, body: cocoaTruffleMat, drizzle: goldTrimMat },
-      { pos: [0.02, 0.65, 0.72], rotY: 1.1, body: goldCrinkleFoilMat, drizzle: ganacheFillingMat },
+      { pos: [0.64, 0.7, 0.58], rotY: 0.3, body: cocoaTruffleMat, drizzle: rosePearlCrinkleFoilMat },
+      { pos: [-0.64, 0.7, -0.56], rotY: -0.5, body: cocoaTruffleMat, drizzle: roseTrimMat },
+      { pos: [0.02, 0.72, 0.68], rotY: 0.9, body: rosePearlCrinkleFoilMat, drizzle: ganacheFillingMat },
     ];
     truffleConfigs.forEach((cfg) => {
       const truffle = createTruffleBonbonGroup(
-        goldCrinkleFoilMat,
+        noirSatinMat,
         cfg.body,
         cfg.drizzle,
         disposables
@@ -1253,28 +1226,33 @@ export function GiftBox3DCanvas({
       confectionGroup.add(truffle);
     });
 
-    // Deep Obsidian Noir Satin Wrap-Around Bands
-    const ribbonBandFBGeo = new THREE.BoxGeometry(0.36, boxH + 0.015, boxD + 0.024);
-    const ribbonBandLRGeo = new THREE.BoxGeometry(boxW + 0.024, boxH + 0.015, 0.36);
-    const ribbonBandFB = new THREE.Mesh(ribbonBandFBGeo, noirSatinMat);
-    ribbonBandFB.position.y = boxH / 2;
-    const ribbonBandLR = new THREE.Mesh(ribbonBandLRGeo, noirSatinMat);
-    ribbonBandLR.position.y = boxH / 2;
-    vesselGroup.add(ribbonBandFB, ribbonBandLR);
-    disposables.push(ribbonBandFBGeo, ribbonBandLRGeo);
+    // Exterior-Only Espresso-Noir Satin Wrap Bands (4 thin outer strips, leaving inside clear!)
+    const outerBandThin = 0.022;
+    const outerBandFBGeo = new THREE.BoxGeometry(0.36, boxH - 0.02, outerBandThin);
+    const outerBandLRGeo = new THREE.BoxGeometry(outerBandThin, boxH - 0.02, 0.36);
+    const bandFront = new THREE.Mesh(outerBandFBGeo, noirSatinMat);
+    bandFront.position.set(0, boxH / 2, boxD / 2 + outerBandThin * 0.45);
+    const bandBack = new THREE.Mesh(outerBandFBGeo, noirSatinMat);
+    bandBack.position.set(0, boxH / 2, -boxD / 2 - outerBandThin * 0.45);
+    const bandLeft = new THREE.Mesh(outerBandLRGeo, noirSatinMat);
+    bandLeft.position.set(-boxW / 2 - outerBandThin * 0.45, boxH / 2, 0);
+    const bandRight = new THREE.Mesh(outerBandLRGeo, noirSatinMat);
+    bandRight.position.set(boxW / 2 + outerBandThin * 0.45, boxH / 2, 0);
+    vesselGroup.add(bandFront, bandBack, bandLeft, bandRight);
+    disposables.push(outerBandFBGeo, outerBandLRGeo);
 
-    // Obsidian Noir & Champagne Gold Front Wax Seal Medallion
+    // Obsidian Noir & Rose-Champagne Front Wax Seal Medallion
     const sealDiscGeo = new THREE.CylinderGeometry(0.21, 0.23, 0.045, 28);
-    const sealRingGeo = new THREE.TorusGeometry(0.15, 0.018, 10, 28);
+    const sealRingGeo = new THREE.TorusGeometry(0.15, 0.016, 10, 28);
     const sealDisc = new THREE.Mesh(sealDiscGeo, waxSealMat);
     sealDisc.rotation.x = Math.PI / 2;
-    sealDisc.position.set(0, boxH * 0.52, boxD / 2 + 0.02);
-    const sealRing = new THREE.Mesh(sealRingGeo, goldTrimMat);
-    sealRing.position.set(0, boxH * 0.52, boxD / 2 + 0.044);
+    sealDisc.position.set(0, boxH * 0.52, boxD / 2 + 0.028);
+    const sealRing = new THREE.Mesh(sealRingGeo, roseTrimMat);
+    sealRing.position.set(0, boxH * 0.52, boxD / 2 + 0.052);
     vesselGroup.add(sealDisc, sealRing);
     disposables.push(sealDiscGeo, sealRingGeo);
 
-    // 2. Hinged Cushioned Blush Lid + Noir & Rose Satin Bow
+    // 2. Hinged Cushioned Blush Lid + Noir & Blush Satin Bow
     const lidPivot = new THREE.Group();
     lidPivot.position.set(0, boxH, -boxD / 2);
     giftBoxRoot.add(lidPivot);
@@ -1308,20 +1286,51 @@ export function GiftBox3DCanvas({
     skirtR.position.set(lidW / 2 - 0.035, -0.02, 0);
     lidGroup.add(skirtF, skirtB, skirtL, skirtR);
 
-    const lidRibbonA = new THREE.Mesh(
-      new THREE.BoxGeometry(0.36, 0.16, lidD + 0.025),
-      noirSatinMat
+    const ribbonStrapCurveA = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, -0.144, lidD / 2 + 0.01),
+      new THREE.Vector3(0, 0.075, lidD / 2 + 0.01),
+      new THREE.Vector3(0, 0.162, lidD / 2 - 0.03),
+      new THREE.Vector3(0, 0.186, lidD / 4),
+      new THREE.Vector3(0, 0.19, 0),
+      new THREE.Vector3(0, 0.186, -lidD / 4),
+      new THREE.Vector3(0, 0.162, -lidD / 2 + 0.03),
+      new THREE.Vector3(0, 0.075, -lidD / 2 - 0.01),
+      new THREE.Vector3(0, -0.144, -lidD / 2 - 0.01),
+    ]);
+    const lidRibbonAGeo = createSatinRibbonStripGeometry(
+      ribbonStrapCurveA,
+      56,
+      () => 0.34,
+      0.016,
+      0
     );
-    lidRibbonA.position.y = 0.115;
-    const lidRibbonB = new THREE.Mesh(
-      new THREE.BoxGeometry(lidW + 0.025, 0.16, 0.36),
-      noirSatinMat
-    );
-    lidRibbonB.position.y = 0.115;
-    lidGroup.add(lidRibbonA, lidRibbonB);
-    disposables.push(lidRibbonA.geometry, lidRibbonB.geometry);
+    const lidRibbonA = new THREE.Mesh(lidRibbonAGeo, noirSatinMat);
+    lidRibbonA.castShadow = !isSoftwareGl;
 
-    // Wide Woven Satin Bow (Obsidian Noir & Blush Quartz)
+    const ribbonStrapCurveB = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-lidW / 2 - 0.01, -0.144, 0),
+      new THREE.Vector3(-lidW / 2 - 0.01, 0.075, 0),
+      new THREE.Vector3(-lidW / 2 + 0.03, 0.162, 0),
+      new THREE.Vector3(-lidW / 4, 0.187, 0),
+      new THREE.Vector3(0, 0.193, 0),
+      new THREE.Vector3(lidW / 4, 0.187, 0),
+      new THREE.Vector3(lidW / 2 - 0.03, 0.162, 0),
+      new THREE.Vector3(lidW / 2 + 0.01, 0.075, 0),
+      new THREE.Vector3(lidW / 2 + 0.01, -0.144, 0),
+    ]);
+    const lidRibbonBGeo = createSatinRibbonStripGeometry(
+      ribbonStrapCurveB,
+      56,
+      () => 0.34,
+      0.016,
+      0
+    );
+    const lidRibbonB = new THREE.Mesh(lidRibbonBGeo, noirSatinMat);
+    lidRibbonB.castShadow = !isSoftwareGl;
+    lidGroup.add(lidRibbonA, lidRibbonB);
+    disposables.push(lidRibbonAGeo, lidRibbonBGeo);
+
+    // Wide Woven Satin Bow (Obsidian Noir & Soft Blush)
     const bowGroup = new THREE.Group();
     bowGroup.position.set(0, 0.2, 0);
     lidGroup.add(bowGroup);
@@ -1397,9 +1406,8 @@ export function GiftBox3DCanvas({
     bowGroup.add(knotWrap);
     disposables.push(knotGeo);
 
-    // 3. Sculpted 3D Pillowed Velvet & Crinkled-Foil Keepsake Hearts + Satin Coils + Veined Rose Petals
+    // 3. Sculpted 3D Pillowed Velvet & Rose-Foil Hearts + Satin Coils + Veined Rose Petals (Poised, Calm Motion)
     const pillowHeartGeo = createSculptedPillowHeartGeometry(0.76);
-    const heartSeamGeo = createHeartSeamCordGeometry(0.76, 0.016);
     const petalGeo = createBotanicalPetalGeometry(0.95);
 
     const makeCoilCurve = (turns: number, rad: number, h: number) => {
@@ -1428,79 +1436,105 @@ export function GiftBox3DCanvas({
       0.011,
       -Math.PI * 1.1
     );
-    disposables.push(pillowHeartGeo, heartSeamGeo, petalGeo, coilGeoA, coilGeoB);
+    disposables.push(pillowHeartGeo, petalGeo, coilGeoA, coilGeoB);
 
     const burstPieces: BurstPiece[] = [];
 
+    // Poised, subtle orientations (kept facing viewer cleanly, no wild tumbling)
     const heartConfigs = [
       {
         mat: velvetNoirHeartMat,
-        seamMat: goldTrimMat,
-        scale: 1.0,
-        rest: [0, 0.82, 0],
-        burst: [0, 2.28, 0.32],
-        rot: [0.1, 0.2, 0.05],
+        scale: 0.95,
+        rest: [0, 0.86, 0],
+        burst: [0, 2.05, 0.28],
+        restRot: [0, 0.35, 0],
+        burstRot: [0.08, 0.42, 0.04],
       },
       {
-        mat: goldCrinkleFoilMat,
-        seamMat: noirSatinMat,
+        mat: rosePearlCrinkleFoilMat,
         scale: 0.78,
-        rest: [-0.52, 0.76, 0.25],
-        burst: [-1.85, 1.92, 0.82],
-        rot: [-0.2, -0.5, 0.3],
+        rest: [-0.5, 0.8, 0.22],
+        burst: [-1.72, 1.75, 0.7],
+        restRot: [0, 0.2, 0.08],
+        burstRot: [-0.08, 0.28, 0.14],
       },
       {
         mat: velvetBlushHeartMat,
-        seamMat: noirSatinMat,
-        scale: 0.84,
-        rest: [0.54, 0.78, -0.18],
-        burst: [1.92, 2.08, 0.68],
-        rot: [0.25, 0.6, -0.25],
+        scale: 0.82,
+        rest: [0.52, 0.82, -0.16],
+        burst: [1.78, 1.88, 0.58],
+        restRot: [0, 0.5, -0.08],
+        burstRot: [0.1, 0.58, -0.14],
       },
       {
-        mat: roseGoldCrinkleFoilMat,
-        seamMat: goldTrimMat,
+        mat: darkRoseBronzeFoilMat,
         scale: 0.68,
-        rest: [-0.32, 0.74, -0.42],
-        burst: [-1.15, 2.7, -0.55],
-        rot: [-0.3, 0.3, -0.2],
+        rest: [-0.3, 0.78, -0.38],
+        burst: [-1.05, 2.45, -0.45],
+        restRot: [0, 0.4, -0.05],
+        burstRot: [-0.1, 0.52, -0.12],
       },
       {
         mat: velvetPlumHeartMat,
-        seamMat: goldTrimMat,
         scale: 0.72,
-        rest: [0.32, 0.75, 0.42],
-        burst: [1.12, 2.58, 1.08],
-        rot: [0.15, -0.4, 0.22],
+        rest: [0.3, 0.8, 0.38],
+        burst: [1.05, 2.38, 0.88],
+        restRot: [0, 0.3, 0.06],
+        burstRot: [0.08, 0.38, 0.12],
       },
     ];
 
     heartConfigs.forEach((cfg, idx) => {
-      const heartGroup = new THREE.Group();
-      const bodyMesh = new THREE.Mesh(pillowHeartGeo, cfg.mat);
-      bodyMesh.castShadow = !isSoftwareGl;
-      bodyMesh.receiveShadow = !isSoftwareGl;
-      const seamMesh = new THREE.Mesh(heartSeamGeo, cfg.seamMat);
-      heartGroup.add(bodyMesh, seamMesh);
-      heartGroup.scale.setScalar(cfg.scale);
-      giftBoxRoot.add(heartGroup);
+      const mesh = new THREE.Mesh(pillowHeartGeo, cfg.mat);
+      mesh.castShadow = !isSoftwareGl;
+      mesh.receiveShadow = !isSoftwareGl;
+      mesh.scale.setScalar(cfg.scale);
+      giftBoxRoot.add(mesh);
 
       burstPieces.push({
-        mesh: heartGroup,
+        mesh,
         restPos: new THREE.Vector3(...cfg.rest),
         burstOffset: new THREE.Vector3(...cfg.burst),
-        restRot: new THREE.Euler(0, idx * 0.6, 0),
-        burstRot: new THREE.Euler(cfg.rot[0], cfg.rot[1] + idx * 0.8, cfg.rot[2]),
+        restRot: new THREE.Euler(...cfg.restRot),
+        burstRot: new THREE.Euler(...cfg.burstRot),
         phaseOffset: idx * 1.1,
-        floatAmp: 0.07,
+        floatAmp: 0.04,
       });
     });
 
     const coilConfigs = [
-      { geo: coilGeoA, mat: noirSatinMat, rest: [-0.58, 0.78, -0.14], burst: [-2.22, 1.68, 0.34] },
-      { geo: coilGeoB, mat: blushSatinMat, rest: [0.58, 0.78, 0.14], burst: [2.25, 1.84, 0.38] },
-      { geo: coilGeoB, mat: champagneSatinMat, rest: [0.06, 0.76, -0.52], burst: [0.32, 2.42, -1.02] },
-      { geo: coilGeoA, mat: noirSatinMat, rest: [-0.14, 0.76, 0.5], burst: [-0.5, 1.82, 1.38] },
+      {
+        geo: coilGeoA,
+        mat: noirSatinMat,
+        rest: [-0.56, 0.82, -0.12],
+        burst: [-2.08, 1.56, 0.32],
+        restRot: [Math.PI / 2, 0.2, 0],
+        burstRot: [0.45, 0.45, 0.18],
+      },
+      {
+        geo: coilGeoB,
+        mat: blushSatinMat,
+        rest: [0.56, 0.82, 0.12],
+        burst: [2.1, 1.68, 0.34],
+        restRot: [Math.PI / 2, -0.25, 0],
+        burstRot: [0.42, -0.1, -0.2],
+      },
+      {
+        geo: coilGeoB,
+        mat: dustyRoseSatinMat,
+        rest: [0.06, 0.8, -0.5],
+        burst: [0.28, 2.25, -0.88],
+        restRot: [Math.PI / 2, 0.5, 0],
+        burstRot: [0.5, 0.72, 0.15],
+      },
+      {
+        geo: coilGeoA,
+        mat: blushSatinMat,
+        rest: [-0.14, 0.8, 0.48],
+        burst: [-0.46, 1.68, 1.18],
+        restRot: [Math.PI / 2, -0.4, 0],
+        burstRot: [0.48, -0.22, -0.14],
+      },
     ];
 
     coilConfigs.forEach((cfg, idx) => {
@@ -1511,36 +1545,37 @@ export function GiftBox3DCanvas({
         mesh,
         restPos: new THREE.Vector3(...cfg.rest),
         burstOffset: new THREE.Vector3(...cfg.burst),
-        restRot: new THREE.Euler(Math.PI / 2, idx * 0.7, 0),
-        burstRot: new THREE.Euler(0.4 + idx * 0.3, idx * 1.4, 0.6),
+        restRot: new THREE.Euler(...cfg.restRot),
+        burstRot: new THREE.Euler(...cfg.burstRot),
         phaseOffset: idx * 1.4 + 0.5,
-        floatAmp: 0.08,
+        floatAmp: 0.045,
       });
     });
 
     const petalConfigs = [
-      { mat: petalLightMat, rest: [-0.45, 0.76, 0.42], burst: [-2.42, 2.28, 0.86] },
-      { mat: petalDeepMat, rest: [0.46, 0.76, -0.4], burst: [2.46, 2.34, -0.48] },
-      { mat: petalLightMat, rest: [0.22, 0.78, 0.12], burst: [1.28, 2.86, 0.46] },
-      { mat: petalDeepMat, rest: [-0.2, 0.78, -0.22], burst: [-1.36, 2.8, -0.38] },
-      { mat: petalLightMat, rest: [0.65, 0.74, 0.35], burst: [2.68, 1.48, 1.05] },
-      { mat: petalDeepMat, rest: [-0.65, 0.74, -0.35], burst: [-2.64, 1.54, -0.76] },
-      { mat: petalLightMat, rest: [0, 0.75, 0.6], burst: [0.1, 2.05, 1.55] },
-      { mat: petalDeepMat, rest: [0.1, 0.75, -0.6], burst: [-0.22, 2.14, -1.28] },
+      { mat: petalLightMat, rest: [-0.44, 0.8, 0.4], burst: [-2.22, 2.08, 0.78] },
+      { mat: petalDeepMat, rest: [0.45, 0.8, -0.38], burst: [2.26, 2.14, -0.42] },
+      { mat: petalLightMat, rest: [0.2, 0.82, 0.1], burst: [1.18, 2.6, 0.4] },
+      { mat: petalDeepMat, rest: [-0.2, 0.82, -0.2], burst: [-1.24, 2.55, -0.32] },
+      { mat: petalLightMat, rest: [0.62, 0.78, 0.32], burst: [2.44, 1.38, 0.92] },
+      { mat: petalDeepMat, rest: [-0.62, 0.78, -0.32], burst: [-2.4, 1.44, -0.68] },
+      { mat: petalLightMat, rest: [0, 0.78, 0.56], burst: [0.08, 1.9, 1.38] },
+      { mat: petalDeepMat, rest: [0.08, 0.78, -0.56], burst: [-0.2, 1.98, -1.12] },
     ];
 
     petalConfigs.forEach((cfg, idx) => {
       const mesh = new THREE.Mesh(petalGeo, cfg.mat);
-      mesh.scale.setScalar(0.88 + (idx % 3) * 0.12);
+      mesh.scale.setScalar(0.88 + (idx % 3) * 0.1);
       giftBoxRoot.add(mesh);
+      const baseYaw = idx * 0.65;
       burstPieces.push({
         mesh,
         restPos: new THREE.Vector3(...cfg.rest),
         burstOffset: new THREE.Vector3(...cfg.burst),
-        restRot: new THREE.Euler(Math.PI / 2.2, idx * 0.8, 0.2),
-        burstRot: new THREE.Euler(0.6 + idx * 0.35, idx * 1.1, -0.5 + idx * 0.25),
+        restRot: new THREE.Euler(Math.PI / 2.2, baseYaw, 0.15),
+        burstRot: new THREE.Euler(0.75 + (idx % 2) * 0.25, baseYaw + 0.25, -0.2 + (idx % 3) * 0.12),
         phaseOffset: idx * 0.75,
-        floatAmp: 0.095,
+        floatAmp: 0.055,
       });
     });
 
@@ -1580,24 +1615,21 @@ export function GiftBox3DCanvas({
       const targetOpen = THREE.MathUtils.clamp(progressRef.current, 0, 1);
       smoothOpen = THREE.MathUtils.damp(smoothOpen, targetOpen, 15.0, delta);
 
-      giftBoxRoot.rotation.y = -0.5 + smoothOpen * 0.48 + pointerX * 0.16;
+      giftBoxRoot.rotation.y = -0.5 + smoothOpen * 0.42 + pointerX * 0.14;
 
       pointerX = THREE.MathUtils.damp(pointerX, pointerTargetX, 5.0, delta);
       pointerY = THREE.MathUtils.damp(pointerY, pointerTargetY, 5.0, delta);
-      camera.position.x = pointerX * 0.42;
-      camera.position.y = 3.25 - pointerY * 0.24 + smoothOpen * 0.38;
-      camera.lookAt(0, 1.0 + smoothOpen * 0.32, 0);
+      camera.position.x = pointerX * 0.36;
+      camera.position.y = 3.25 - pointerY * 0.2 + smoothOpen * 0.34;
+      camera.lookAt(0, 1.0 + smoothOpen * 0.28, 0);
 
-      // Instant, crisp lid opening & interior lift
       const lidPhase = THREE.MathUtils.smoothstep(smoothOpen, 0.0, 0.48);
       lidPivot.rotation.x = -lidPhase * 1.44;
       lidPivot.position.y = boxH + lidPhase * 0.24;
       lidPivot.position.z = -boxD / 2 - lidPhase * 0.16;
 
       bowGroup.scale.setScalar(1 - lidPhase * 0.12);
-
-      // Gentle upward presentation lift for nestled confections inside box
-      confectionGroup.position.y = lidPhase * 0.16;
+      confectionGroup.position.y = lidPhase * 0.14;
 
       const burstPhase = THREE.MathUtils.smoothstep(smoothOpen, 0.08, 0.88);
       for (let i = 0; i < burstPieces.length; i++) {
@@ -1606,20 +1638,17 @@ export function GiftBox3DCanvas({
         _vec3.copy(item.restPos).lerp(_targetPos, burstPhase);
         const floatY =
           burstPhase > 0.05
-            ? Math.sin(elapsed * 1.5 + item.phaseOffset) * item.floatAmp * burstPhase
+            ? Math.sin(elapsed * 1.15 + item.phaseOffset) * item.floatAmp * burstPhase
             : 0;
         item.mesh.position.set(_vec3.x, _vec3.y + floatY, _vec3.z);
 
-        item.mesh.rotation.x = THREE.MathUtils.lerp(
-          item.restRot.x,
-          item.burstRot.x + Math.sin(elapsed * 0.85 + item.phaseOffset) * 0.1 * burstPhase,
-          burstPhase
-        );
-        item.mesh.rotation.y = THREE.MathUtils.lerp(
-          item.restRot.y,
-          item.burstRot.y + elapsed * 0.32 * burstPhase,
-          burstPhase
-        );
+        // Calm, serene micro-sway only — zero continuous spinning
+        const swayX = Math.sin(elapsed * 0.75 + item.phaseOffset) * 0.04 * burstPhase;
+        const swayY = Math.cos(elapsed * 0.65 + item.phaseOffset) * 0.06 * burstPhase;
+        item.mesh.rotation.x =
+          THREE.MathUtils.lerp(item.restRot.x, item.burstRot.x, burstPhase) + swayX;
+        item.mesh.rotation.y =
+          THREE.MathUtils.lerp(item.restRot.y, item.burstRot.y, burstPhase) + swayY;
         item.mesh.rotation.z = THREE.MathUtils.lerp(item.restRot.z, item.burstRot.z, burstPhase);
       }
     }
