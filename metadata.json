@@ -1,0 +1,8 @@
+{
+  "name": "Maison Confection",
+  "description": "Bespoke artisanal gift boxes, handcrafted confections, curios, and letterpress event stationery atelier.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

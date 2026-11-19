@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+:root {
+  --surface-canvas: #fdf2f5;
+  --surface-petal: #f9e4eb;
+  --surface-card: #fff9fb;
+  --border-rose: #e9c4d1;
+  --ink-noir: #161013;
+  --ink-plum-muted: #6e4e5a;
+  --pink-blush: #f4c2d2;
+  --pink-quartz: #f2b8cb;
+  --rose-deep: #9e3b58;
+  --noir-elevated: #241a1f;
+  --champagne-gold: #c9a25e;
+}
+
+@layer base {
+  html {
+    background-color: var(--surface-canvas);
+    color: var(--ink-noir);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--surface-canvas);
+    color: var(--ink-noir);
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-serif-editorial {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+.shadow-atelier-rest {
+  box-shadow:
+    0 10px 28px -6px rgba(22, 16, 19, 0.08),
+    0 2px 8px -2px rgba(158, 59, 88, 0.06);
+}
+
+.shadow-atelier-hover {
+  box-shadow:
+    0 20px 40px -8px rgba(22, 16, 19, 0.14),
+    0 8px 16px -4px rgba(158, 59, 88, 0.09);
+}
+
+.shadow-atelier-modal {
+  box-shadow: 0 28px 56px -12px rgba(22, 16, 19, 0.28);
+}
+
+.bevel-letterpress {
+  box-shadow:
+    inset 0 1px 1px rgba(255, 235, 242, 0.25),
+    0 10px 24px -6px rgba(22, 16, 19, 0.35);
+}
+
+.bevel-card {
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
+    0 10px 26px -6px rgba(22, 16, 19, 0.06),
+    0 2px 6px -1px rgba(158, 59, 88, 0.05);
+}
+
+.stamp-card-surface {
+  background-color: #fff9fb;
+  background-image: radial-gradient(#e9c4d1 0.8px, transparent 0.8px);
+  background-size: 16px 16px;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
