@@ -782,8 +782,8 @@ export function GiftBox3DCanvas({
     const height = container.clientHeight || 600;
 
     const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 60);
-    camera.position.set(0, 3.25, 7.35);
-    camera.lookAt(0, 1.0, 0);
+    camera.position.set(0, 3.25, 7.8);
+    camera.lookAt(0, 0.58, 0);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: !isSoftwareGl,
@@ -1646,8 +1646,8 @@ export function GiftBox3DCanvas({
       pointerX = THREE.MathUtils.damp(pointerX, pointerTargetX, 5.0, delta);
       pointerY = THREE.MathUtils.damp(pointerY, pointerTargetY, 5.0, delta);
       camera.position.x = pointerX * 0.36;
-      camera.position.y = 3.25 - pointerY * 0.2 + smoothOpen * 0.34;
-      camera.lookAt(0, 1.0 + smoothOpen * 0.28, 0);
+      camera.position.y = 3.25 - pointerY * 0.2 + smoothOpen * 0.3;
+      camera.lookAt(0, 0.58 + smoothOpen * 0.24, 0);
 
       const lidPhase = THREE.MathUtils.smoothstep(smoothOpen, 0.0, 0.48);
       lidPivot.rotation.x = -lidPhase * 1.44;

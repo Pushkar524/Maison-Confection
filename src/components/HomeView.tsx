@@ -1,5 +1,5 @@
 import { ArrowRight, BookOpen, Package, Ribbon } from 'lucide-react';
-import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import { useRef, useState } from 'react';
 import { CLIENT_STORIES } from '../data/atelierData';
 import { AtelierProduct, ProductCategory, ScreenView } from '../types/atelier';
@@ -46,7 +46,24 @@ export function HomeView({
     mass: 0.35,
   });
 
-  const anatomyOpacity = useTransform(smoothOpenProgress, [0.16, 0.42, 0.96], [0, 1, 0.95]);
+  const prefersReducedMotion = useReducedMotion();
+  const headingOpacity = useTransform(smoothOpenProgress, [0.05, 0.36], [0, 1]);
+  const headingY = useTransform(
+    smoothOpenProgress,
+    [0.05, 0.36],
+    [prefersReducedMotion ? 0 : 28, 0]
+  );
+  const actionsOpacity = useTransform(smoothOpenProgress, [0.1, 0.42], [0, 1]);
+  const actionsY = useTransform(
+    smoothOpenProgress,
+    [0.1, 0.42],
+    [prefersReducedMotion ? 0 : 20, 0]
+  );
+  const actionsPointerEvents = useTransform(smoothOpenProgress, (v) =>
+    v > 0.08 ? 'auto' : 'none'
+  );
+  const scrollPromptOpacity = useTransform(smoothOpenProgress, [0, 0.12], [0.75, 0]);
+
   // Preserve favorites prop compatibility with parent state
   void favorites;
   void onToggleFavorite;
@@ -64,68 +81,58 @@ export function HomeView({
             <GiftBox3DCanvas openProgress={smoothOpenProgress} mode="hero-open" />
           </div>
 
-          {/* Left/Right Anatomy Callouts (Edge-anchored, reveal as lid opens) */}
-          <motion.div
-            style={{ opacity: anatomyOpacity }}
-            className="hidden md:block pointer-events-none absolute inset-x-0 top-24 lg:top-28 z-10 max-w-[1360px] mx-auto px-8 lg:px-12"
-          >
-            <div className="flex items-start justify-between gap-8">
-              <div className="bg-gradient-to-br from-[#3D1023]/95 to-[#290916]/95 border border-[#7D2B4B] rounded-2xl px-4 py-3 shadow-atelier-rest max-w-[235px]">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#FF8FB3]">
-                  01. Mulberry Satin & Rose Linen
-                </p>
-                <p className="text-xs text-[#E8B4C6] mt-0.5">
-                  Double-faced dark plum satin bow over deep reddish-pink woven cloth.
-                </p>
-              </div>
+          {/* Bottom Centered Hero Lockup: Scroll-Revealed Single Big Minimal Heading + Compact Small Buttons */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#1B0610] via-[#1B0610]/85 to-transparent pt-20 pb-7 md:pb-10">
+            <div className="max-w-[1380px] mx-auto px-4 sm:px-8 text-center">
+              <div className="pointer-events-auto flex flex-col items-center">
+                <motion.h1
+                  style={{ opacity: headingOpacity, y: headingY, textWrap: 'balance' }}
+                  className="font-display text-[48px] sm:text-[74px] md:text-[94px] lg:text-[112px] xl:text-[124px] font-light leading-[0.95] tracking-[-0.025em] text-[#FFF0F5] max-w-[1320px] will-change-[transform,opacity]"
+                >
+                  Velvet <span className="text-outline-velvet font-normal">Keepsakes</span>
+                </motion.h1>
 
-              <div className="bg-gradient-to-br from-[#3D1023]/95 to-[#290916]/95 border border-[#7D2B4B] rounded-2xl px-4 py-3 shadow-atelier-rest max-w-[240px] text-right">
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#FF8FB3]">
-                  02. Hearts, Coils & Petals
-                </p>
-                <p className="text-xs text-[#E8B4C6] mt-0.5">
-                  Velvet ruby & rose-foil hearts, silk curls, and crimson rose petals.
-                </p>
-              </div>
-            </div>
-          </motion.div>
+                <motion.p
+                  aria-hidden="true"
+                  style={{ opacity: scrollPromptOpacity }}
+                  className="text-xs tracking-[0.12em] text-[#E8B4C6] -mt-4 mb-2 pointer-events-none select-none"
+                >
+                  Scroll to unbox
+                </motion.p>
 
-          {/* Bottom Semantic Editorial Overlay */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#1E0711] via-[#1E0711]/90 to-transparent pt-16 pb-7 md:pb-10">
-            <div className="max-w-[1360px] mx-auto px-5 md:px-8 lg:px-12">
-              <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-5">
-                <div className="pointer-events-auto max-w-2xl">
-                  <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#FF8FB3] mb-1.5">
-                    Confectionery, Keepsakes & Paper Studio
-                  </p>
-                  <h1
-                    className="font-serif-editorial text-[30px] sm:text-[42px] lg:text-[50px] font-semibold leading-[1.1] tracking-[-0.02em] text-[#FFF0F5]"
-                    style={{ textWrap: 'balance' }}
-                  >
-                    Curated keepsakes,{' '}
-                    <em className="italic font-medium text-[#FF8FB3]">personalized</em> with tactile
-                    grace.
-                  </h1>
-                </div>
-
-                <div className="pointer-events-auto flex flex-wrap items-center gap-3 shrink-0">
+                <motion.div
+                  style={{
+                    opacity: actionsOpacity,
+                    y: actionsY,
+                    pointerEvents: actionsPointerEvents,
+                  }}
+                  className="mt-5 flex flex-wrap items-center justify-center gap-2 will-change-[transform,opacity]"
+                >
                   <button
                     type="button"
                     onClick={() => onNavigate('bespoke-box')}
-                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] text-sm font-bold whitespace-nowrap cursor-pointer border border-[#FF9BBE]/35 bevel-letterpress transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1E0711] focus-visible:ring-[#FF8FB3]"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 min-h-[40px] sm:min-h-[34px] rounded-lg bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] text-[11px] font-medium tracking-wide whitespace-nowrap shrink-0 cursor-pointer border border-[#FF9BBE]/35 bevel-letterpress transition-transform duration-150 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1B0610] focus-visible:ring-[#FF8FB3]"
                   >
-                    <span>Compose a Gift Box</span>
-                    <ArrowRight className="w-4 h-4 text-[#FFE3ED]" />
+                    <span>Compose a Box</span>
+                    <ArrowRight className="w-3 h-3 text-[#FFE3ED]" />
                   </button>
 
                   <button
                     type="button"
                     onClick={() => onNavigate('stationery')}
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-br from-[#3D1023] to-[#290916] hover:from-[#4C142B] hover:to-[#350D1E] text-[#FCE7EF] border-[1.5px] border-[#9E3B5E] text-sm font-bold whitespace-nowrap cursor-pointer transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8FB3]"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 min-h-[40px] sm:min-h-[34px] rounded-lg bg-[#2B0917]/80 hover:bg-[#3D1023] text-[#FCE7EF] border border-[#822E4F] hover:border-[#FF8FB3] text-[11px] font-medium tracking-wide whitespace-nowrap shrink-0 cursor-pointer transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8FB3]"
                   >
                     <span>Stationery Studio</span>
                   </button>
-                </div>
+
+                  <button
+                    type="button"
+                    onClick={() => onNavigate('collections')}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 min-h-[40px] sm:min-h-[34px] rounded-lg bg-[#2B0917]/80 hover:bg-[#3D1023] text-[#E8B4C6] hover:text-[#FFF0F5] border border-[#6E2440] hover:border-[#9E3B5E] text-[11px] font-medium tracking-wide whitespace-nowrap shrink-0 cursor-pointer transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF8FB3]"
+                  >
+                    <span>Explore Catalog</span>
+                  </button>
+                </motion.div>
               </div>
             </div>
           </div>
