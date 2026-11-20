@@ -19,14 +19,14 @@ export function ResilientImage({
   if (hasError || !src) {
     return (
       <div
-        className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#F9E4EB] via-[#FDF2F5] to-[#F4C2D2]"
+        className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-[#4D142C] via-[#340C1D] to-[#230814]"
         role="img"
         aria-label={alt}
       >
-        <div className="w-12 h-12 rounded-full bg-[#161013] flex items-center justify-center mb-3 text-[#FDF2F5]">
+        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E84F82] to-[#B81D52] flex items-center justify-center mb-3 text-[#FFF4F8] shadow-atelier-rest">
           <Gift className="w-5 h-5" />
         </div>
-        <span className="font-serif-editorial text-lg font-semibold text-[#161013]">
+        <span className="font-serif-editorial text-lg font-semibold text-[#FCE7EF]">
           {fallbackTitle || alt}
         </span>
       </div>

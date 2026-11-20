@@ -156,7 +156,7 @@ export default function App() {
   const totalBagCount = bagItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-[#FDF2F5] text-[#161013]">
+    <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-[#270917] via-[#1D0711] to-[#350D1E] text-[#FCE7EF]">
       <AmbientPetalsHeartsBackdrop />
 
       <Header
@@ -236,9 +236,9 @@ export default function App() {
         <div
           role="status"
           aria-live="polite"
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-3 px-5 py-3.5 rounded-full bg-[#161013] text-[#FDF2F5] text-sm font-semibold shadow-atelier-modal border border-[#2E2026]"
+          className="fixed bottom-6 right-6 z-40 flex items-center gap-3 px-5 py-3.5 rounded-full bg-gradient-to-r from-[#3D1023] to-[#290916] text-[#FCE7EF] text-sm font-semibold shadow-atelier-modal border border-[#8C2F52]"
         >
-          <span className="w-6 h-6 rounded-full bg-[#F4C2D2] text-[#161013] flex items-center justify-center shrink-0">
+          <span className="w-6 h-6 rounded-full bg-gradient-to-br from-[#FF8FB3] to-[#E84F82] text-[#220612] flex items-center justify-center shrink-0">
             <Check className="w-3.5 h-3.5" />
           </span>
           <span>{toastMessage}</span>
@@ -248,7 +248,7 @@ export default function App() {
               setToastMessage(null);
               setBagOpen(true);
             }}
-            className="text-xs font-bold text-[#F4C2D2] hover:text-white underline ml-1 cursor-pointer"
+            className="text-xs font-bold text-[#FF8FB3] hover:text-[#FFF4F8] underline ml-1 cursor-pointer"
           >
             View Bag
           </button>

@@ -21,7 +21,7 @@ interface CatalogViewProps {
 }
 
 const CATEGORIES: ProductCategory[] = [
-  'All Curios',
+  'All Collections',
   'Confection Boxes',
   'Event Stationery',
   'Tea & Pantry',
@@ -38,7 +38,7 @@ export function CatalogView({
   onQuickAdd,
   onAddConfiguredItem,
 }: CatalogViewProps) {
-  const [category, setCategory] = useState<ProductCategory>('All Curios');
+  const [category, setCategory] = useState<ProductCategory>('All Collections');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [onlyFavorites, setOnlyFavorites] = useState(false);
@@ -53,7 +53,7 @@ export function CatalogView({
   const filteredProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     const list = ATELIER_PRODUCTS.filter((p) => {
-      if (category !== 'All Curios' && p.category !== category) return false;
+      if (category !== 'All Collections' && p.category !== category) return false;
       if (onlyFavorites && !favorites.includes(p.id)) return false;
       if (
         query &&
@@ -113,10 +113,10 @@ export function CatalogView({
             setGiftNote('');
             setQuantity(1);
           }}
-          className="inline-flex items-center gap-2 text-sm font-bold text-[#6E4E5A] hover:text-[#161013] mb-8 cursor-pointer transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-bold text-[#E8B4C6] hover:text-[#FFF0F5] mb-8 cursor-pointer transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Atelier Collections</span>
+          <ArrowLeft className="w-4 h-4 text-[#FF8FB3]" />
+          <span>Back to Collections</span>
         </button>
 
         {/* Contiguous PDP Split: Sticky Gallery Left + Sticky Purchase Module Right */}
@@ -124,7 +124,7 @@ export function CatalogView({
           {/* Left Photography Stage */}
           <div className="lg:col-span-6 lg:sticky lg:top-28 space-y-5">
             <div
-              className="aspect-[4/3] rounded-2xl overflow-hidden border border-[#E9C4D1] shadow-atelier-rest"
+              className="aspect-[4/3] rounded-2xl overflow-hidden border border-[#6E2440] shadow-atelier-rest"
               style={{ backgroundColor: selectedProduct.backdropTint }}
             >
               <ResilientImage
@@ -135,14 +135,14 @@ export function CatalogView({
               />
             </div>
 
-            <div className="bg-[#F9E4EB] border border-[#E9C4D1] rounded-2xl p-6 space-y-3">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#161013]">
-                Atelier Craft Specifications
+            <div className="bg-gradient-to-br from-[#350D1E] to-[#260814] border border-[#6E2440] rounded-2xl p-6 space-y-3 shadow-atelier-rest">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#FF8FB3]">
+                Craft Specifications
               </p>
               <ul className="space-y-2">
                 {selectedProduct.craftNotes.map((note) => (
-                  <li key={note} className="flex items-start gap-2.5 text-sm text-[#161013]">
-                    <Check className="w-4 h-4 text-[#9E3B58] shrink-0 mt-0.5" />
+                  <li key={note} className="flex items-start gap-2.5 text-sm text-[#FCE7EF]">
+                    <Check className="w-4 h-4 text-[#FF8FB3] shrink-0 mt-0.5" />
                     <span>{note}</span>
                   </li>
                 ))}
@@ -151,15 +151,15 @@ export function CatalogView({
           </div>
 
           {/* Right Contiguous Purchase Module */}
-          <div className="lg:col-span-6 bg-[#FFF9FB] border border-[#E9C4D1] rounded-3xl p-6 sm:p-8 md:p-10 bevel-card space-y-7">
+          <div className="lg:col-span-6 bg-gradient-to-b from-[#3A0F22] via-[#2F0B1B] to-[#250815] border border-[#6E2440] rounded-3xl p-6 sm:p-8 md:p-10 bevel-card space-y-7">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-[#6E4E5A] mb-2">
+                <div className="flex items-center gap-2 text-xs font-semibold text-[#D996AE] mb-2">
                   <span>{selectedProduct.category}</span>
                   <span aria-hidden="true">·</span>
                   <span>{selectedProduct.occasion}</span>
                 </div>
-                <h1 className="font-serif-editorial text-3xl md:text-[38px] font-semibold text-[#161013] leading-tight">
+                <h1 className="font-serif-editorial text-3xl md:text-[38px] font-semibold text-[#FFF0F5] leading-tight">
                   {selectedProduct.title}
                 </h1>
               </div>
@@ -167,27 +167,27 @@ export function CatalogView({
               <button
                 type="button"
                 onClick={() => onToggleFavorite(selectedProduct.id)}
-                aria-label={isFav ? 'Remove from saved curios' : 'Save to favorites'}
-                className="w-11 h-11 rounded-full bg-[#F9E4EB] border border-[#E9C4D1] flex items-center justify-center text-[#161013] hover:border-[#161013] shrink-0 cursor-pointer transition-colors"
+                aria-label={isFav ? 'Remove from saved items' : 'Save to favorites'}
+                className="w-11 h-11 rounded-full bg-[#4A132A] border border-[#7D2B4B] flex items-center justify-center text-[#FCE7EF] hover:border-[#FF8FB3] shrink-0 cursor-pointer transition-colors"
               >
-                <Heart className={`w-5 h-5 ${isFav ? 'fill-[#9E3B58] text-[#9E3B58]' : ''}`} />
+                <Heart className={`w-5 h-5 ${isFav ? 'fill-[#FF6B9D] text-[#FF6B9D]' : ''}`} />
               </button>
             </div>
 
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-[#161013] tabular-nums">
+              <span className="text-3xl font-bold text-[#FF8FB3] tabular-nums">
                 ${unitPrice.toFixed(0)}
               </span>
-              <span className="text-sm text-[#6E4E5A]">{activeEdition.detail}</span>
+              <span className="text-sm text-[#E8B4C6]">{activeEdition.detail}</span>
             </div>
 
-            <p className="text-[15px] leading-relaxed text-[#6E4E5A]">
+            <p className="text-[15px] leading-relaxed text-[#E8B4C6]">
               {selectedProduct.description}
             </p>
 
             {/* Edition Selector */}
             <div className="space-y-3">
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#161013]">
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5]">
                 Select Edition
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -201,17 +201,17 @@ export function CatalogView({
                       onClick={() => setEditionId(ed.id)}
                       className={`text-left p-4 rounded-xl border transition-all cursor-pointer ${
                         active
-                          ? 'bg-[#FDF2F5] border-[#161013] ring-4 ring-[#161013]/15'
-                          : 'bg-[#F9E4EB]/60 border-[#E9C4D1] hover:border-[#161013]/50'
+                          ? 'bg-[#4D142C] border-[#FF8FB3] ring-2 ring-[#FF8FB3]/30'
+                          : 'bg-[#290916]/85 border-[#6E2440] hover:border-[#C96B8E]'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-bold text-[#161013]">{ed.label}</span>
-                        <span className="text-sm font-bold text-[#9E3B58] tabular-nums">
+                        <span className="text-sm font-bold text-[#FFF0F5]">{ed.label}</span>
+                        <span className="text-sm font-bold text-[#FF8FB3] tabular-nums">
                           ${edPrice}
                         </span>
                       </div>
-                      <span className="text-xs text-[#6E4E5A] block mt-1">{ed.detail}</span>
+                      <span className="text-xs text-[#D996AE] block mt-1">{ed.detail}</span>
                     </button>
                   );
                 })}
@@ -219,13 +219,13 @@ export function CatalogView({
             </div>
 
             {/* Foil & Monogram Personalization */}
-            <div className="space-y-4 pt-2 border-t border-[#E9C4D1]">
+            <div className="space-y-4 pt-2 border-t border-[#6E2440]">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#161013] inline-flex items-center gap-1.5">
-                  <PenTool className="w-3.5 h-3.5 text-[#9E3B58]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#FFF0F5] inline-flex items-center gap-1.5">
+                  <PenTool className="w-3.5 h-3.5 text-[#FF8FB3]" />
                   <span>Complimentary Foil & Monogram</span>
                 </span>
-                <span className="text-xs text-[#6E4E5A]">Included</span>
+                <span className="text-xs text-[#D996AE]">Included</span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -238,12 +238,12 @@ export function CatalogView({
                       onClick={() => setFoil(opt.name)}
                       className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                         selected
-                          ? 'border-[#161013] bg-[#FDF2F5] ring-2 ring-[#161013]/20'
-                          : 'border-[#E9C4D1] bg-[#FFF9FB] hover:border-[#161013]/50'
+                          ? 'border-[#FF8FB3] bg-[#4D142C] ring-2 ring-[#FF8FB3]/30'
+                          : 'border-[#6E2440] bg-[#290916] hover:border-[#C96B8E]'
                       }`}
                     >
                       <span className={`block w-full h-5 rounded-md mb-1.5 ${opt.swatchClass}`} />
-                      <span className="block text-[11px] font-bold text-[#161013] truncate">
+                      <span className="block text-[11px] font-bold text-[#FCE7EF] truncate">
                         {opt.name}
                       </span>
                     </button>
@@ -255,7 +255,7 @@ export function CatalogView({
                 <div>
                   <label
                     htmlFor="pdp-monogram"
-                    className="block text-xs font-semibold text-[#161013] mb-1.5"
+                    className="block text-xs font-semibold text-[#FCE7EF] mb-1.5"
                   >
                     Monogram (up to 4 chars)
                   </label>
@@ -266,13 +266,13 @@ export function CatalogView({
                     value={monogram}
                     onChange={(e) => setMonogram(e.target.value)}
                     placeholder="e.g. E&O"
-                    className="w-full h-12 px-3.5 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm font-bold uppercase tracking-widest text-[#161013] placeholder:text-[#6E4E5A]/60 focus:outline-none focus:border-[#161013] focus:ring-4 focus:ring-[#161013]/15"
+                    className="w-full h-12 px-3.5 rounded-xl bg-[#220712] border border-[#6E2440] text-sm font-bold uppercase tracking-widest text-[#FFF0F5] placeholder:text-[#D996AE]/50 focus:outline-none focus:border-[#FF8FB3] focus:ring-4 focus:ring-[#FF8FB3]/15"
                   />
                 </div>
                 <div className="sm:col-span-2">
                   <label
                     htmlFor="pdp-note"
-                    className="block text-xs font-semibold text-[#161013] mb-1.5"
+                    className="block text-xs font-semibold text-[#FCE7EF] mb-1.5"
                   >
                     Enclosed Calligraphy Card Message
                   </label>
@@ -282,32 +282,32 @@ export function CatalogView({
                     maxLength={120}
                     value={giftNote}
                     onChange={(e) => setGiftNote(e.target.value)}
-                    placeholder="Pour toi, with warmest wishes..."
-                    className="w-full h-12 px-3.5 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm text-[#161013] placeholder:text-[#6E4E5A]/60 focus:outline-none focus:border-[#161013] focus:ring-4 focus:ring-[#161013]/15"
+                    placeholder="Especially for you, with warmest wishes..."
+                    className="w-full h-12 px-3.5 rounded-xl bg-[#220712] border border-[#6E2440] text-sm text-[#FFF0F5] placeholder:text-[#D996AE]/50 focus:outline-none focus:border-[#FF8FB3] focus:ring-4 focus:ring-[#FF8FB3]/15"
                   />
                 </div>
               </div>
             </div>
 
             {/* Quantity Stepper + Primary Buy CTA */}
-            <div className="pt-4 border-t border-[#E9C4D1] flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <div className="inline-flex items-center justify-between sm:justify-start gap-3 px-3 py-2 rounded-full bg-[#F9E4EB] border border-[#E9C4D1]">
+            <div className="pt-4 border-t border-[#6E2440] flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <div className="inline-flex items-center justify-between sm:justify-start gap-3 px-3 py-2 rounded-full bg-[#240814] border border-[#6E2440]">
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                   aria-label="Decrease quantity"
-                  className="w-8 h-8 rounded-full bg-[#FFF9FB] border border-[#E9C4D1] flex items-center justify-center text-[#161013] hover:border-[#161013] cursor-pointer"
+                  className="w-8 h-8 rounded-full bg-[#3D1023] border border-[#7D2B4B] flex items-center justify-center text-[#FFF0F5] hover:border-[#FF8FB3] cursor-pointer"
                 >
                   <Minus className="w-3.5 h-3.5" />
                 </button>
-                <span className="min-w-[28px] text-center text-sm font-bold text-[#161013] tabular-nums">
+                <span className="min-w-[28px] text-center text-sm font-bold text-[#FFF0F5] tabular-nums">
                   {quantity}
                 </span>
                 <button
                   type="button"
                   onClick={() => setQuantity((q) => q + 1)}
                   aria-label="Increase quantity"
-                  className="w-8 h-8 rounded-full bg-[#FFF9FB] border border-[#E9C4D1] flex items-center justify-center text-[#161013] hover:border-[#161013] cursor-pointer"
+                  className="w-8 h-8 rounded-full bg-[#3D1023] border border-[#7D2B4B] flex items-center justify-center text-[#FFF0F5] hover:border-[#FF8FB3] cursor-pointer"
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>
@@ -316,9 +316,9 @@ export function CatalogView({
               <button
                 type="button"
                 onClick={handleAddPDP}
-                className="flex-1 inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#161013] hover:bg-[#2B1C22] text-[#FDF2F5] text-sm font-bold whitespace-nowrap cursor-pointer bevel-letterpress transition-transform duration-150 hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#161013]"
+                className="flex-1 inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-sm font-bold whitespace-nowrap cursor-pointer bevel-letterpress transition-transform duration-150 hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#FF8FB3]"
               >
-                <ShoppingBag className="w-4 h-4 text-[#F4C2D2]" />
+                <ShoppingBag className="w-4 h-4 text-[#FFE6EF]" />
                 <span>
                   Add to Gift Bag — <span className="tabular-nums">${unitPrice * quantity}</span>
                 </span>
@@ -333,20 +333,20 @@ export function CatalogView({
   return (
     <section className="max-w-[1360px] mx-auto px-5 md:px-8 lg:px-12 pt-8 md:pt-12">
       <div className="mb-8 md:mb-10">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#9E3B58] mb-2">
-          Complete Atelier Archive
+        <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#FF8FB3] mb-2">
+          Complete Collection Archive
         </p>
-        <h1 className="font-serif-editorial text-4xl md:text-[46px] font-semibold text-[#161013] leading-tight">
+        <h1 className="font-serif-editorial text-4xl md:text-[46px] font-semibold text-[#FFF0F5] leading-tight">
           Confections, Keepsakes & Event Paper
         </h1>
-        <p className="mt-2 text-base text-[#6E4E5A] max-w-2xl">
-          Filter by category, search occasions, or click any curio to customize foil monograms and
+        <p className="mt-2 text-base text-[#E8B4C6] max-w-2xl">
+          Filter by category, search occasions, or click any item to customize foil monograms and
           editions.
         </p>
       </div>
 
       {/* Filter & Search Toolbar */}
-      <div className="bg-[#F9E4EB] border border-[#E9C4D1] rounded-2xl p-4 md:p-5 mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-[#340D1E] to-[#270916] border border-[#6E2440] rounded-2xl p-4 md:p-5 mb-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-atelier-rest">
         <div className="flex flex-wrap items-center gap-1.5">
           {CATEGORIES.map((cat) => {
             const active = category === cat;
@@ -357,8 +357,8 @@ export function CatalogView({
                 onClick={() => setCategory(cat)}
                 className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-all ${
                   active
-                    ? 'bg-[#161013] text-[#FDF2F5] shadow-atelier-rest'
-                    : 'bg-[#FFF9FB] text-[#6E4E5A] border border-[#E9C4D1] hover:text-[#161013]'
+                    ? 'bg-gradient-to-r from-[#FCE4EC] to-[#F5B8CD] text-[#240814] shadow-atelier-rest'
+                    : 'bg-[#220712] text-[#E8B4C6] border border-[#6E2440] hover:text-[#FFF0F5] hover:border-[#C96B8E]'
                 }`}
               >
                 {cat}
@@ -371,25 +371,25 @@ export function CatalogView({
             onClick={() => setOnlyFavorites((prev) => !prev)}
             className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-all ${
               onlyFavorites
-                ? 'bg-[#F4C2D2] text-[#161013] border border-[#161013]'
-                : 'bg-[#FFF9FB] text-[#6E4E5A] border border-[#E9C4D1] hover:text-[#161013]'
+                ? 'bg-gradient-to-r from-[#E84F82] to-[#B81D52] text-[#FFF4F8] border border-[#FF9BBE]/45'
+                : 'bg-[#220712] text-[#E8B4C6] border border-[#6E2440] hover:text-[#FFF0F5] hover:border-[#C96B8E]'
             }`}
           >
-            <Heart className={`w-3.5 h-3.5 ${onlyFavorites ? 'fill-[#161013] text-[#161013]' : ''}`} />
+            <Heart className={`w-3.5 h-3.5 ${onlyFavorites ? 'fill-[#FFF4F8] text-[#FFF4F8]' : ''}`} />
             <span>Saved ({favorites.length})</span>
           </button>
         </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="relative">
-            <Search className="w-4 h-4 text-[#6E4E5A] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-[#D996AE] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search macarons, honey, weddings..."
-              aria-label="Search atelier products"
-              className="w-full sm:w-64 h-11 pl-10 pr-4 rounded-xl bg-[#FFF9FB] border border-[#E9C4D1] text-sm text-[#161013] placeholder:text-[#6E4E5A] focus:outline-none focus:border-[#161013] focus:ring-4 focus:ring-[#161013]/15"
+              aria-label="Search studio products"
+              className="w-full sm:w-64 h-11 pl-10 pr-4 rounded-xl bg-[#220712] border border-[#6E2440] text-sm text-[#FFF0F5] placeholder:text-[#D996AE]/60 focus:outline-none focus:border-[#FF8FB3] focus:ring-4 focus:ring-[#FF8FB3]/15"
             />
           </div>
 
@@ -397,32 +397,32 @@ export function CatalogView({
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as SortOption)}
             aria-label="Sort products"
-            className="h-11 px-4 rounded-xl bg-[#FFF9FB] border border-[#E9C4D1] text-sm font-semibold text-[#161013] focus:outline-none focus:border-[#161013] cursor-pointer"
+            className="h-11 px-4 rounded-xl bg-[#220712] border border-[#6E2440] text-sm font-semibold text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3] cursor-pointer"
           >
-            <option value="featured">Sort: Atelier Featured</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
+            <option value="featured" className="bg-[#240814] text-[#FFF0F5]">Sort: Featured</option>
+            <option value="price-asc" className="bg-[#240814] text-[#FFF0F5]">Price: Low to High</option>
+            <option value="price-desc" className="bg-[#240814] text-[#FFF0F5]">Price: High to Low</option>
           </select>
         </div>
       </div>
 
       {/* Results Grid or Empty State */}
       {filteredProducts.length === 0 ? (
-        <div className="bg-[#FFF9FB] border border-[#E9C4D1] rounded-3xl p-12 text-center space-y-4">
-          <p className="font-serif-editorial text-2xl font-semibold text-[#161013]">
-            No curios matched your current selection
+        <div className="bg-gradient-to-b from-[#3A0F22] to-[#250815] border border-[#6E2440] rounded-3xl p-12 text-center space-y-4">
+          <p className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
+            No items matched your current selection
           </p>
-          <p className="text-sm text-[#6E4E5A]">
+          <p className="text-sm text-[#E8B4C6]">
             Clear your search or category filter to view all artisanal boxes and stationery.
           </p>
           <button
             type="button"
             onClick={() => {
-              setCategory('All Curios');
+              setCategory('All Collections');
               setSearchQuery('');
               setOnlyFavorites(false);
             }}
-            className="px-6 py-2.5 rounded-full bg-[#161013] text-[#FDF2F5] text-sm font-bold cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-sm font-bold cursor-pointer"
           >
             Reset Filters
           </button>

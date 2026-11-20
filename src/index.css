@@ -1,22 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --surface-canvas: #fdf2f5;
-  --surface-petal: #f9e4eb;
-  --surface-card: #fff9fb;
-  --border-rose: #e9c4d1;
-  --ink-noir: #161013;
-  --ink-plum-muted: #6e4e5a;
-  --pink-blush: #f4c2d2;
-  --pink-quartz: #f2b8cb;
-  --rose-deep: #9e3b58;
-  --noir-elevated: #241a1f;
-  --champagne-gold: #c9a25e;
+  --surface-canvas: #1f0712;
+  --surface-canvas-deep: #1a060f;
+  --surface-canvas-velvet: #320c1c;
+  --surface-petal: #2d0b1a;
+  --surface-card: #380e20;
+  --border-rose: #6e2440;
+  --ink-noir: #fce7ef;
+  --ink-plum-muted: #df9db6;
+  --pink-blush: #ff8fb3;
+  --pink-quartz: #e84f82;
+  --rose-deep: #c41c55;
+  --noir-elevated: #451228;
+  --champagne-gold: #e2b771;
 }
 
 @layer base {
   html {
     background-color: var(--surface-canvas);
+    background-image: linear-gradient(155deg, #270917 0%, #1d0711 48%, #350d1e 100%);
+    background-attachment: fixed;
     color: var(--ink-noir);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -24,7 +28,7 @@
   }
 
   body {
-    background-color: var(--surface-canvas);
+    background-color: transparent;
     color: var(--ink-noir);
     min-height: 100vh;
   }
@@ -39,36 +43,38 @@
 
 .shadow-atelier-rest {
   box-shadow:
-    0 10px 28px -6px rgba(22, 16, 19, 0.08),
-    0 2px 8px -2px rgba(158, 59, 88, 0.06);
+    0 12px 30px -8px rgba(20, 4, 11, 0.55),
+    0 2px 10px -2px rgba(232, 79, 130, 0.14);
 }
 
 .shadow-atelier-hover {
   box-shadow:
-    0 20px 40px -8px rgba(22, 16, 19, 0.14),
-    0 8px 16px -4px rgba(158, 59, 88, 0.09);
+    0 22px 44px -10px rgba(18, 4, 10, 0.7),
+    0 8px 20px -4px rgba(232, 79, 130, 0.24);
 }
 
 .shadow-atelier-modal {
-  box-shadow: 0 28px 56px -12px rgba(22, 16, 19, 0.28);
+  box-shadow:
+    0 28px 64px -12px rgba(16, 3, 9, 0.8),
+    0 0 0 1px rgba(255, 143, 179, 0.14);
 }
 
 .bevel-letterpress {
   box-shadow:
-    inset 0 1px 1px rgba(255, 235, 242, 0.25),
-    0 10px 24px -6px rgba(22, 16, 19, 0.35);
+    inset 0 1px 1px rgba(255, 214, 229, 0.32),
+    0 12px 26px -6px rgba(16, 3, 9, 0.65);
 }
 
 .bevel-card {
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.9),
-    0 10px 26px -6px rgba(22, 16, 19, 0.06),
-    0 2px 6px -1px rgba(158, 59, 88, 0.05);
+    inset 0 1px 0 rgba(255, 190, 214, 0.14),
+    0 14px 32px -8px rgba(16, 3, 9, 0.62),
+    0 2px 8px -2px rgba(232, 79, 130, 0.12);
 }
 
 .stamp-card-surface {
-  background-color: #fff9fb;
-  background-image: radial-gradient(#e9c4d1 0.8px, transparent 0.8px);
+  background-color: #fff3f7;
+  background-image: radial-gradient(#e07fa0 0.8px, transparent 0.8px);
   background-size: 16px 16px;
 }
 

@@ -1,7 +1,7 @@
 export type ScreenView = 'home' | 'collections' | 'bespoke-box' | 'stationery';
 
 export type ProductCategory =
-  | 'All Curios'
+  | 'All Collections'
   | 'Confection Boxes'
   | 'Event Stationery'
   | 'Tea & Pantry';
@@ -19,7 +19,7 @@ export interface AtelierProduct {
   id: string;
   title: string;
   subtitle: string;
-  category: Exclude<ProductCategory, 'All Curios'>;
+  category: Exclude<ProductCategory, 'All Collections'>;
   occasion: string;
   price: number;
   image: string;

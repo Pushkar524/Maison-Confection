@@ -408,12 +408,12 @@ export function AmbientPetalsHeartsBackdrop() {
       alpha: true,
       powerPreference: 'high-performance',
     });
-    renderer.setClearColor(0x000000, 0);
+    renderer.setClearColor(0x1f0712, 0);
     renderer.setSize(width, height);
     renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 1.75));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.04;
+    renderer.toneMappingExposure = 1.1;
     container.appendChild(renderer.domElement);
 
     // Zero-dependency PMREM studio reflections for rose foil, crushed velvet, and silk satin
@@ -423,12 +423,12 @@ export function AmbientPetalsHeartsBackdrop() {
     disposables.push(envTarget);
     pmrem.dispose();
 
-    const hemi = new THREE.HemisphereLight(0xfff6f9, 0xd4b6c3, 1.05);
-    const keyLight = new THREE.DirectionalLight(0xfff5f2, 1.9);
+    const hemi = new THREE.HemisphereLight(0xffe6ef, 0x6e1838, 1.18);
+    const keyLight = new THREE.DirectionalLight(0xfff5f2, 2.05);
     keyLight.position.set(5, 7, 6);
-    const fillLight = new THREE.DirectionalLight(0xffeef4, 0.9);
+    const fillLight = new THREE.DirectionalLight(0xffcde0, 1.05);
     fillLight.position.set(-6, 3, 5);
-    const rimLight = new THREE.DirectionalLight(0xffd7e5, 1.15);
+    const rimLight = new THREE.DirectionalLight(0xff8cb3, 1.55);
     rimLight.position.set(-4, -3, -5);
     scene.add(hemi, keyLight, fillLight, rimLight);
 
@@ -436,8 +436,8 @@ export function AmbientPetalsHeartsBackdrop() {
     const satinBump = createSatinBumpTexture(renderer);
     const velvetMaps = createVelvetMaps(renderer);
     const foilNormal = createFoilNormalMap(renderer);
-    const petalTexBlush = createPetalTextures(renderer, '#F4C8D7', '#DC8FA8');
-    const petalTexBerry = createPetalTextures(renderer, '#EBB5C7', '#9E3B58');
+    const petalTexBlush = createPetalTextures(renderer, '#F279A1', '#B51649');
+    const petalTexBerry = createPetalTextures(renderer, '#E84F82', '#8C1038');
     disposables.push(
       satinBump,
       velvetMaps.bumpMap,
@@ -449,18 +449,18 @@ export function AmbientPetalsHeartsBackdrop() {
 
     const heartMaterials = [
       new THREE.MeshPhysicalMaterial({
-        color: 0x1a1115,
+        color: 0x59142f,
         bumpMap: velvetMaps.bumpMap,
         bumpScale: 0.015,
         roughnessMap: velvetMaps.roughnessMap,
-        roughness: 0.86,
+        roughness: 0.84,
         metalness: 0.02,
         sheen: 1.0,
-        sheenRoughness: 0.52,
-        sheenColor: new THREE.Color(0x9b6b7d),
+        sheenRoughness: 0.48,
+        sheenColor: new THREE.Color(0xff8fb3),
       }),
       new THREE.MeshPhysicalMaterial({
-        color: 0xf4c2d2,
+        color: 0xe84f82,
         bumpMap: velvetMaps.bumpMap,
         bumpScale: 0.014,
         roughnessMap: velvetMaps.roughnessMap,
@@ -468,43 +468,43 @@ export function AmbientPetalsHeartsBackdrop() {
         metalness: 0.02,
         sheen: 1.0,
         sheenRoughness: 0.45,
-        sheenColor: new THREE.Color(0xfff5f8),
+        sheenColor: new THREE.Color(0xfff3f7),
       }),
       new THREE.MeshStandardMaterial({
-        color: 0xebc2cf,
+        color: 0xf48fb1,
         normalMap: foilNormal,
         normalScale: new THREE.Vector2(0.85, 0.85),
         roughness: 0.24,
         metalness: 0.72,
       }),
       new THREE.MeshPhysicalMaterial({
-        color: 0x9e3b58,
+        color: 0xb51649,
         bumpMap: velvetMaps.bumpMap,
         bumpScale: 0.014,
         roughness: 0.82,
         metalness: 0.02,
         sheen: 1.0,
         sheenRoughness: 0.46,
-        sheenColor: new THREE.Color(0xf6cad8),
+        sheenColor: new THREE.Color(0xff9bbe),
       }),
     ];
 
     const ribbonMaterials = [
       new THREE.MeshPhysicalMaterial({
-        color: 0x1c1217,
+        color: 0x4d1229,
         bumpMap: satinBump,
         bumpScale: 0.009,
-        roughness: 0.42,
+        roughness: 0.4,
         metalness: 0.03,
-        specularIntensity: 0.34,
+        specularIntensity: 0.36,
         sheen: 1.0,
-        sheenRoughness: 0.26,
-        sheenColor: new THREE.Color(0x7d5766),
+        sheenRoughness: 0.24,
+        sheenColor: new THREE.Color(0xff8fb3),
         anisotropy: 0.88,
         side: THREE.DoubleSide,
       }),
       new THREE.MeshPhysicalMaterial({
-        color: 0xebb9ca,
+        color: 0xe84f82,
         bumpMap: satinBump,
         bumpScale: 0.009,
         roughness: 0.44,
@@ -512,12 +512,12 @@ export function AmbientPetalsHeartsBackdrop() {
         specularIntensity: 0.3,
         sheen: 1.0,
         sheenRoughness: 0.24,
-        sheenColor: new THREE.Color(0xfff5f8),
+        sheenColor: new THREE.Color(0xfff3f7),
         anisotropy: 0.85,
         side: THREE.DoubleSide,
       }),
       new THREE.MeshPhysicalMaterial({
-        color: 0x9e3b58,
+        color: 0xb51649,
         bumpMap: satinBump,
         bumpScale: 0.009,
         roughness: 0.44,
@@ -525,7 +525,7 @@ export function AmbientPetalsHeartsBackdrop() {
         specularIntensity: 0.32,
         sheen: 1.0,
         sheenRoughness: 0.25,
-        sheenColor: new THREE.Color(0xf4c2d2),
+        sheenColor: new THREE.Color(0xff9bbe),
         anisotropy: 0.85,
         side: THREE.DoubleSide,
       }),
@@ -538,7 +538,7 @@ export function AmbientPetalsHeartsBackdrop() {
         metalness: 0.0,
         sheen: 0.65,
         sheenRoughness: 0.48,
-        sheenColor: new THREE.Color(0xfff2f6),
+        sheenColor: new THREE.Color(0xfff3f7),
         clearcoat: 0.12,
         clearcoatRoughness: 0.45,
         side: THREE.DoubleSide,
@@ -549,7 +549,7 @@ export function AmbientPetalsHeartsBackdrop() {
         metalness: 0.0,
         sheen: 0.65,
         sheenRoughness: 0.5,
-        sheenColor: new THREE.Color(0xf7d0dd),
+        sheenColor: new THREE.Color(0xf87ca4),
         clearcoat: 0.12,
         clearcoatRoughness: 0.45,
         side: THREE.DoubleSide,

@@ -17,7 +17,7 @@ interface ShelfItem {
   id: string;
   productId: string;
   kind: PackKind;
-  category: Exclude<ProductCategory, 'All Curios'>;
+  category: Exclude<ProductCategory, 'All Collections'>;
   title: string;
   t1: string;
   t2: string;
@@ -40,49 +40,49 @@ const SHELF_ITEMS: ShelfItem[] = [
     productId: 'coffret-grand-bonbon',
     kind: 'coffret',
     category: 'Confection Boxes',
-    title: 'Grand Jardin Bonbon Box',
-    t1: 'GRAND JARDIN',
-    t2: 'BONBON COFFRET',
-    sub: '16 PRALINES & AMALFI CITRON',
+    title: 'Grand Garden Truffle Box',
+    t1: 'GRAND GARDEN',
+    t2: 'TRUFFLE BOX',
+    sub: '16 PRALINES & CANDIED LEMON',
     specTag: '16 PCS',
     code: '01',
     price: 78,
     shelf: 0,
     slot: 0,
-    ribbonHex: '#F4C2D2',
-    wrapColor: '#1E1216',
-    trimHex: '#2D1A21',
+    ribbonHex: '#F87CA4',
+    wrapColor: '#4A1228',
+    trimHex: '#2E0918',
     image: '/src/assets/images/product_bonbon_coffret_1795102538021.jpg',
     blurb:
-      'Sixteen hand-painted single-origin cacao bonbons paired with candied Amalfi citron in a keepsake silk-rose coffret.',
+      'Sixteen hand-painted single-origin cacao truffles paired with candied Amalfi lemon in a keepsake silk-rose gift box.',
   },
   {
     id: 'macaron-parcel',
     productId: 'atelier-macaron-ribbon',
     kind: 'parcel',
     category: 'Confection Boxes',
-    title: 'Fête du Jour Macaron Parcel',
-    t1: 'FÊTE DU JOUR',
-    t2: 'MACARON PARCEL',
+    title: 'Celebration Day Macaron Box',
+    t1: 'CELEBRATION DAY',
+    t2: 'MACARON BOX',
     sub: '12 ROSEWATER & PISTACHIO',
     specTag: '12 PCS',
     code: '02',
     price: 64,
     shelf: 0,
     slot: 1,
-    ribbonHex: '#161013',
-    wrapColor: '#F5CEDB',
-    trimHex: '#E5AFC2',
+    ribbonHex: '#380E20',
+    wrapColor: '#E85A89',
+    trimHex: '#C23464',
     image: '/src/assets/images/product_macaron_ribbon_box_1795102538417.jpg',
     blurb:
-      'A pillowy blush linen keepsake cube bound in deep noir satin ribbon, cushioned with twelve crisp almond macarons.',
+      'A pillowy rose linen keepsake cube bound in deep burgundy satin ribbon, cushioned with twelve crisp almond macarons.',
   },
   {
     id: 'eliza-oliver',
     productId: 'cotton-rag-invitation-suite',
     kind: 'stationery-pack',
     category: 'Event Stationery',
-    title: 'Eliza & Oliver Rag Pack',
+    title: 'Eliza & Oliver Letterpress Pack',
     t1: 'ELIZA & OLIVER',
     t2: 'STATIONERY PACK',
     sub: '25 SUITES · 600GSM COTTON',
@@ -91,9 +91,9 @@ const SHELF_ITEMS: ShelfItem[] = [
     price: 185,
     shelf: 0,
     slot: 2,
-    ribbonHex: '#E8B4C6',
-    wrapColor: '#6D263E',
-    trimHex: '#4E1A2B',
+    ribbonHex: '#F87CA4',
+    wrapColor: '#8C113A',
+    trimHex: '#5E0925',
     image: '/src/assets/images/product_stationery_suite_1795102538035.jpg',
     blurb:
       'Pressed on antique Heidelberg platens using 600gsm deckle cotton rag, bundled with silk ribbon and wax seals.',
@@ -112,20 +112,20 @@ const SHELF_ITEMS: ShelfItem[] = [
     price: 56,
     shelf: 0,
     slot: 3,
-    ribbonHex: '#E8B4C6',
-    wrapColor: '#1B1115',
-    trimHex: '#2C1B22',
+    ribbonHex: '#E84F82',
+    wrapColor: '#3E0E22',
+    trimHex: '#280715',
     image: '/src/assets/images/product_curio_tea_tin_1795102538911.jpg',
     blurb:
-      'Embossed apothecary tea caddy filled with chamomile and elderflower oolong alongside single-apiary Provence honey.',
+      'Embossed apothecary tea caddy filled with chamomile and elderflower oolong alongside single-apiary meadow honey.',
   },
   {
     id: 'pour-toi',
     productId: 'atelier-pour-toi-hamper',
     kind: 'coffret',
     category: 'Confection Boxes',
-    title: 'Pour Toi Keepsake Trunk',
-    t1: 'POUR TOI',
+    title: 'For You Keepsake Trunk',
+    t1: 'FOR YOU',
     t2: 'KEEPSAKE TRUNK',
     sub: '18 CONFECTIONS & WAX NOTE',
     specTag: '18 PCS',
@@ -133,30 +133,30 @@ const SHELF_ITEMS: ShelfItem[] = [
     price: 128,
     shelf: 0,
     slot: 4,
-    ribbonHex: '#161013',
-    wrapColor: '#9E3B58',
-    trimHex: '#7A2A42',
+    ribbonHex: '#380E20',
+    wrapColor: '#B51649',
+    trimHex: '#820D32',
     image: HERO_IMAGE,
     blurb:
-      'Our signature multi-sensory unboxing ritual: petal-rose silk trunk holding macarons, truffles, and wax-sealed notes.',
+      'Our signature multi-sensory unboxing ritual: dark-rose silk trunk holding macarons, truffles, and wax-sealed notes.',
   },
   {
     id: 'soiree-menu',
     productId: 'scalloped-menu-placecards',
     kind: 'stationery-pack',
     category: 'Event Stationery',
-    title: 'Scalloped Soirée Card Pack',
+    title: 'Scalloped Gala Card Pack',
     t1: 'SCALLOPED',
-    t2: 'SOIRÉE CARD PACK',
+    t2: 'GALA CARD PACK',
     sub: '12 MENUS & PLACE CARDS',
     specTag: '450 GSM',
     code: '06',
     price: 92,
     shelf: 1,
     slot: 0,
-    ribbonHex: '#161013',
-    wrapColor: '#EEBACB',
-    trimHex: '#DA9BB0',
+    ribbonHex: '#380E20',
+    wrapColor: '#F078A0',
+    trimHex: '#CF4E7B',
     image: '/src/assets/images/product_stationery_suite_1795102538035.jpg',
     blurb:
       'Tailored table stationery crafted on rose-tinted cotton stock with scalloped borders and satin ribbon knots.',
@@ -175,12 +175,12 @@ const SHELF_ITEMS: ShelfItem[] = [
     price: 112,
     shelf: 1,
     slot: 1,
-    ribbonHex: '#F4C2D2',
-    wrapColor: '#23151B',
-    trimHex: '#37212A',
+    ribbonHex: '#F87CA4',
+    wrapColor: '#52132B',
+    trimHex: '#320A1A',
     image: '/src/assets/images/product_bonbon_coffret_1795102538021.jpg',
     blurb:
-      'Double-height noir clothbound coffret housing twenty-four hand-tempered ganache pralines and Amalfi citron.',
+      'Double-height burgundy clothbound gift box housing twenty-four hand-tempered ganache pralines and candied lemon.',
   },
   {
     id: 'rosewater-double',
@@ -189,27 +189,27 @@ const SHELF_ITEMS: ShelfItem[] = [
     category: 'Confection Boxes',
     title: 'Rosewater Two-Tier Box',
     t1: 'ROSEWATER',
-    t2: 'TWO-TIER PARCEL',
+    t2: 'TWO-TIER BOX',
     sub: '24 PISTACHIO MACARONS',
     specTag: '24 PCS',
     code: '08',
     price: 106,
     shelf: 1,
     slot: 2,
-    ribbonHex: '#F7D7E2',
-    wrapColor: '#732941',
-    trimHex: '#571D30',
+    ribbonHex: '#FF9BB9',
+    wrapColor: '#9E1442',
+    trimHex: '#6E0A2C',
     image: '/src/assets/images/product_macaron_ribbon_box_1795102538417.jpg',
     blurb:
-      'Two stacked tiers of rosewater, pistachio, and blood-orange macarons bound in hand-ironed obsidian satin.',
+      'Two stacked tiers of rosewater, pistachio, and blood-orange macarons bound in hand-ironed silk satin.',
   },
   {
     id: 'provence-pantry',
     productId: 'wildflower-tea-honey-curio',
     kind: 'pantry-box',
     category: 'Tea & Pantry',
-    title: 'Provence Violet Gift Pack',
-    t1: 'PROVENCE',
+    title: 'Meadow Violet Gift Pack',
+    t1: 'MEADOW VIOLET',
     t2: 'PANTRY PACK',
     sub: 'SUGARED VIOLETS & 2 HONEY JARS',
     specTag: 'TRIO PACK',
@@ -217,30 +217,30 @@ const SHELF_ITEMS: ShelfItem[] = [
     price: 84,
     shelf: 1,
     slot: 3,
-    ribbonHex: '#161013',
-    wrapColor: '#F2C6D5',
-    trimHex: '#DEA5B8',
+    ribbonHex: '#380E20',
+    wrapColor: '#E85A89',
+    trimHex: '#C23464',
     image: '/src/assets/images/product_curio_tea_tin_1795102538911.jpg',
     blurb:
-      'Crystalized Toulouse violet petals nestled beside two raw wildflower honey jars and botanical loose-leaf oolong.',
+      'Crystalized English violet petals nestled beside two raw wildflower honey jars and botanical loose-leaf oolong.',
   },
   {
     id: 'atelier-reserve-trunk',
     productId: 'atelier-pour-toi-hamper',
     kind: 'coffret',
     category: 'Confection Boxes',
-    title: 'Atelier Reserve Box',
-    t1: 'ATELIER',
-    t2: 'RESERVE COFFRET',
+    title: 'Signature Reserve Box',
+    t1: 'SIGNATURE',
+    t2: 'RESERVE BOX',
     sub: 'FULL TRUNK + TEA & HONEY',
     specTag: 'RESERVE',
     code: '10',
     price: 176,
     shelf: 1,
     slot: 4,
-    ribbonHex: '#F4C2D2',
-    wrapColor: '#1D1216',
-    trimHex: '#2F1D24',
+    ribbonHex: '#F87CA4',
+    wrapColor: '#4A1228',
+    trimHex: '#2E0918',
     image: HERO_IMAGE,
     blurb:
       'Our grandest linen archive box combining confections, botanical tea caddy, raw honey, and brass-sealed stationery.',
@@ -683,21 +683,21 @@ export function CurioShelfShowcase({
       const c = makeCanvas(W, H);
       const g = c.getContext('2d')!;
       const light = isLightColor(b.wrapColor);
-      const ink = light ? '#1B1115' : '#FDF2F5';
-      const accentInk = light ? '#9E3B58' : '#F4C2D2';
+      const ink = light ? '#1C060E' : '#FCE4EC';
+      const accentInk = light ? '#6E0D2E' : '#FF9BB9';
 
       g.fillStyle = b.wrapColor;
       g.fillRect(0, 0, W, H);
       drawClothWeave(g, W, H, b.title.length * 17 + 9, light ? 0.04 : 0.055);
 
       g.fillStyle = linearGrad(g, 0, 0, W, H, [
-        [0, light ? 'rgba(255,255,255,0.22)' : 'rgba(244,194,210,0.09)'],
+        [0, light ? 'rgba(255,255,255,0.22)' : 'rgba(248,124,164,0.10)'],
         [1, 'rgba(0,0,0,0.16)'],
       ]);
       g.fillRect(0, 0, W, H);
 
-      // Telescoping Coffret Lid Border / Stationery Envelope Flap Line
-      g.strokeStyle = light ? 'rgba(27,17,21,0.18)' : 'rgba(244,194,210,0.25)';
+      // Telescoping Gift Box Lid Border / Stationery Envelope Flap Line
+      g.strokeStyle = light ? 'rgba(28,6,14,0.20)' : 'rgba(248,124,164,0.28)';
       g.lineWidth = Math.max(2, W * 0.003);
       g.strokeRect(W * 0.045, H * 0.04, W * 0.91, H * 0.92);
 
@@ -735,7 +735,7 @@ export function CurioShelfShowcase({
       const pw = frameW;
       const ph = b.kind === 'stationery-pack' ? H * 0.42 : H * 0.415;
       g.save();
-      g.fillStyle = light ? '#EED7E0' : '#2E1C24';
+      g.fillStyle = light ? '#F7C6D6' : '#3A0E1E';
       g.fillRect(px, py, pw, ph);
       const img = PLATE[b.id];
       if (img && img.naturalWidth > 0) {
@@ -754,7 +754,7 @@ export function CurioShelfShowcase({
         }
         g.drawImage(img, sx, sy, sw, sh, px, py, pw, ph);
       }
-      g.strokeStyle = light ? 'rgba(27,17,21,0.26)' : 'rgba(244,194,210,0.34)';
+      g.strokeStyle = light ? 'rgba(28,6,14,0.28)' : 'rgba(248,124,164,0.36)';
       g.lineWidth = W * 0.004;
       g.strokeRect(px, py, pw, ph);
       g.restore();
@@ -781,7 +781,7 @@ export function CurioShelfShowcase({
 
       g.globalAlpha = 0.55;
       g.font = `500 ${W * 0.019}px ${SANS}`;
-      trackedText(g, 'MAISON CONFECTION · ATELIER', centerX, H * 0.932, W * 0.0045, 'center');
+      trackedText(g, 'VELVET ROSE · CONFECTIONS', centerX, H * 0.932, W * 0.0045, 'center');
       g.globalAlpha = 1;
 
       addGrain(g, W, H, 7, 13 + b.slot * 7);
@@ -793,7 +793,7 @@ export function CurioShelfShowcase({
       const g = c.getContext('2d')!;
       const r = mulberry(109 + b.slot * 31);
       const light = isLightColor(b.wrapColor);
-      const ink = light ? '#1B1115' : '#FDF2F5';
+      const ink = light ? '#1C060E' : '#FCE4EC';
 
       g.fillStyle = b.wrapColor;
       g.fillRect(0, 0, W, H);
@@ -816,126 +816,126 @@ export function CurioShelfShowcase({
         const y = H * 0.11;
         const w = W * 0.24;
         const h = w * 1.1;
-        g.save();
-        g.fillStyle = light ? '#EED7E0' : '#2D1B23';
-        g.fillRect(x, y, w, h);
-        if (img && img.naturalWidth > 0) {
-          const cw = img.naturalWidth * crops[i][2];
-          const ch = cw * (h / w);
-          const sx = Math.min(img.naturalWidth - cw, img.naturalWidth * crops[i][0]);
-          const sy = Math.min(img.naturalHeight - ch, img.naturalHeight * crops[i][1]);
-          g.drawImage(img, sx, sy, cw, ch, x, y, w, h);
-        } else {
-          g.fillStyle = linearGrad(g, x, y, x + w, y + h, [
-            [0, b.trimHex],
-            [1, '#1B1115'],
-          ]);
-          g.fillRect(x, y, w, h);
-        }
-        g.strokeStyle = light ? 'rgba(27,17,21,0.28)' : 'rgba(244,194,210,0.32)';
-        g.lineWidth = W * 0.0025;
-        g.strokeRect(x, y, w, h);
-        g.restore();
-      }
-
-      g.fillStyle = ink;
-      g.globalAlpha = 0.64;
-      g.font = `500 ${W * 0.018}px ${MONO}`;
-      g.textAlign = 'left';
-      g.fillText(`CURIO SPEC · ${b.specTag} · ${b.category.toUpperCase()}`, W * 0.1, H * 0.415);
-      g.globalAlpha = 1;
-
-      // Craft & Tasting Card Copy
-      g.font = `400 ${W * 0.03}px ${SERIF}`;
-      g.fillStyle = ink;
-      const words = b.blurb.split(' ');
-      let line = '';
-      let y = H * 0.505;
-      for (const w0 of words) {
-        const t = line ? `${line} ${w0}` : w0;
-        if (g.measureText(t).width > W * 0.8) {
-          g.fillText(line, W * 0.1, y);
-          line = w0;
-          y += W * 0.044;
-        } else {
-          line = t;
-        }
-      }
-      g.fillText(line, W * 0.1, y);
-
-      g.globalAlpha = 0.72;
-      g.font = `600 ${W * 0.02}px ${SANS}`;
-      trackedText(g, `HANDCRAFTED IN SMALL BATCHES · REF ${b.code}`, W * 0.1, y + W * 0.075, W * 0.003, 'left');
-      g.globalAlpha = 1;
-
-      // Monogram Atelier Seal
       g.save();
-      g.translate(W * 0.13, H * 0.855);
-      g.strokeStyle = ink;
-      g.globalAlpha = 0.55;
-      g.lineWidth = W * 0.0035;
-      g.beginPath();
-      g.arc(0, 0, W * 0.056, 0, TAU);
-      g.stroke();
-      g.globalAlpha = 1;
-      g.fillStyle = ink;
-      g.font = `600 ${W * 0.028}px ${SERIF}`;
-      g.textAlign = 'center';
-      g.textBaseline = 'middle';
-      g.fillText('MC', 0, W * 0.002);
-      g.restore();
-
-      g.textAlign = 'left';
-      g.textBaseline = 'alphabetic';
-      g.fillStyle = ink;
-      g.font = `600 ${W * 0.022}px ${SANS}`;
-      trackedText(g, 'MAISON CONFECTION', W * 0.21, H * 0.845, W * 0.004, 'left');
-      g.globalAlpha = 0.65;
-      g.font = `400 ${W * 0.019}px ${SANS}`;
-      g.fillText(`Packaged to Order · Keepsake Vessel`, W * 0.21, H * 0.875);
-      g.globalAlpha = 1;
-
-      // Atelier Batch Label & Price
-      const bx = W * 0.61;
-      const by = H * 0.818;
-      const bw = W * 0.29;
-      const bh = H * 0.082;
-      g.fillStyle = '#FFF9FB';
-      g.fillRect(bx, by, bw, bh);
-      g.fillStyle = '#161013';
-      let px = bx + bw * 0.04;
-      while (px < bx + bw * 0.96) {
-        const w = W * (0.002 + (r() < 0.3 ? 0.0055 : 0.002) * r() * 3);
-        g.fillRect(px, by + bh * 0.1, w, bh * 0.64);
-        px += w + W * (0.002 + r() * 0.004);
+      g.fillStyle = light ? '#F7C6D6' : '#3A0E1E';
+      g.fillRect(x, y, w, h);
+      if (img && img.naturalWidth > 0) {
+        const cw = img.naturalWidth * crops[i][2];
+        const ch = cw * (h / w);
+        const sx = Math.min(img.naturalWidth - cw, img.naturalWidth * crops[i][0]);
+        const sy = Math.min(img.naturalHeight - ch, img.naturalHeight * crops[i][1]);
+        g.drawImage(img, sx, sy, cw, ch, x, y, w, h);
+      } else {
+        g.fillStyle = linearGrad(g, x, y, x + w, y + h, [
+          [0, b.trimHex],
+          [1, '#240814'],
+        ]);
+        g.fillRect(x, y, w, h);
       }
-      g.font = `400 ${W * 0.017}px ${MONO}`;
-      g.textAlign = 'center';
-      g.fillText(`MC-COFFRET-${b.code}`, bx + bw / 2, by + bh * 0.92);
-
-      g.textAlign = 'right';
-      g.fillStyle = ink;
-      g.globalAlpha = 0.85;
-      g.font = `700 ${W * 0.024}px ${SANS}`;
-      g.fillText(`$${b.price}.00`, W * 0.9, H * 0.78);
-      g.globalAlpha = 1;
-
-      addGrain(g, W, H, 7, 5);
-      return c;
+      g.strokeStyle = light ? 'rgba(28,6,14,0.28)' : 'rgba(248,124,164,0.34)';
+      g.lineWidth = W * 0.0025;
+      g.strokeRect(x, y, w, h);
+      g.restore();
     }
 
-    /* ---- Ebonized Espresso Rosewood Shelf Texture ---- */
-    function woodTexture(px: number) {
-      const W = px;
-      const Hh = Math.round(px * 0.5);
-      const c = makeCanvas(W, Hh);
-      const g = c.getContext('2d')!;
-      const r = mulberry(909);
-      g.fillStyle = '#331E26';
-      g.fillRect(0, 0, W, Hh);
+    g.fillStyle = ink;
+    g.globalAlpha = 0.64;
+    g.font = `500 ${W * 0.018}px ${MONO}`;
+    g.textAlign = 'left';
+    g.fillText(`BOX SPEC · ${b.specTag} · ${b.category.toUpperCase()}`, W * 0.1, H * 0.415);
+    g.globalAlpha = 1;
+
+    // Craft & Tasting Card Copy
+    g.font = `400 ${W * 0.03}px ${SERIF}`;
+    g.fillStyle = ink;
+    const words = b.blurb.split(' ');
+    let line = '';
+    let y = H * 0.505;
+    for (const w0 of words) {
+      const t = line ? `${line} ${w0}` : w0;
+      if (g.measureText(t).width > W * 0.8) {
+        g.fillText(line, W * 0.1, y);
+        line = w0;
+        y += W * 0.044;
+      } else {
+        line = t;
+      }
+    }
+    g.fillText(line, W * 0.1, y);
+
+    g.globalAlpha = 0.72;
+    g.font = `600 ${W * 0.02}px ${SANS}`;
+    trackedText(g, `HANDCRAFTED IN SMALL BATCHES · REF ${b.code}`, W * 0.1, y + W * 0.075, W * 0.003, 'left');
+    g.globalAlpha = 1;
+
+    // Monogram Studio Seal
+    g.save();
+    g.translate(W * 0.13, H * 0.855);
+    g.strokeStyle = ink;
+    g.globalAlpha = 0.55;
+    g.lineWidth = W * 0.0035;
+    g.beginPath();
+    g.arc(0, 0, W * 0.056, 0, TAU);
+    g.stroke();
+    g.globalAlpha = 1;
+    g.fillStyle = ink;
+    g.font = `600 ${W * 0.028}px ${SERIF}`;
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.fillText('VR', 0, W * 0.002);
+    g.restore();
+
+    g.textAlign = 'left';
+    g.textBaseline = 'alphabetic';
+    g.fillStyle = ink;
+    g.font = `600 ${W * 0.022}px ${SANS}`;
+    trackedText(g, 'VELVET ROSE', W * 0.21, H * 0.845, W * 0.004, 'left');
+    g.globalAlpha = 0.65;
+    g.font = `400 ${W * 0.019}px ${SANS}`;
+    g.fillText(`Packaged to Order · Keepsake Vessel`, W * 0.21, H * 0.875);
+    g.globalAlpha = 1;
+
+    // Studio Batch Label & Price
+    const bx = W * 0.61;
+    const by = H * 0.818;
+    const bw = W * 0.29;
+    const bh = H * 0.082;
+    g.fillStyle = '#FFF3F7';
+    g.fillRect(bx, by, bw, bh);
+    g.fillStyle = '#1C060E';
+    let px = bx + bw * 0.04;
+    while (px < bx + bw * 0.96) {
+      const w = W * (0.002 + (r() < 0.3 ? 0.0055 : 0.002) * r() * 3);
+      g.fillRect(px, by + bh * 0.1, w, bh * 0.64);
+      px += w + W * (0.002 + r() * 0.004);
+    }
+    g.font = `400 ${W * 0.017}px ${MONO}`;
+    g.textAlign = 'center';
+    g.fillText(`VR-BOX-${b.code}`, bx + bw / 2, by + bh * 0.92);
+
+    g.textAlign = 'right';
+    g.fillStyle = ink;
+    g.globalAlpha = 0.85;
+    g.font = `700 ${W * 0.024}px ${SANS}`;
+    g.fillText(`$${b.price}.00`, W * 0.9, H * 0.78);
+    g.globalAlpha = 1;
+
+    addGrain(g, W, H, 7, 5);
+    return c;
+  }
+
+  /* ---- Deep Burgundy Rosewood Shelf Texture ---- */
+  function woodTexture(px: number) {
+    const W = px;
+    const Hh = Math.round(px * 0.5);
+    const c = makeCanvas(W, Hh);
+    const g = c.getContext('2d')!;
+    const r = mulberry(909);
+    g.fillStyle = '#3B0E21';
+    g.fillRect(0, 0, W, Hh);
 
       for (let i = 0; i < 14; i++) {
-        g.fillStyle = `rgba(${68 + ((r() * 24) | 0)},${40 + ((r() * 14) | 0)},${52 + ((r() * 18) | 0)},${0.08 + r() * 0.1})`;
+        g.fillStyle = `rgba(${96 + ((r() * 28) | 0)},${32 + ((r() * 14) | 0)},${56 + ((r() * 18) | 0)},${0.1 + r() * 0.12})`;
         g.beginPath();
         g.ellipse(r() * W, r() * Hh, W * (0.1 + r() * 0.28), Hh * (0.06 + r() * 0.2), 0, 0, TAU);
         g.fill();
@@ -947,8 +947,8 @@ export function CurioShelfShowcase({
         const ph = r() * TAU;
         const dark = r() < 0.4;
         g.strokeStyle = dark
-          ? `rgba(${16 + ((r() * 12) | 0)},${9 + ((r() * 7) | 0)},${12 + ((r() * 8) | 0)},${0.35 + r() * 0.5})`
-          : `rgba(${104 + ((r() * 32) | 0)},${64 + ((r() * 22) | 0)},${78 + ((r() * 24) | 0)},${0.16 + r() * 0.28})`;
+          ? `rgba(${32 + ((r() * 14) | 0)},${9 + ((r() * 6) | 0)},${18 + ((r() * 9) | 0)},${0.35 + r() * 0.45})`
+          : `rgba(${132 + ((r() * 34) | 0)},${48 + ((r() * 18) | 0)},${80 + ((r() * 24) | 0)},${0.2 + r() * 0.3})`;
         g.lineWidth = dark ? 0.8 + r() * 1.6 : 0.8 + r() * 2.2;
         g.beginPath();
         for (let x = 0; x <= W; x += 8) {
@@ -960,7 +960,7 @@ export function CurioShelfShowcase({
         g.stroke();
       }
       for (let i = 0; i < 7000; i++) {
-        g.fillStyle = `rgba(18,10,14,${0.14 + r() * 0.3})`;
+        g.fillStyle = `rgba(26,7,15,${0.14 + r() * 0.26})`;
         g.fillRect(r() * W, r() * Hh, 1 + r() * 4, 1);
       }
       const t = new THREE.CanvasTexture(c);
@@ -971,22 +971,22 @@ export function CurioShelfShowcase({
       return t;
     }
 
-    /* ---- Baked Blush-Cotton Wall Texture ---- */
+    /* ---- Baked Dark Burgundy-Plum Velvet Studio Wall Texture ---- */
     const WALL = { x0: -9.15, x1: 9.15, y0: -9.67, y1: 8.63 };
     const WT = {
-      peak: 244,
-      bell: 11,
+      peak: 76,
+      bell: 24,
       bellR: 4.8,
-      rightLift: 4,
-      vFall: 14,
+      rightLift: 6,
+      vFall: 12,
       vStart: 0.7,
       vRange: 3.2,
-      bounce: 24,
+      bounce: 18,
       bounceR: 2.7,
       bouncePow: 2.5,
       plankHalf: 3.38,
       plankFeather: 1.7,
-      tint: [0.992, 0.906, 0.935] as [number, number, number],
+      tint: [0.95, 0.34, 0.56] as [number, number, number],
     };
 
     function paperTexture(px: number) {
@@ -1161,7 +1161,7 @@ export function CurioShelfShowcase({
       powerPreference: 'high-performance',
     });
     renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0xf6dde6, 1);
+    renderer.setClearColor(0x220813, 1);
     renderer.toneMapping = THREE.NoToneMapping;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.autoClear = false;
@@ -1242,8 +1242,8 @@ export function CurioShelfShowcase({
             t *= mix(0.88, 1.0, 1.0 - pow(clamp(abs(vP.x) / 3.38, 0.0, 1.0), 8.0));
             vec3 col = wood * t;
             float arris = smoothstep(0.30, 0.50, vP.z * 2.0 + 0.5) * pow(clamp(n.z, 0.0, 1.0), 1.5);
-            col += vec3(0.14, 0.095, 0.115) * arris;
-            col += vec3(0.06, 0.040, 0.050) * pow(clamp(n.z, 0.0, 1.0), 5.0);
+            col += vec3(0.22, 0.09, 0.14) * arris;
+            col += vec3(0.09, 0.04, 0.06) * pow(clamp(n.z, 0.0, 1.0), 5.0);
             gl_FragColor = vec4(col, uOpacity);
             #include <colorspace_fragment>
           }
@@ -1402,7 +1402,7 @@ export function CurioShelfShowcase({
     function makeSatinRibbonMat(ribbonHex: string, edgeShadow = 0.0) {
       const baseCol = new THREE.Color(ribbonHex);
       const isPale = isLightColor(ribbonHex);
-      const sheenCol = isPale ? new THREE.Color('#FFFFFF') : new THREE.Color('#F3BFD1');
+      const sheenCol = isPale ? new THREE.Color('#FFFFFF') : new THREE.Color('#F87CA4');
       return new THREE.ShaderMaterial({
         transparent: true,
         side: THREE.DoubleSide,
@@ -2186,7 +2186,7 @@ export function CurioShelfShowcase({
       const strapMat = makeSatinRibbonMat(data.ribbonHex, 0.0);
       const bowLoopMat = makeSatinRibbonMat(data.ribbonHex, 1.0);
       const sealMat = makeWaxSealMat(
-        data.kind === 'stationery-pack' ? '#161013' : '#C99B9E',
+        data.kind === 'stationery-pack' ? '#380E20' : '#D99B9E',
         data.kind !== 'stationery-pack'
       );
       const embellishShaders: THREE.ShaderMaterial[] = [strapMat, bowLoopMat, sealMat];
@@ -2578,24 +2578,24 @@ export function CurioShelfShowcase({
       const TW = Math.min(180, Math.round(w * 0.34));
       const X0 = Math.max(0, w - TW - 40);
       const a = buildTearBand(TW, h);
-      const paper = tintBand(a, TW, h, 251, 236, 242, true);
-      const dark = tintBand(a, TW, h, 42, 22, 30, false);
+      const paper = tintBand(a, TW, h, 56, 14, 32, true);
+      const dark = tintBand(a, TW, h, 22, 5, 12, false);
 
       const cv = makeCanvas(w, h);
       const g = cv.getContext('2d')!;
       const BL = 40;
       g.save();
-      g.globalAlpha = 0.24;
+      g.globalAlpha = 0.42;
       g.filter = `blur(${Math.round(h * 0.018)}px)`;
-      g.fillStyle = '#2A161E';
+      g.fillStyle = '#18050D';
       g.fillRect(-BL, 0, X0 + 14 + BL, h);
       g.drawImage(dark, X0 + 14, 0);
       g.restore();
 
       const pg = g.createLinearGradient(0, 0, w, 0);
-      pg.addColorStop(0, 'rgb(253, 242, 246)');
-      pg.addColorStop(0.74, 'rgb(251, 236, 242)');
-      pg.addColorStop(1, 'rgb(247, 226, 234)');
+      pg.addColorStop(0, 'rgb(41, 9, 22)');
+      pg.addColorStop(0.74, 'rgb(54, 13, 30)');
+      pg.addColorStop(1, 'rgb(64, 17, 37)');
       g.fillStyle = pg;
       g.fillRect(-BL, 0, X0 + 1 + BL, h);
       g.drawImage(paper, X0, 0);
@@ -2609,8 +2609,8 @@ export function CurioShelfShowcase({
         const ang = (r() - 0.5) * 0.5;
         g.strokeStyle =
           r() < 0.5
-            ? `rgba(255,250,252,${0.03 + r() * 0.06})`
-            : `rgba(158,59,88,${0.015 + r() * 0.035})`;
+            ? `rgba(255,143,179,${0.025 + r() * 0.045})`
+            : `rgba(26,6,14,${0.04 + r() * 0.07})`;
         g.lineWidth = r() < 0.85 ? 1 : 2;
         g.beginPath();
         g.moveTo(x, y);
@@ -3055,7 +3055,7 @@ export function CurioShelfShowcase({
         }
 
         const catMatch =
-          catFilter === 'All Curios' || B.data.category === catFilter || B === S.active;
+          catFilter === 'All Collections' || B.data.category === catFilter || B === S.active;
         const targetFilterOpacity = catMatch ? 1 : 0.26;
         B.tFilter.v[0] = lerp(B.tFilter.v[0], targetFilterOpacity, Math.min(1, dt * 8));
 
@@ -3178,23 +3178,23 @@ export function CurioShelfShowcase({
   return (
     <div
       ref={stageRef}
-      className="relative w-full h-[610px] sm:h-[670px] lg:h-[740px] rounded-3xl overflow-hidden border border-[#E9C4D1] bg-[#F6DDE6] shadow-atelier-rest select-none"
+      className="relative w-full h-[610px] sm:h-[670px] lg:h-[740px] rounded-3xl overflow-hidden border border-[#6E2440] bg-gradient-to-br from-[#2B0A18] via-[#220813] to-[#360E1F] shadow-atelier-rest select-none"
     >
-      {/* Interactive 3D Coffret & Parcel Shelf WebGL Canvas */}
+      {/* Interactive 3D Gift Box & Stationery Pack Shelf WebGL Canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full block touch-pan-y"
-        aria-label="Interactive 3D Maison Confection coffret and curio parcel display"
+        aria-label="Interactive 3D Velvet Rose Confections gift box and stationery pack display"
       />
 
-      {/* Torn Blush-Cotton Paper Slide-In Sheet */}
+      {/* Torn Dark-Velvet Slide-In Sheet */}
       <canvas
         ref={washRef}
         aria-hidden="true"
         className="hidden md:block pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-[min(600px,56%)] h-full"
       />
 
-      {/* Desktop Left Editorial Detail Reveal on Coffret Focus */}
+      {/* Desktop Left Editorial Detail Reveal on Box Focus */}
       <div
         className={`hidden md:flex flex-col justify-center absolute left-0 top-0 bottom-0 z-20 w-[min(480px,48%)] pl-10 lg:pl-14 pr-12 transition-opacity duration-300 ${
           selectedItem ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
@@ -3202,18 +3202,18 @@ export function CurioShelfShowcase({
       >
         {selectedItem && (
           <div className="max-w-[330px] space-y-4">
-            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#9E3B58] tabular-nums">
+            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#FF8FB3] tabular-nums">
               {selectedItem.category} · {selectedItem.specTag} · ${selectedItem.price}
             </p>
-            <h3 className="font-serif-editorial text-3xl lg:text-[40px] font-semibold leading-[1.08] text-[#161013]">
+            <h3 className="font-serif-editorial text-3xl lg:text-[40px] font-semibold leading-[1.08] text-[#FFF0F5]">
               {selectedItem.title}
             </h3>
-            <p className="text-sm lg:text-[15px] leading-relaxed text-[#4D343E]">
+            <p className="text-sm lg:text-[15px] leading-relaxed text-[#E8B4C6]">
               {selectedItem.blurb}
             </p>
 
             {activeProduct?.craftNotes?.[0] && (
-              <p className="text-xs font-medium text-[#6E4E5A] border-t border-[#E9C4D1] pt-3">
+              <p className="text-xs font-medium text-[#D996AE] border-t border-[#6E2440] pt-3">
                 {activeProduct.craftNotes[0]}
               </p>
             )}
@@ -3222,9 +3222,9 @@ export function CurioShelfShowcase({
               <button
                 type="button"
                 onClick={() => actionsRef.current?.flipActive()}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#FFF9FB] hover:bg-white text-[#161013] border border-[#E9C4D1] text-xs font-bold shadow-atelier-rest cursor-pointer transition-transform duration-150 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#3A0F22] hover:bg-[#4D142C] text-[#FCE7EF] border border-[#7D2B4B] text-xs font-bold shadow-atelier-rest cursor-pointer transition-transform duration-150 hover:-translate-y-0.5"
               >
-                <RotateCw className="w-3.5 h-3.5 text-[#9E3B58]" />
+                <RotateCw className="w-3.5 h-3.5 text-[#FF8FB3]" />
                 <span>{isFlipped ? 'Show front' : 'Inspect underside'}</span>
               </button>
 
@@ -3233,9 +3233,9 @@ export function CurioShelfShowcase({
                   <button
                     type="button"
                     onClick={() => onQuickAdd(activeProduct)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#161013] hover:bg-[#2B1C22] text-[#FDF2F5] text-xs font-bold bevel-letterpress cursor-pointer transition-transform duration-150 hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-xs font-bold bevel-letterpress cursor-pointer transition-transform duration-150 hover:-translate-y-0.5"
                   >
-                    <ShoppingBag className="w-3.5 h-3.5 text-[#F4C2D2]" />
+                    <ShoppingBag className="w-3.5 h-3.5 text-[#FFE6EF]" />
                     <span>Add · ${selectedItem.price}</span>
                   </button>
 
@@ -3243,9 +3243,9 @@ export function CurioShelfShowcase({
                     <button
                       type="button"
                       onClick={() => onQuickPersonalize(activeProduct)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#F9E4EB] hover:bg-[#FFF9FB] text-[#161013] border border-[#161013]/20 text-xs font-bold cursor-pointer transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#4A132A] hover:bg-[#5E1835] text-[#FCE7EF] border border-[#7D2B4B] text-xs font-bold cursor-pointer transition-colors"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-[#9E3B58]" />
+                      <Sparkles className="w-3.5 h-3.5 text-[#FF8FB3]" />
                       <span>Personalize</span>
                     </button>
                   )}
@@ -3253,7 +3253,7 @@ export function CurioShelfShowcase({
                   <button
                     type="button"
                     onClick={() => onSelectProduct(activeProduct)}
-                    className="text-xs font-bold text-[#6E4E5A] hover:text-[#161013] underline underline-offset-4 px-1 py-1 cursor-pointer"
+                    className="text-xs font-bold text-[#E8B4C6] hover:text-[#FFF0F5] underline underline-offset-4 px-1 py-1 cursor-pointer"
                   >
                     Full specs
                   </button>
@@ -3262,9 +3262,9 @@ export function CurioShelfShowcase({
 
               <button
                 type="button"
-                aria-label="Close parcel inspection"
+                aria-label="Close box inspection"
                 onClick={() => actionsRef.current?.clearActive()}
-                className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#FFF9FB]/90 hover:bg-white text-[#161013] border border-[#E9C4D1] cursor-pointer transition-colors"
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#3A0F22]/90 hover:bg-[#4D142C] text-[#FCE7EF] border border-[#7D2B4B] cursor-pointer transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -3275,7 +3275,7 @@ export function CurioShelfShowcase({
 
       {/* Top Interactive Drag Hint Pill */}
       <div
-        className={`hidden md:flex items-center gap-2 pointer-events-none absolute top-5 right-6 z-20 px-4 py-2 rounded-full bg-[#FFF9FB]/95 border border-[#E9C4D1] text-xs font-semibold text-[#161013] shadow-atelier-rest transition-opacity duration-300 ${
+        className={`hidden md:flex items-center gap-2 pointer-events-none absolute top-5 right-6 z-20 px-4 py-2 rounded-full bg-[#2D0A19]/95 border border-[#7D2B4B] text-xs font-semibold text-[#FCE7EF] shadow-atelier-rest transition-opacity duration-300 ${
           selectedItem && showHint ? 'opacity-100' : 'opacity-0'
         }`}
       >
@@ -3284,28 +3284,28 @@ export function CurioShelfShowcase({
 
       {/* Subtle Hover Prompt Badge (Desktop Idle) */}
       {!selectedItem && stageReady && (
-        <div className="hidden md:flex items-center justify-between pointer-events-none absolute top-4 inset-x-6 z-10 text-xs font-semibold text-[#6E4E5A]">
+        <div className="hidden md:flex items-center justify-between pointer-events-none absolute top-4 inset-x-6 z-10 text-xs font-semibold text-[#D996AE]">
           <span>
             {hoveredItem
               ? `${hoveredItem.title} · $${hoveredItem.price} — Click to unbox & inspect`
-              : 'Hover any coffret or parcel to lift · Click to inspect & turn'}
+              : 'Hover any gift box or pack to lift · Click to inspect & turn'}
           </span>
-          <span className="tabular-nums text-[#9E3B58] font-bold">
-            10 Curated Boxes & Packs
+          <span className="tabular-nums text-[#FF8FB3] font-bold">
+            10 Curated Gift Boxes & Packs
           </span>
         </div>
       )}
 
       {/* Desktop Bottom Catalogue Rail */}
       <div
-        className={`hidden md:block absolute inset-x-0 bottom-0 z-20 pt-8 pb-3.5 px-5 bg-gradient-to-t from-[#F6DDE6]/95 via-[#F6DDE6]/78 to-transparent border-t border-[#E9C4D1]/50 transition-opacity duration-300 ${
+        className={`hidden md:block absolute inset-x-0 bottom-0 z-20 pt-8 pb-3.5 px-5 bg-gradient-to-t from-[#1F0712]/95 via-[#260915]/88 to-transparent border-t border-[#6E2440]/75 transition-opacity duration-300 ${
           selectedItem ? 'opacity-40 hover:opacity-100' : 'opacity-100'
         }`}
       >
         <div className="flex items-center justify-between gap-2.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {SHELF_ITEMS.map((item) => {
             const isMatch =
-              activeCategory === 'All Curios' || item.category === activeCategory;
+              activeCategory === 'All Collections' || item.category === activeCategory;
             const isSelected = selectedItem?.id === item.id;
             return (
               <button
@@ -3316,21 +3316,21 @@ export function CurioShelfShowcase({
                 onClick={() => actionsRef.current?.selectById(item.id)}
                 className={`group flex items-center gap-2.5 text-left px-2.5 py-1.5 rounded-xl shrink-0 cursor-pointer transition-all duration-150 ${
                   isSelected
-                    ? 'bg-[#161013] text-[#FDF2F5] shadow-atelier-rest'
+                    ? 'bg-gradient-to-r from-[#E84F82] to-[#B81D52] text-[#FFF4F8] shadow-atelier-rest'
                     : isMatch
-                    ? 'hover:bg-[#FFF9FB]/85 text-[#161013]'
-                    : 'opacity-40 hover:opacity-80 text-[#6E4E5A]'
+                    ? 'hover:bg-[#3D1023]/85 text-[#FCE7EF]'
+                    : 'opacity-40 hover:opacity-80 text-[#D996AE]'
                 }`}
               >
                 <img
                   src={item.image}
                   alt=""
-                  className="w-8 h-9 rounded-md object-cover border border-[#E9C4D1]/70 shrink-0 transition-transform duration-200 group-hover:scale-105"
+                  className="w-8 h-9 rounded-md object-cover border border-[#7D2B4B] shrink-0 transition-transform duration-200 group-hover:scale-105"
                 />
                 <div className="min-w-0">
                   <p
                     className={`text-[10px] font-bold uppercase tracking-wider tabular-nums ${
-                      isSelected ? 'text-[#F4C2D2]' : 'text-[#9E3B58]'
+                      isSelected ? 'text-[#FFE6EF]' : 'text-[#FF8FB3]'
                     }`}
                   >
                     {item.specTag} · ${item.price}
@@ -3346,30 +3346,30 @@ export function CurioShelfShowcase({
       </div>
 
       {/* Mobile Bottom Control Bar & Stack Navigation */}
-      <div className="md:hidden absolute inset-x-0 bottom-0 z-20 p-4 pt-12 bg-gradient-to-t from-[#F6DDE6] via-[#F6DDE6]/92 to-transparent">
+      <div className="md:hidden absolute inset-x-0 bottom-0 z-20 p-4 pt-12 bg-gradient-to-t from-[#1F0712] via-[#260915]/92 to-transparent">
         <div className="flex items-center justify-between gap-3 mb-3">
           <div className="min-w-0">
-            <p className="text-[11px] font-bold uppercase tracking-wider text-[#9E3B58] tabular-nums">
+            <p className="text-[11px] font-bold uppercase tracking-wider text-[#FF8FB3] tabular-nums">
               {mobileItem.specTag} · ${mobileItem.price}
             </p>
-            <h3 className="font-serif-editorial text-xl font-semibold text-[#161013] truncate">
+            <h3 className="font-serif-editorial text-xl font-semibold text-[#FFF0F5] truncate">
               {mobileItem.title}
             </h3>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
             <button
               type="button"
-              aria-label="Previous coffret"
+              aria-label="Previous gift box"
               onClick={() => actionsRef.current?.stepMobile(-1)}
-              className="w-9 h-9 rounded-full bg-[#FFF9FB] border border-[#E9C4D1] flex items-center justify-center text-[#161013] cursor-pointer"
+              className="w-9 h-9 rounded-full bg-[#3A0F22] border border-[#7D2B4B] flex items-center justify-center text-[#FFF0F5] cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               type="button"
-              aria-label="Next coffret"
+              aria-label="Next gift box"
               onClick={() => actionsRef.current?.stepMobile(1)}
-              className="w-9 h-9 rounded-full bg-[#FFF9FB] border border-[#E9C4D1] flex items-center justify-center text-[#161013] cursor-pointer"
+              className="w-9 h-9 rounded-full bg-[#3A0F22] border border-[#7D2B4B] flex items-center justify-center text-[#FFF0F5] cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -3386,7 +3386,7 @@ export function CurioShelfShowcase({
                 actionsRef.current?.selectById(mobileItem.id);
               }
             }}
-            className="flex-1 py-2.5 px-3 rounded-full bg-[#FFF9FB] border border-[#E9C4D1] text-xs font-bold text-[#161013] cursor-pointer"
+            className="flex-1 py-2.5 px-3 rounded-full bg-[#3A0F22] border border-[#7D2B4B] text-xs font-bold text-[#FCE7EF] cursor-pointer"
           >
             {selectedItem?.id === mobileItem.id ? 'Turn Pack' : 'Inspect Box'}
           </button>
@@ -3396,7 +3396,7 @@ export function CurioShelfShowcase({
               type="button"
               aria-label="Close pack inspection"
               onClick={() => actionsRef.current?.clearActive()}
-              className="w-10 h-10 rounded-full bg-[#FFF9FB] border border-[#E9C4D1] flex items-center justify-center text-[#161013] shrink-0 cursor-pointer"
+              className="w-10 h-10 rounded-full bg-[#3A0F22] border border-[#7D2B4B] flex items-center justify-center text-[#FCE7EF] shrink-0 cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -3406,7 +3406,7 @@ export function CurioShelfShowcase({
             <button
               type="button"
               onClick={() => onQuickAdd(productMap.get(mobileItem.productId)!)}
-              className="flex-1 py-2.5 px-3 rounded-full bg-[#161013] text-[#FDF2F5] text-xs font-bold cursor-pointer"
+              className="flex-1 py-2.5 px-3 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] text-[#FFF4F8] border border-[#FF9BBE]/35 text-xs font-bold cursor-pointer"
             >
               Add · ${mobileItem.price}
             </button>

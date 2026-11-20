@@ -49,13 +49,13 @@ function createLinenTextures(renderer: THREE.WebGLRenderer) {
   const bCtx = bumpCanvas.getContext('2d');
 
   if (aCtx && bCtx) {
-    aCtx.fillStyle = '#EBBCCB';
+    aCtx.fillStyle = '#E05A88';
     aCtx.fillRect(0, 0, 512, 512);
     bCtx.fillStyle = '#808080';
     bCtx.fillRect(0, 0, 512, 512);
 
     for (let i = 0; i < 512; i += 3) {
-      const shade = i % 6 === 0 ? 'rgba(182, 118, 140, 0.22)' : 'rgba(255, 244, 248, 0.22)';
+      const shade = i % 6 === 0 ? 'rgba(181, 22, 73, 0.22)' : 'rgba(255, 230, 238, 0.22)';
       aCtx.fillStyle = shade;
       aCtx.fillRect(i, 0, 1.5, 512);
       aCtx.fillRect(0, i, 512, 1.5);
@@ -89,15 +89,15 @@ function createInnerPaperTexture(renderer: THREE.WebGLRenderer): THREE.CanvasTex
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
   if (ctx) {
-    ctx.fillStyle = '#FAE7EE';
+    ctx.fillStyle = '#FCE7EF';
     ctx.fillRect(0, 0, 256, 256);
     for (let i = 0; i < 650; i++) {
       const x = (((Math.sin(i * 19.31) * 43758.54) % 1) + 1) % 1 * 256;
       const y = (((Math.sin(i * 73.17) * 43758.54) % 1) + 1) % 1 * 256;
-      ctx.fillStyle = i % 2 === 0 ? 'rgba(182, 118, 140, 0.14)' : 'rgba(255, 250, 252, 0.25)';
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(181, 22, 73, 0.14)' : 'rgba(255, 245, 249, 0.25)';
       ctx.fillRect(x, y, 2, 1);
     }
-    ctx.strokeStyle = 'rgba(148, 86, 108, 0.35)';
+    ctx.strokeStyle = 'rgba(158, 17, 61, 0.35)';
     ctx.lineWidth = 2;
     ctx.strokeRect(10, 10, 236, 236);
   }
@@ -350,11 +350,35 @@ function createContactShadowTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext('2d');
   if (ctx) {
     const grad = ctx.createRadialGradient(128, 128, 18, 128, 128, 124);
-    grad.addColorStop(0, 'rgba(28, 18, 23, 0.34)');
-    grad.addColorStop(0.55, 'rgba(74, 43, 54, 0.14)');
-    grad.addColorStop(1, 'rgba(74, 43, 54, 0)');
+    grad.addColorStop(0, 'rgba(20, 5, 11, 0.62)');
+    grad.addColorStop(0.55, 'rgba(28, 7, 16, 0.24)');
+    grad.addColorStop(1, 'rgba(28, 7, 16, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 256, 256);
+  }
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+function createDarkVelvetBackdropTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    const grad = ctx.createRadialGradient(256, 230, 32, 256, 256, 360);
+    grad.addColorStop(0, '#441126');
+    grad.addColorStop(0.52, '#2B0917');
+    grad.addColorStop(1, '#1E0610');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 512, 512);
+    for (let i = 0; i < 1800; i++) {
+      const px = (((Math.sin(i * 19.31) * 43758.54) % 1) + 1) % 1 * 512;
+      const py = (((Math.sin(i * 73.17) * 43758.54) % 1) + 1) % 1 * 512;
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(255, 143, 179, 0.018)' : 'rgba(22, 5, 12, 0.04)';
+      ctx.fillRect(px, py, 2, 2);
+    }
   }
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -748,9 +772,11 @@ export function GiftBox3DCanvas({
     const disposables: { dispose: () => void }[] = [];
 
     const scene = new THREE.Scene();
-    const bgHex = mode === 'hero-open' ? 0xfdf2f5 : 0xf9e4eb;
-    scene.background = new THREE.Color(bgHex);
-    scene.fog = new THREE.Fog(bgHex, 12, 26);
+    const bgHex = mode === 'hero-open' ? 0x240814 : 0x200712;
+    const velvetBackdropTex = createDarkVelvetBackdropTexture();
+    disposables.push(velvetBackdropTex);
+    scene.background = velvetBackdropTex;
+    scene.fog = new THREE.Fog(bgHex, 11, 24);
 
     const width = container.clientWidth || 800;
     const height = container.clientHeight || 600;
@@ -768,7 +794,7 @@ export function GiftBox3DCanvas({
     renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.02;
+    renderer.toneMappingExposure = 1.08;
     renderer.shadowMap.enabled = !isSoftwareGl;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
@@ -787,11 +813,11 @@ export function GiftBox3DCanvas({
     disposables.push(envTarget);
     pmremGenerator.dispose();
 
-    // Soft Blush-Noir Studio Lighting
-    const hemiLight = new THREE.HemisphereLight(0xfff6f9, 0xd4b6c3, 1.02);
+    // Rich Dark-Velvet & Rose-Gold Studio Lighting
+    const hemiLight = new THREE.HemisphereLight(0xffe6ef, 0x54132c, 1.12);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff5f2, 2.0);
+    const keyLight = new THREE.DirectionalLight(0xfff5f2, 2.2);
     keyLight.position.set(5.4, 8.6, 5.2);
     keyLight.castShadow = !isSoftwareGl;
     keyLight.shadow.mapSize.set(1024, 1024);
@@ -807,11 +833,11 @@ export function GiftBox3DCanvas({
     keyLight.shadow.radius = 4;
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xffeef4, 0.85);
+    const fillLight = new THREE.DirectionalLight(0xffcde0, 1.05);
     fillLight.position.set(-5.0, 3.8, 4.2);
     scene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffd7e5, 1.25);
+    const rimLight = new THREE.DirectionalLight(0xff7aa8, 1.75);
     rimLight.position.set(-4.2, 4.8, -5.2);
     scene.add(rimLight);
 
@@ -822,8 +848,8 @@ export function GiftBox3DCanvas({
     const velvetTex = createVelvetTextures(renderer);
     const foilMaps = createCrinkledFoilMaps(renderer);
     const meringueBump = createMeringueBumpTexture();
-    const petalTexLight = createPetalTextures(renderer, '#F4C8D7', '#DC8FA8');
-    const petalTexDeep = createPetalTextures(renderer, '#EBB5C7', '#B35371');
+    const petalTexLight = createPetalTextures(renderer, '#F279A1', '#B51649');
+    const petalTexDeep = createPetalTextures(renderer, '#E84F82', '#8C1038');
     const contactTex = createContactShadowTexture();
     disposables.push(
       linenTex.map,
@@ -842,9 +868,9 @@ export function GiftBox3DCanvas({
       contactTex
     );
 
-    // Unified Cohesive Luxury Blush-Pink + Espresso-Noir Materials (no jarring color soup)
+    // Unified Cohesive Luxury Reddish-Pink + Crimson-Obsidian Materials
     const linenOuterMat = new THREE.MeshStandardMaterial({
-      color: 0xf1cad7,
+      color: 0xe05280,
       map: linenTex.map,
       bumpMap: linenTex.bumpMap,
       bumpScale: 0.018,
@@ -852,7 +878,7 @@ export function GiftBox3DCanvas({
       metalness: 0.01,
     });
     const linenTrimMat = new THREE.MeshStandardMaterial({
-      color: 0xe4b1c3,
+      color: 0xb51649,
       map: linenTex.map,
       bumpMap: linenTex.bumpMap,
       bumpScale: 0.014,
@@ -860,13 +886,13 @@ export function GiftBox3DCanvas({
       metalness: 0.01,
     });
     const innerPaperMat = new THREE.MeshStandardMaterial({
-      color: 0xfbeaf0,
+      color: 0xfce4ec,
       map: innerPaperTex,
       roughness: 0.92,
       metalness: 0.0,
     });
     const silkLiningMat = new THREE.MeshPhysicalMaterial({
-      color: 0xf0bccd,
+      color: 0xf48fb1,
       bumpMap: satinBump,
       bumpScale: 0.005,
       roughness: 0.56,
@@ -874,126 +900,126 @@ export function GiftBox3DCanvas({
       specularIntensity: 0.25,
       sheen: 1.0,
       sheenRoughness: 0.34,
-      sheenColor: new THREE.Color(0xfff5f8),
+      sheenColor: new THREE.Color(0xfff3f7),
     });
 
-    // Deep Espresso-Noir & Blush Satin Ribbon Materials
+    // Deep Burgundy-Plum & Dark-Pink Satin Ribbon Materials (lifted for dark velvet backdrop contrast)
     const noirSatinMat = new THREE.MeshPhysicalMaterial({
-      color: 0x1c1217,
+      color: 0x421024,
       bumpMap: satinBump,
       bumpScale: 0.01,
-      roughness: 0.44,
+      roughness: 0.4,
       metalness: 0.03,
-      specularIntensity: 0.32,
+      specularIntensity: 0.36,
       sheen: 1.0,
-      sheenRoughness: 0.28,
-      sheenColor: new THREE.Color(0x6e4a58),
+      sheenRoughness: 0.24,
+      sheenColor: new THREE.Color(0xff8fb3),
       anisotropy: 0.88,
       side: THREE.DoubleSide,
     });
     const blushSatinMat = new THREE.MeshPhysicalMaterial({
-      color: 0xebb9ca,
+      color: 0xe84f82,
       bumpMap: satinBump,
       bumpScale: 0.01,
-      roughness: 0.46,
+      roughness: 0.44,
       metalness: 0.02,
-      specularIntensity: 0.28,
+      specularIntensity: 0.3,
       sheen: 1.0,
-      sheenRoughness: 0.26,
-      sheenColor: new THREE.Color(0xfff5f8),
+      sheenRoughness: 0.25,
+      sheenColor: new THREE.Color(0xffe4ee),
       anisotropy: 0.85,
       side: THREE.DoubleSide,
     });
     const dustyRoseSatinMat = new THREE.MeshPhysicalMaterial({
-      color: 0x9c4561,
+      color: 0xb51649,
       bumpMap: satinBump,
       bumpScale: 0.01,
-      roughness: 0.45,
+      roughness: 0.43,
       metalness: 0.03,
-      specularIntensity: 0.3,
+      specularIntensity: 0.32,
       sheen: 1.0,
-      sheenRoughness: 0.26,
-      sheenColor: new THREE.Color(0xf4c2d2),
+      sheenRoughness: 0.25,
+      sheenColor: new THREE.Color(0xff9bbe),
       anisotropy: 0.85,
       side: THREE.DoubleSide,
     });
 
     const waxSealMat = new THREE.MeshPhysicalMaterial({
-      color: 0x181014,
-      roughness: 0.42,
+      color: 0x3a0e20,
+      roughness: 0.38,
       metalness: 0.04,
-      clearcoat: 0.26,
-      clearcoatRoughness: 0.38,
+      clearcoat: 0.3,
+      clearcoatRoughness: 0.34,
     });
 
-    // Muted Rose-Champagne metallic (soft rose-bronze harmony instead of garish yellow gold)
+    // Muted Rose-Champagne metallic trim
     const roseTrimMat = new THREE.MeshStandardMaterial({
-      color: 0xd4a6a8,
-      roughness: 0.34,
-      metalness: 0.78,
+      color: 0xe2a8ab,
+      roughness: 0.3,
+      metalness: 0.8,
     });
 
     // Crinkled tangent-normal-mapped Rose-Pearl Foil
     const rosePearlCrinkleFoilMat = new THREE.MeshStandardMaterial({
-      color: 0xebc2cf,
+      color: 0xf48fb1,
       normalMap: foilMaps.normalMap,
       normalScale: new THREE.Vector2(0.85, 0.85),
       roughnessMap: foilMaps.roughnessMap,
-      roughness: 0.92,
+      roughness: 0.9,
       metalness: 0.84,
-      envMapIntensity: 1.05,
+      envMapIntensity: 1.1,
     });
     const darkRoseBronzeFoilMat = new THREE.MeshStandardMaterial({
-      color: 0xc2939c,
+      color: 0xc9527c,
       normalMap: foilMaps.normalMap,
       normalScale: new THREE.Vector2(0.85, 0.85),
       roughnessMap: foilMaps.roughnessMap,
-      roughness: 0.92,
+      roughness: 0.9,
       metalness: 0.86,
-      envMapIntensity: 1.08,
+      envMapIntensity: 1.12,
     });
 
-    // Crushed Velvet Keepsake Hearts (Unified Espresso Noir, Deep Rose Plum, & Soft Blush)
+    // Crushed Velvet Keepsake Hearts (Burgundy Mulberry, Ruby, & Dark Pink)
     const velvetNoirHeartMat = new THREE.MeshPhysicalMaterial({
-      color: 0x1e1318,
+      color: 0x4d1229,
       bumpMap: velvetTex.bumpMap,
       bumpScale: 0.014,
       roughnessMap: velvetTex.roughnessMap,
-      roughness: 0.96,
+      roughness: 0.92,
       metalness: 0.0,
-      specularIntensity: 0.1,
+      specularIntensity: 0.14,
       sheen: 1.0,
-      sheenRoughness: 0.54,
-      sheenColor: new THREE.Color(0x75505e),
+      sheenRoughness: 0.48,
+      sheenColor: new THREE.Color(0xff8fb3),
     });
     const velvetPlumHeartMat = new THREE.MeshPhysicalMaterial({
-      color: 0x7c3149,
+      color: 0xb51649,
       bumpMap: velvetTex.bumpMap,
       bumpScale: 0.014,
       roughnessMap: velvetTex.roughnessMap,
-      roughness: 0.96,
+      roughness: 0.94,
       metalness: 0.0,
-      specularIntensity: 0.1,
+      specularIntensity: 0.12,
       sheen: 1.0,
-      sheenRoughness: 0.52,
-      sheenColor: new THREE.Color(0xf4c2d2),
+      sheenRoughness: 0.48,
+      sheenColor: new THREE.Color(0xff9bbe),
     });
     const velvetBlushHeartMat = new THREE.MeshPhysicalMaterial({
-      color: 0xebb7c8,
+      color: 0xe84f82,
       bumpMap: velvetTex.bumpMap,
       bumpScale: 0.014,
       roughnessMap: velvetTex.roughnessMap,
-      roughness: 0.96,
+      roughness: 0.94,
       metalness: 0.0,
-      specularIntensity: 0.09,
+      specularIntensity: 0.11,
       sheen: 1.0,
-      sheenRoughness: 0.5,
-      sheenColor: new THREE.Color(0xfff5f8),
+      sheenRoughness: 0.48,
+      sheenColor: new THREE.Color(0xfff3f7),
     });
 
-    // Artisanal Confection Materials (Rose Macarons & Espresso Truffles)
+    // Artisanal Confection Materials (Dark-Pink Macarons & Espresso Truffles)
     const macaronRoseMat = new THREE.MeshPhysicalMaterial({
-      color: 0xefb8ca,
+      color: 0xf48fb1,
       bumpMap: meringueBump,
       bumpScale: 0.012,
       roughness: 0.84,
@@ -1001,35 +1027,35 @@ export function GiftBox3DCanvas({
       specularIntensity: 0.12,
       sheen: 0.25,
       sheenRoughness: 0.8,
-      sheenColor: new THREE.Color(0xfff4f7),
+      sheenColor: new THREE.Color(0xfff3f7),
     });
     const macaronNoirMat = new THREE.MeshPhysicalMaterial({
-      color: 0x26191e,
+      color: 0x421024,
       bumpMap: meringueBump,
       bumpScale: 0.012,
-      roughness: 0.82,
+      roughness: 0.8,
       metalness: 0.0,
-      specularIntensity: 0.14,
-      sheen: 0.22,
-      sheenRoughness: 0.75,
-      sheenColor: new THREE.Color(0x6e4e5a),
+      specularIntensity: 0.16,
+      sheen: 0.28,
+      sheenRoughness: 0.72,
+      sheenColor: new THREE.Color(0xff8fb3),
     });
     const ganacheFillingMat = new THREE.MeshStandardMaterial({
-      color: 0x3b1f28,
+      color: 0x4a1226,
       roughness: 0.45,
       metalness: 0.02,
     });
     const cocoaTruffleMat = new THREE.MeshPhysicalMaterial({
-      color: 0x2b181d,
+      color: 0x3d1221,
       bumpMap: velvetTex.bumpMap,
       bumpScale: 0.018,
       roughnessMap: velvetTex.roughnessMap,
-      roughness: 1.0,
+      roughness: 0.96,
       metalness: 0.0,
-      specularIntensity: 0.08,
-      sheen: 0.32,
-      sheenRoughness: 0.85,
-      sheenColor: new THREE.Color(0x70484e),
+      specularIntensity: 0.1,
+      sheen: 0.36,
+      sheenRoughness: 0.8,
+      sheenColor: new THREE.Color(0xc9527c),
     });
 
     // Organic Botanical Matte Rose Petals
@@ -1042,7 +1068,7 @@ export function GiftBox3DCanvas({
       specularIntensity: 0.08,
       sheen: 0.72,
       sheenRoughness: 0.55,
-      sheenColor: new THREE.Color(0xfff7fa),
+      sheenColor: new THREE.Color(0xfff3f7),
       side: THREE.DoubleSide,
     });
     const petalDeepMat = new THREE.MeshPhysicalMaterial({
@@ -1054,7 +1080,7 @@ export function GiftBox3DCanvas({
       specularIntensity: 0.09,
       sheen: 0.76,
       sheenRoughness: 0.52,
-      sheenColor: new THREE.Color(0xf9d5e2),
+      sheenColor: new THREE.Color(0xf87ca4),
       side: THREE.DoubleSide,
     });
 
@@ -1709,10 +1735,10 @@ export function GiftBox3DCanvas({
   if (contextLost) {
     return (
       <div
-        className={`w-full h-full flex items-center justify-center bg-[#FDF2F5] text-center p-8 ${className}`}
+        className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2C0A18] to-[#1D0610] text-center p-8 ${className}`}
       >
-        <p className="font-serif-editorial text-2xl text-[#161013]">
-          3D Atelier Box resting — reload to restore WebGL view.
+        <p className="font-serif-editorial text-2xl text-[#FCE7EF]">
+          3D Gift Box resting — reload to restore WebGL view.
         </p>
       </div>
     );

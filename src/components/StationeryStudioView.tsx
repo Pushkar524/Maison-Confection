@@ -74,13 +74,13 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
   return (
     <section className="max-w-[1360px] mx-auto px-5 md:px-8 lg:px-12 pt-8 md:pt-12">
       <div className="mb-8">
-        <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#9E3B58] mb-2">
+        <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#FF8FB3] mb-2">
           Heidelberg Letterpress & Paper Studio
         </p>
-        <h1 className="font-serif-editorial text-4xl md:text-[46px] font-semibold text-[#161013] leading-tight">
-          Bespoke Event Stationery Atelier
+        <h1 className="font-serif-editorial text-4xl md:text-[46px] font-semibold text-[#FFF0F5] leading-tight">
+          Custom Event Stationery Studio
         </h1>
-        <p className="mt-2 text-base text-[#6E4E5A] max-w-2xl">
+        <p className="mt-2 text-base text-[#E8B4C6] max-w-2xl">
           Preview your wedding invitation, candlelit menu, or milestone card pressed onto 600gsm
           deckle-edge cotton rag with silk ribbon and hand-poured wax.
         </p>
@@ -97,81 +97,81 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
               onClick={() => handleTemplateSelect(tpl.id)}
               className={`text-left p-5 rounded-2xl border transition-all cursor-pointer ${
                 selected
-                  ? 'bg-[#FFF9FB] border-[#161013] ring-4 ring-[#161013]/15 shadow-atelier-rest'
-                  : 'bg-[#F9E4EB] border-[#E9C4D1] hover:border-[#161013]/50'
+                  ? 'bg-gradient-to-br from-[#4D142C] to-[#340C1D] border-[#FF8FB3] ring-2 ring-[#FF8FB3]/30 shadow-atelier-rest'
+                  : 'bg-gradient-to-br from-[#340D1E] to-[#270916] border-[#6E2440] hover:border-[#C96B8E]'
               }`}
             >
               <div className="flex items-center justify-between gap-2 mb-1.5">
-                <span className="text-xs font-bold text-[#9E3B58]">{tpl.defaultPaper}</span>
-                {selected && <Check className="w-4 h-4 text-[#161013]" />}
+                <span className="text-xs font-bold text-[#FF8FB3]">{tpl.defaultPaper}</span>
+                {selected && <Check className="w-4 h-4 text-[#FF8FB3]" />}
               </div>
-              <h2 className="font-serif-editorial text-xl font-semibold text-[#161013]">
+              <h2 className="font-serif-editorial text-xl font-semibold text-[#FFF0F5]">
                 {tpl.name}
               </h2>
-              <p className="text-xs text-[#6E4E5A] mt-1">{tpl.subtitle}</p>
+              <p className="text-xs text-[#D996AE] mt-1">{tpl.subtitle}</p>
             </button>
           );
         })}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-        {/* Left: Live Tabletop Three-Piece Suite Preview */}
-        <div className="lg:col-span-7 bg-[#F9E4EB] border border-[#E9C4D1] rounded-3xl p-6 sm:p-10 space-y-6">
-          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#161013]">
+        {/* Left: Live Tabletop Three-Piece Suite Preview on Dark Velvet Mat */}
+        <div className="lg:col-span-7 bg-gradient-to-br from-[#340D1E] via-[#2A0917] to-[#210712] border border-[#6E2440] rounded-3xl p-6 sm:p-10 space-y-6 shadow-atelier-rest">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-[#FF8FB3]">
             <span>Live Typesetting Proof</span>
-            <span>{activeTemplate.defaultPaper}</span>
+            <span className="text-[#E8B4C6]">{activeTemplate.defaultPaper}</span>
           </div>
 
           {/* Three-piece Paper Ensemble */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-            {/* Main Invitation Card */}
-            <div className="md:col-span-7 bg-[#FFF9FB] border border-[#E9C4D1] rounded-xl p-8 sm:p-10 text-center shadow-atelier-hover space-y-4">
+            {/* Main Invitation Card (Physical 600gsm Cotton-Rag Paper Proof) */}
+            <div className="md:col-span-7 bg-[#FFF3F7] border border-[#E07FA0] rounded-xl p-8 sm:p-10 text-center shadow-atelier-hover space-y-4">
               <div
                 className="font-serif-editorial text-3xl sm:text-4xl font-semibold tracking-tight leading-tight"
                 style={{ color: activeFoil.textHex }}
               >
                 {headline || 'Your Headline'}
               </div>
-              <div className="w-10 h-px bg-[#D8A6B8] mx-auto" />
-              <p className="text-sm text-[#6E4E5A] leading-relaxed max-w-xs mx-auto">
+              <div className="w-10 h-px bg-[#D86089] mx-auto" />
+              <p className="text-sm text-[#781A3D] leading-relaxed max-w-xs mx-auto">
                 {subline || 'Invite wording preview'}
               </p>
-              <div className="pt-3 space-y-1 text-xs font-bold uppercase tracking-[0.14em] text-[#161013]">
+              <div className="pt-3 space-y-1 text-xs font-bold uppercase tracking-[0.14em] text-[#240814]">
                 <p>{eventDate || 'Date & Time'}</p>
-                <p className="text-[#6E4E5A] font-semibold">{venue || 'Venue Location'}</p>
+                <p className="text-[#781A3D] font-semibold">{venue || 'Venue Location'}</p>
               </div>
             </div>
 
-            {/* Scalloped RSVP + Wax-Sealed Envelope */}
+            {/* Scalloped RSVP + Wax-Sealed Velvet Envelope */}
             <div className="md:col-span-5 space-y-5">
               {/* Scalloped RSVP Card with Ribbon Tie */}
-              <div className="relative bg-[#FFF9FB] border-2 border-dashed border-[#D8A6B8] rounded-2xl p-5 text-center shadow-atelier-rest stamp-card-surface">
+              <div className="relative bg-[#FFF3F7] border-2 border-dashed border-[#D86089] rounded-2xl p-5 text-center shadow-atelier-rest stamp-card-surface">
                 <div
                   className="h-3 w-24 mx-auto rounded-full mb-3"
                   style={{ backgroundColor: activeRibbon.hex }}
                 />
-                <p className="font-serif-editorial text-lg font-semibold text-[#161013] tracking-wider">
+                <p className="font-serif-editorial text-lg font-semibold text-[#240814] tracking-wider">
                   R.S.V.P.
                 </p>
-                <p className="text-[11px] text-[#6E4E5A] mt-1">
+                <p className="text-[11px] text-[#781A3D] mt-1">
                   Kindly reply by the first of the month
                 </p>
-                <div className="mt-3 pt-2 border-t border-[#E9C4D1] text-[11px] text-[#6E4E5A] space-y-1 text-left">
+                <div className="mt-3 pt-2 border-t border-[#E07FA0] text-[11px] text-[#781A3D] space-y-1 text-left">
                   <p>___ Joyfully Accepts</p>
                   <p>___ Regretfully Declines</p>
                 </div>
               </div>
 
-              {/* Wax-Sealed Outer Envelope */}
-              <div className="bg-[#FDF2F5] border border-[#E9C4D1] rounded-xl p-5 text-center shadow-atelier-rest">
+              {/* Wax-Sealed Outer Velvet Envelope */}
+              <div className="bg-gradient-to-br from-[#421126] to-[#2B0917] border border-[#7D2B4B] rounded-xl p-5 text-center shadow-atelier-rest">
                 <div
-                  className="mx-auto w-11 h-11 rounded-full flex items-center justify-center text-[#FDF2F5] font-serif-editorial text-xl font-semibold shadow-sm mb-2"
+                  className="mx-auto w-11 h-11 rounded-full flex items-center justify-center text-[#FCE4EC] border border-white/20 font-serif-editorial text-xl font-semibold shadow-sm mb-2"
                   style={{ backgroundColor: activeSeal.hex }}
                 >
                   {activeSeal.motif}
                 </div>
-                <p className="text-xs font-bold text-[#161013]">{activeSeal.name}</p>
-                <p className="text-[11px] text-[#6E4E5A]">
+                <p className="text-xs font-bold text-[#FFF0F5]">{activeSeal.name}</p>
+                <p className="text-[11px] text-[#E8B4C6]">
                   {activeRibbon.name} · {foil}
                 </p>
               </div>
@@ -180,8 +180,8 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
         </div>
 
         {/* Right: Typesetting & Order Controls */}
-        <div className="lg:col-span-5 bg-[#FFF9FB] border border-[#E9C4D1] rounded-3xl p-6 sm:p-8 bevel-card space-y-5">
-          <h2 className="font-serif-editorial text-2xl font-semibold text-[#161013]">
+        <div className="lg:col-span-5 bg-gradient-to-b from-[#3A0F22] via-[#2F0B1B] to-[#250815] border border-[#6E2440] rounded-3xl p-6 sm:p-8 bevel-card space-y-5">
+          <h2 className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
             Customize Suite Wording & Finish
           </h2>
 
@@ -189,7 +189,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
             <div>
               <label
                 htmlFor="suite-headline"
-                className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-1.5"
               >
                 Headline / Couple or Event Name
               </label>
@@ -198,14 +198,14 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                 type="text"
                 value={headline}
                 onChange={(e) => setHeadline(e.target.value)}
-                className="w-full h-11 px-3.5 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm text-[#161013] focus:outline-none focus:border-[#161013] focus:ring-4 focus:ring-[#161013]/15"
+                className="w-full h-11 px-3.5 rounded-xl bg-[#220712] border border-[#6E2440] text-sm text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3] focus:ring-4 focus:ring-[#FF8FB3]/15"
               />
             </div>
 
             <div>
               <label
                 htmlFor="suite-subline"
-                className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-1.5"
               >
                 Invitation Subline
               </label>
@@ -214,7 +214,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                 rows={2}
                 value={subline}
                 onChange={(e) => setSubline(e.target.value)}
-                className="w-full p-3 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm text-[#161013] focus:outline-none focus:border-[#161013] focus:ring-4 focus:ring-[#161013]/15"
+                className="w-full p-3 rounded-xl bg-[#220712] border border-[#6E2440] text-sm text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3] focus:ring-4 focus:ring-[#FF8FB3]/15"
               />
             </div>
 
@@ -222,7 +222,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
               <div>
                 <label
                   htmlFor="suite-date"
-                  className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-1.5"
+                  className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-1.5"
                 >
                   Date & Hour
                 </label>
@@ -231,13 +231,13 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                   type="text"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm text-[#161013] focus:outline-none focus:border-[#161013]"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#220712] border border-[#6E2440] text-sm text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3]"
                 />
               </div>
               <div>
                 <label
                   htmlFor="suite-venue"
-                  className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-1.5"
+                  className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-1.5"
                 >
                   Venue
                 </label>
@@ -246,7 +246,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                   type="text"
                   value={venue}
                   onChange={(e) => setVenue(e.target.value)}
-                  className="w-full h-11 px-3.5 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm text-[#161013] focus:outline-none focus:border-[#161013]"
+                  className="w-full h-11 px-3.5 rounded-xl bg-[#220712] border border-[#6E2440] text-sm text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3]"
                 />
               </div>
             </div>
@@ -256,7 +256,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
               <div>
                 <label
                   htmlFor="suite-foil"
-                  className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-1.5"
+                  className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-1.5"
                 >
                   Ink / Foil
                 </label>
@@ -264,10 +264,10 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                   id="suite-foil"
                   value={foil}
                   onChange={(e) => setFoil(e.target.value as FoilFinish)}
-                  className="w-full h-11 px-3 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm font-semibold text-[#161013] cursor-pointer"
+                  className="w-full h-11 px-3 rounded-xl bg-[#220712] border border-[#6E2440] text-sm font-semibold text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3] cursor-pointer"
                 >
                   {FOIL_OPTIONS.map((f) => (
-                    <option key={f.name} value={f.name}>
+                    <option key={f.name} value={f.name} className="bg-[#240814] text-[#FFF0F5]">
                       {f.name}
                     </option>
                   ))}
@@ -276,7 +276,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
               <div>
                 <label
                   htmlFor="suite-ribbon"
-                  className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-1.5"
+                  className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-1.5"
                 >
                   Silk Ribbon
                 </label>
@@ -284,10 +284,10 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                   id="suite-ribbon"
                   value={ribbonId}
                   onChange={(e) => setRibbonId(e.target.value)}
-                  className="w-full h-11 px-3 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm font-semibold text-[#161013] cursor-pointer"
+                  className="w-full h-11 px-3 rounded-xl bg-[#220712] border border-[#6E2440] text-sm font-semibold text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3] cursor-pointer"
                 >
                   {RIBBON_OPTIONS.map((r) => (
-                    <option key={r.id} value={r.id}>
+                    <option key={r.id} value={r.id} className="bg-[#240814] text-[#FFF0F5]">
                       {r.name}
                     </option>
                   ))}
@@ -296,7 +296,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
             </div>
 
             <div>
-              <span className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-2">
+              <span className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-2">
                 Wax Seal Stamp
               </span>
               <div className="flex flex-wrap gap-2">
@@ -307,12 +307,12 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                     onClick={() => setSealId(seal.id)}
                     className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold cursor-pointer transition-all ${
                       sealId === seal.id
-                        ? 'border-[#161013] bg-[#161013] text-[#FDF2F5]'
-                        : 'border-[#E9C4D1] bg-[#FDF2F5] text-[#6E4E5A]'
+                        ? 'border-[#FF8FB3] bg-gradient-to-r from-[#FCE4EC] to-[#F5B8CD] text-[#240814]'
+                        : 'border-[#6E2440] bg-[#220712] text-[#E8B4C6] hover:border-[#C96B8E]'
                     }`}
                   >
                     <span
-                      className="w-3.5 h-3.5 rounded-full border border-white/20"
+                      className="w-3.5 h-3.5 rounded-full border border-white/25"
                       style={{ backgroundColor: seal.hex }}
                     />
                     <span>{seal.name}</span>
@@ -325,7 +325,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
             <div>
               <label
                 htmlFor="suite-quantity"
-                className="block text-xs font-bold uppercase tracking-wider text-[#161013] mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-[#FFF0F5] mb-1.5"
               >
                 Print Run Quantity
               </label>
@@ -333,10 +333,10 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
                 id="suite-quantity"
                 value={qtyId}
                 onChange={(e) => setQtyId(e.target.value)}
-                className="w-full h-11 px-3.5 rounded-xl bg-[#FDF2F5] border border-[#E9C4D1] text-sm font-semibold text-[#161013] cursor-pointer"
+                className="w-full h-11 px-3.5 rounded-xl bg-[#220712] border border-[#6E2440] text-sm font-semibold text-[#FFF0F5] focus:outline-none focus:border-[#FF8FB3] cursor-pointer"
               >
                 {SUITE_QUANTITIES.map((q) => (
-                  <option key={q.id} value={q.id}>
+                  <option key={q.id} value={q.id} className="bg-[#240814] text-[#FFF0F5]">
                     {q.label}
                   </option>
                 ))}
@@ -344,13 +344,13 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
             </div>
           </div>
 
-          <div className="pt-4 border-t border-[#E9C4D1]">
+          <div className="pt-4 border-t border-[#6E2440]">
             <button
               type="button"
               onClick={handleAddToBag}
-              className="w-full inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#161013] hover:bg-[#2B1C22] text-[#FDF2F5] text-sm font-bold cursor-pointer bevel-letterpress transition-transform hover:scale-[1.01]"
+              className="w-full inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-sm font-bold cursor-pointer bevel-letterpress transition-transform hover:scale-[1.01]"
             >
-              <ShoppingBag className="w-4 h-4 text-[#F4C2D2]" />
+              <ShoppingBag className="w-4 h-4 text-[#FFE6EF]" />
               <span>
                 Add Stationery Suite — <span className="tabular-nums">${computedPrice}</span>
               </span>
