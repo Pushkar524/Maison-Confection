@@ -77,28 +77,29 @@ export function HomeView({
       >
         <div className="sticky top-0 w-full h-screen overflow-hidden border-b border-[#6E2440]">
           {/* Full-Viewport 3D WebGL Gift Box Canvas */}
-          <div className="absolute inset-0 pt-16 md:pt-20 w-full h-full">
+          <div className="absolute inset-0 w-full h-full">
             <GiftBox3DCanvas openProgress={smoothOpenProgress} mode="hero-open" />
           </div>
 
-          {/* Bottom Centered Hero Lockup: Scroll-Revealed Single Big Minimal Heading + Compact Small Buttons */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#1B0610] via-[#1B0610]/85 to-transparent pt-20 pb-7 md:pb-10">
+          {/* Bottom Centered Hero Lockup: Scroll-Revealed Keepsakes Title (Cormorant Garamond) + Compact Small Buttons */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#1B0610] via-[#1B0610]/80 to-transparent pt-20 pb-7 md:pb-10">
             <div className="max-w-[1380px] mx-auto px-4 sm:px-8 text-center">
               <div className="pointer-events-auto flex flex-col items-center">
                 <motion.h1
                   style={{ opacity: headingOpacity, y: headingY, textWrap: 'balance' }}
-                  className="font-display text-[48px] sm:text-[74px] md:text-[94px] lg:text-[112px] xl:text-[124px] font-light leading-[0.95] tracking-[-0.025em] text-[#FFF0F5] max-w-[1320px] will-change-[transform,opacity]"
+                  className="font-display text-[56px] sm:text-[78px] md:text-[96px] lg:text-[114px] font-normal leading-[0.94] tracking-[-0.02em] text-[#FFF0F5] max-w-[1320px] will-change-[transform,opacity]"
                 >
-                  Velvet <span className="text-outline-velvet font-normal">Keepsakes</span>
+                  Keepsakes
                 </motion.h1>
 
-                <motion.p
+                <motion.div
                   aria-hidden="true"
                   style={{ opacity: scrollPromptOpacity }}
-                  className="text-xs tracking-[0.12em] text-[#E8B4C6] -mt-4 mb-2 pointer-events-none select-none"
+                  className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.26em] text-[#E8B4C6] -mt-4 mb-2 pointer-events-none select-none"
                 >
-                  Scroll to unbox
-                </motion.p>
+                  <span>Scroll to unbox</span>
+                  <span className="inline-block w-8 h-px bg-[#E8B4C6]/70" />
+                </motion.div>
 
                 <motion.div
                   style={{

@@ -385,6 +385,85 @@ function createDarkVelvetBackdropTexture(): THREE.CanvasTexture {
   return tex;
 }
 
+function createVelvetWordTexture(renderer: THREE.WebGLRenderer) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 2048;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+
+  const paint = () => {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const letters = ['V', 'E', 'L', 'V', 'E', 'T'];
+    ctx.font = '600 288px "Outfit", "DM Sans", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const grad = ctx.createLinearGradient(0, 96, 0, 412);
+    grad.addColorStop(0, 'rgba(255, 242, 247, 0.94)');
+    grad.addColorStop(0.55, 'rgba(246, 212, 226, 0.88)');
+    grad.addColorStop(1, 'rgba(216, 148, 176, 0.46)');
+
+    ctx.save();
+    ctx.fillStyle = grad;
+    ctx.shadowColor = 'rgba(255, 165, 198, 0.16)';
+    ctx.shadowBlur = 18;
+
+    const startX = 190;
+    const endX = 1858;
+    const step = (endX - startX) / (letters.length - 1);
+    for (let i = 0; i < letters.length; i++) {
+      ctx.fillText(letters[i], startX + i * step, 258);
+    }
+    ctx.restore();
+  };
+
+  paint();
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  return { tex, paint };
+}
+
+function createSparkleGlintTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d');
+  if (ctx) {
+    ctx.clearRect(0, 0, 128, 128);
+    const radial = ctx.createRadialGradient(64, 64, 1, 64, 64, 54);
+    radial.addColorStop(0, 'rgba(255, 250, 252, 1)');
+    radial.addColorStop(0.24, 'rgba(255, 186, 214, 0.78)');
+    radial.addColorStop(0.55, 'rgba(232, 79, 130, 0.22)');
+    radial.addColorStop(1, 'rgba(232, 79, 130, 0)');
+    ctx.fillStyle = radial;
+    ctx.fillRect(0, 0, 128, 128);
+
+    // Crisp 4-point star flare
+    ctx.save();
+    ctx.translate(64, 64);
+    const drawRay = (w: number, h: number) => {
+      const g = ctx.createLinearGradient(0, -h, 0, h);
+      g.addColorStop(0, 'rgba(255, 240, 246, 0)');
+      g.addColorStop(0.5, 'rgba(255, 248, 252, 0.96)');
+      g.addColorStop(1, 'rgba(255, 240, 246, 0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, w, h, 0, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    drawRay(3.2, 56);
+    ctx.rotate(Math.PI / 2);
+    drawRay(3.2, 56);
+    ctx.restore();
+  }
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
 function createSatinRibbonStripGeometry(
   curve: THREE.Curve<THREE.Vector3>,
   segments: number,
@@ -1605,6 +1684,279 @@ export function GiftBox3DCanvas({
       });
     });
 
+    // 4. Permanent Mid-Depth 3D "V E L V E T" Backdrop + Foreground Hearts, Satin Ribbons, Petals & Sparkles
+    let velvetWordMesh: THREE.Mesh | null = null;
+    const foregroundAmbienceGroup = new THREE.Group();
+    scene.add(foregroundAmbienceGroup);
+
+    const foregroundFloaters: {
+      obj: THREE.Object3D;
+      basePos: THREE.Vector3;
+      baseRot: THREE.Euler;
+      phase: number;
+      floatAmp: number;
+      swayAmp: number;
+    }[] = [];
+
+    const sparkleItems: {
+      crystal: THREE.Mesh;
+      sprite: THREE.Sprite;
+      basePos: THREE.Vector3;
+      phase: number;
+      speed: number;
+      baseScale: number;
+    }[] = [];
+
+    if (mode === 'hero-open') {
+      const velvetWord = createVelvetWordTexture(renderer);
+      const wordGeo = new THREE.PlaneGeometry(11.2, 2.75);
+      const wordMat = new THREE.MeshBasicMaterial({
+        map: velvetWord.tex,
+        transparent: true,
+        depthWrite: false,
+        fog: true,
+      });
+      velvetWordMesh = new THREE.Mesh(wordGeo, wordMat);
+      velvetWordMesh.position.set(0, 1.05, -2.05);
+      velvetWordMesh.rotation.x = -0.26;
+      velvetWordMesh.renderOrder = -1;
+      const initAspect = (container.clientWidth || 800) / (container.clientHeight || 600);
+      velvetWordMesh.scale.setScalar(THREE.MathUtils.clamp(initAspect / 1.65, 0.48, 1.05));
+      scene.add(velvetWordMesh);
+      disposables.push(velvetWord.tex, wordGeo, wordMat);
+
+      if (document.fonts && typeof document.fonts.ready?.then === 'function') {
+        document.fonts.ready.then(() => {
+          if (!disposed && velvetWordMesh) {
+            velvetWord.paint();
+            velvetWord.tex.needsUpdate = true;
+          }
+        });
+      }
+
+      // Sculpted Foreground Hearts in front of V E L V E T
+      const fgHearts = [
+        {
+          mat: velvetPlumHeartMat,
+          pos: [-3.25, 1.58, 0.55] as [number, number, number],
+          rot: [0.06, 0.34, 0.08] as [number, number, number],
+          scale: 0.56,
+          amp: 0.07,
+        },
+        {
+          mat: rosePearlCrinkleFoilMat,
+          pos: [3.28, 1.72, 0.45] as [number, number, number],
+          rot: [-0.04, -0.32, -0.09] as [number, number, number],
+          scale: 0.52,
+          amp: 0.075,
+        },
+        {
+          mat: velvetBlushHeartMat,
+          pos: [-2.18, 2.42, 0.92] as [number, number, number],
+          rot: [0.05, 0.28, -0.06] as [number, number, number],
+          scale: 0.44,
+          amp: 0.065,
+        },
+        {
+          mat: darkRoseBronzeFoilMat,
+          pos: [2.22, 2.48, 0.85] as [number, number, number],
+          rot: [-0.06, -0.25, 0.08] as [number, number, number],
+          scale: 0.46,
+          amp: 0.06,
+        },
+        {
+          mat: velvetNoirHeartMat,
+          pos: [-3.78, 0.86, 1.38] as [number, number, number],
+          rot: [0.04, 0.42, 0.12] as [number, number, number],
+          scale: 0.48,
+          amp: 0.055,
+        },
+        {
+          mat: rosePearlCrinkleFoilMat,
+          pos: [3.72, 0.94, 1.28] as [number, number, number],
+          rot: [0.06, -0.38, -0.1] as [number, number, number],
+          scale: 0.45,
+          amp: 0.065,
+        },
+      ];
+
+      fgHearts.forEach((cfg, idx) => {
+        const mesh = new THREE.Mesh(pillowHeartGeo, cfg.mat);
+        mesh.scale.setScalar(cfg.scale);
+        mesh.position.set(...cfg.pos);
+        mesh.rotation.set(...cfg.rot);
+        mesh.castShadow = !isSoftwareGl;
+        foregroundAmbienceGroup.add(mesh);
+        foregroundFloaters.push({
+          obj: mesh,
+          basePos: new THREE.Vector3(...cfg.pos),
+          baseRot: new THREE.Euler(...cfg.rot),
+          phase: idx * 1.15,
+          floatAmp: cfg.amp,
+          swayAmp: 0.055,
+        });
+      });
+
+      // Flowing Satin Ribbons in front of V E L V E T
+      const fgRibbonCurveA = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(-0.32, -0.36, 0.08),
+        new THREE.Vector3(-0.08, -0.06, -0.1),
+        new THREE.Vector3(0.14, 0.16, 0.12),
+        new THREE.Vector3(0.36, 0.42, -0.04),
+      ]);
+      const fgRibbonGeoA = createSatinRibbonStripGeometry(
+        fgRibbonCurveA,
+        36,
+        (t) => 0.15 * (0.7 + 0.3 * Math.sin(t * Math.PI)),
+        0.01,
+        Math.PI * 0.85
+      );
+      disposables.push(fgRibbonGeoA);
+
+      const fgRibbons = [
+        {
+          geo: coilGeoA,
+          mat: blushSatinMat,
+          pos: [-2.78, 1.24, 1.12] as [number, number, number],
+          rot: [0.35, 0.4, 0.22] as [number, number, number],
+          scale: 0.62,
+        },
+        {
+          geo: coilGeoB,
+          mat: noirSatinMat,
+          pos: [2.88, 1.18, 1.05] as [number, number, number],
+          rot: [0.42, -0.32, -0.18] as [number, number, number],
+          scale: 0.64,
+        },
+        {
+          geo: fgRibbonGeoA,
+          mat: dustyRoseSatinMat,
+          pos: [-1.45, 2.38, 0.82] as [number, number, number],
+          rot: [0.15, 0.3, -0.25] as [number, number, number],
+          scale: 0.95,
+        },
+        {
+          geo: fgRibbonGeoA,
+          mat: blushSatinMat,
+          pos: [1.56, 2.42, 0.78] as [number, number, number],
+          rot: [-0.12, -0.45, 0.28] as [number, number, number],
+          scale: 0.92,
+        },
+        {
+          geo: coilGeoB,
+          mat: dustyRoseSatinMat,
+          pos: [3.48, 2.18, 1.15] as [number, number, number],
+          rot: [0.28, -0.2, 0.14] as [number, number, number],
+          scale: 0.52,
+        },
+      ];
+
+      fgRibbons.forEach((cfg, idx) => {
+        const mesh = new THREE.Mesh(cfg.geo, cfg.mat);
+        mesh.scale.setScalar(cfg.scale);
+        mesh.position.set(...cfg.pos);
+        mesh.rotation.set(...cfg.rot);
+        foregroundAmbienceGroup.add(mesh);
+        foregroundFloaters.push({
+          obj: mesh,
+          basePos: new THREE.Vector3(...cfg.pos),
+          baseRot: new THREE.Euler(...cfg.rot),
+          phase: idx * 1.35 + 0.4,
+          floatAmp: 0.06,
+          swayAmp: 0.07,
+        });
+      });
+
+      // Floating Rose Petals crossing directly in front of V E L V E T
+      const fgPetals = [
+        { mat: petalLightMat, pos: [-3.95, 2.15, 1.45] as [number, number, number], rot: [0.65, 0.4, 0.3] as [number, number, number], scale: 0.85 },
+        { mat: petalDeepMat, pos: [-2.68, 1.82, 1.65] as [number, number, number], rot: [0.85, -0.35, -0.2] as [number, number, number], scale: 0.78 },
+        { mat: petalLightMat, pos: [-1.72, 1.22, 1.92] as [number, number, number], rot: [0.55, 0.7, 0.18] as [number, number, number], scale: 0.72 },
+        { mat: petalDeepMat, pos: [-0.95, 2.68, 0.75] as [number, number, number], rot: [0.72, -0.2, 0.25] as [number, number, number], scale: 0.74 },
+        { mat: petalLightMat, pos: [1.05, 2.64, 0.82] as [number, number, number], rot: [0.62, 0.25, -0.28] as [number, number, number], scale: 0.76 },
+        { mat: petalDeepMat, pos: [1.84, 1.28, 1.98] as [number, number, number], rot: [0.78, -0.65, 0.15] as [number, number, number], scale: 0.74 },
+        { mat: petalLightMat, pos: [2.74, 1.88, 1.62] as [number, number, number], rot: [0.82, 0.35, 0.22] as [number, number, number], scale: 0.8 },
+        { mat: petalDeepMat, pos: [3.98, 2.12, 1.42] as [number, number, number], rot: [0.6, -0.45, -0.3] as [number, number, number], scale: 0.86 },
+        { mat: petalLightMat, pos: [-3.12, 0.62, 2.25] as [number, number, number], rot: [0.95, 0.22, -0.18] as [number, number, number], scale: 0.78 },
+        { mat: petalDeepMat, pos: [3.18, 0.68, 2.18] as [number, number, number], rot: [0.9, -0.28, 0.2] as [number, number, number], scale: 0.76 },
+      ];
+
+      fgPetals.forEach((cfg, idx) => {
+        const mesh = new THREE.Mesh(petalGeo, cfg.mat);
+        mesh.scale.setScalar(cfg.scale);
+        mesh.position.set(...cfg.pos);
+        mesh.rotation.set(...cfg.rot);
+        foregroundAmbienceGroup.add(mesh);
+        foregroundFloaters.push({
+          obj: mesh,
+          basePos: new THREE.Vector3(...cfg.pos),
+          baseRot: new THREE.Euler(...cfg.rot),
+          phase: idx * 0.85 + 0.9,
+          floatAmp: 0.085,
+          swayAmp: 0.09,
+        });
+      });
+
+      // Sculpted Crystal Sparkles + Glowing Flare Sprites in front of V E L V E T & Velvet Box
+      const sparkleTex = createSparkleGlintTexture();
+      const sparkleGeo = new THREE.OctahedronGeometry(0.048, 0);
+      const sparkleCrystalMat = new THREE.MeshPhysicalMaterial({
+        color: 0xfff0f6,
+        emissive: 0xff8fb3,
+        emissiveIntensity: 0.85,
+        metalness: 0.92,
+        roughness: 0.06,
+      });
+      const sparkleSpriteMat = new THREE.SpriteMaterial({
+        map: sparkleTex,
+        color: 0xffe4ef,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      });
+      disposables.push(sparkleTex, sparkleGeo, sparkleCrystalMat, sparkleSpriteMat);
+
+      const sparkleCoords: [number, number, number][] = [
+        [-3.65, 2.38, 1.15],
+        [-2.92, 1.38, 1.75],
+        [-2.35, 2.02, 1.32],
+        [-1.82, 2.62, 0.95],
+        [-1.38, 1.65, 1.85],
+        [-0.85, 2.32, 1.48],
+        [-0.38, 2.75, 1.18],
+        [0.42, 2.72, 1.12],
+        [0.92, 2.38, 1.44],
+        [1.42, 1.72, 1.82],
+        [1.88, 2.58, 0.92],
+        [2.38, 1.98, 1.38],
+        [2.96, 1.44, 1.72],
+        [3.68, 2.34, 1.12],
+        [-3.42, 0.92, 2.15],
+        [3.44, 0.95, 2.08],
+        [-1.98, 0.88, 2.32],
+        [2.05, 0.84, 2.28],
+      ];
+
+      sparkleCoords.forEach((coord, idx) => {
+        const crystal = new THREE.Mesh(sparkleGeo, sparkleCrystalMat);
+        crystal.position.set(...coord);
+        foregroundAmbienceGroup.add(crystal);
+
+        const sprite = new THREE.Sprite(sparkleSpriteMat);
+        sprite.position.set(...coord);
+        foregroundAmbienceGroup.add(sprite);
+
+        sparkleItems.push({
+          crystal,
+          sprite,
+          basePos: new THREE.Vector3(...coord),
+          phase: idx * 0.92,
+          speed: 1.55 + (idx % 4) * 0.35,
+          baseScale: 0.24 + (idx % 3) * 0.08,
+        });
+      });
+    }
+
     if (!isSoftwareGl) {
       renderer.compile(scene, camera);
     }
@@ -1629,6 +1981,9 @@ export function GiftBox3DCanvas({
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
+      if (velvetWordMesh) {
+        velvetWordMesh.scale.setScalar(THREE.MathUtils.clamp((w / h) / 1.65, 0.48, 1.05));
+      }
     };
     window.addEventListener('resize', onResize);
 
@@ -1648,6 +2003,36 @@ export function GiftBox3DCanvas({
       camera.position.x = pointerX * 0.36;
       camera.position.y = 3.25 - pointerY * 0.2 + smoothOpen * 0.3;
       camera.lookAt(0, 0.58 + smoothOpen * 0.24, 0);
+
+      if (velvetWordMesh) {
+        velvetWordMesh.position.x = -pointerX * 0.18;
+        velvetWordMesh.position.y = 1.05 + pointerY * 0.08 + smoothOpen * 0.14;
+      }
+
+      foregroundAmbienceGroup.position.x = pointerX * 0.14;
+      foregroundAmbienceGroup.position.y = -pointerY * 0.08 + smoothOpen * 0.18;
+
+      for (let i = 0; i < foregroundFloaters.length; i++) {
+        const f = foregroundFloaters[i];
+        const yOff = Math.sin(elapsed * 1.05 + f.phase) * f.floatAmp;
+        const xOff = Math.cos(elapsed * 0.72 + f.phase) * (f.floatAmp * 0.45);
+        f.obj.position.set(f.basePos.x + xOff, f.basePos.y + yOff, f.basePos.z);
+        f.obj.rotation.x = f.baseRot.x + Math.sin(elapsed * 0.8 + f.phase) * f.swayAmp;
+        f.obj.rotation.y = f.baseRot.y + Math.cos(elapsed * 0.7 + f.phase) * f.swayAmp;
+        f.obj.rotation.z = f.baseRot.z + Math.sin(elapsed * 0.65 + f.phase) * (f.swayAmp * 0.6);
+      }
+
+      for (let i = 0; i < sparkleItems.length; i++) {
+        const sp = sparkleItems[i];
+        const pulse = 0.5 + 0.5 * Math.sin(elapsed * sp.speed + sp.phase);
+        const yOff = Math.sin(elapsed * 1.2 + sp.phase) * 0.05;
+        sp.crystal.position.set(sp.basePos.x, sp.basePos.y + yOff, sp.basePos.z);
+        sp.crystal.scale.setScalar(0.55 + pulse * 0.75);
+        sp.crystal.rotation.y = elapsed * 0.4 + sp.phase;
+
+        sp.sprite.position.set(sp.basePos.x, sp.basePos.y + yOff, sp.basePos.z);
+        sp.sprite.scale.setScalar(sp.baseScale * (0.45 + pulse * 0.85));
+      }
 
       const lidPhase = THREE.MathUtils.smoothstep(smoothOpen, 0.0, 0.48);
       lidPivot.rotation.x = -lidPhase * 1.44;

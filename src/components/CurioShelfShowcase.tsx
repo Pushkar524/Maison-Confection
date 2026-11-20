@@ -249,7 +249,7 @@ const SHELF_ITEMS: ShelfItem[] = [
 
 const TAU = Math.PI * 2;
 const SANS = '"DM Sans",-apple-system,BlinkMacSystemFont,sans-serif';
-const SERIF = '"Raleway",-apple-system,BlinkMacSystemFont,sans-serif';
+const SERIF = '"Cormorant Garamond",Georgia,serif';
 const MONO = 'ui-monospace,"SF Mono",Menlo,Monaco,Consolas,monospace';
 
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v);

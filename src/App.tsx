@@ -166,7 +166,7 @@ export default function App() {
         onOpenBag={() => setBagOpen(true)}
       />
 
-      <main className={`relative z-10 flex-1 ${activeScreen !== 'home' ? 'pt-16 md:pt-20' : ''}`}>
+      <main className={`relative z-10 flex-1 ${activeScreen !== 'home' ? 'pt-20 md:pt-24' : ''}`}>
         {activeScreen === 'home' && (
           <HomeView
             favorites={favorites}
