@@ -54,7 +54,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#2E0918',
     image: '/src/assets/images/product_bonbon_coffret_1795102538021.jpg',
     blurb:
-      'Sixteen hand-painted single-origin cacao truffles paired with candied Amalfi lemon in a keepsake silk-rose gift box.',
+      'Sixteen hand-painted cacao truffles with candied lemon in silk-rose.',
   },
   {
     id: 'macaron-parcel',
@@ -75,7 +75,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#C23464',
     image: '/src/assets/images/product_macaron_ribbon_box_1795102538417.jpg',
     blurb:
-      'A pillowy rose linen keepsake cube bound in deep burgundy satin ribbon, cushioned with twelve crisp almond macarons.',
+      'Rose linen cube bound in burgundy satin with twelve almond macarons.',
   },
   {
     id: 'eliza-oliver',
@@ -96,7 +96,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#5E0925',
     image: '/src/assets/images/product_stationery_suite_1795102538035.jpg',
     blurb:
-      'Pressed on antique Heidelberg platens using 600gsm deckle cotton rag, bundled with silk ribbon and wax seals.',
+      'Heidelberg letterpress on 600gsm cotton rag with silk ribbon and wax seals.',
   },
   {
     id: 'aurora-tea',
@@ -117,7 +117,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#280715',
     image: '/src/assets/images/product_curio_tea_tin_1795102538911.jpg',
     blurb:
-      'Embossed apothecary tea caddy filled with chamomile and elderflower oolong alongside single-apiary meadow honey.',
+      'Chamomile elderflower oolong tin paired with raw meadow wildflower honey.',
   },
   {
     id: 'pour-toi',
@@ -138,7 +138,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#820D32',
     image: HERO_IMAGE,
     blurb:
-      'Our signature multi-sensory unboxing ritual: dark-rose silk trunk holding macarons, truffles, and wax-sealed notes.',
+      'Signature silk trunk with macarons, truffles, and wax-sealed stationery.',
   },
   {
     id: 'soiree-menu',
@@ -159,7 +159,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#CF4E7B',
     image: '/src/assets/images/product_stationery_suite_1795102538035.jpg',
     blurb:
-      'Tailored table stationery crafted on rose-tinted cotton stock with scalloped borders and satin ribbon knots.',
+      'Rose cotton menus and place cards with scalloped edges and satin knots.',
   },
   {
     id: 'criollo-reserve',
@@ -180,7 +180,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#320A1A',
     image: '/src/assets/images/product_bonbon_coffret_1795102538021.jpg',
     blurb:
-      'Double-height burgundy clothbound gift box housing twenty-four hand-tempered ganache pralines and candied lemon.',
+      'Double-height burgundy cloth box holding twenty-four ganache pralines.',
   },
   {
     id: 'rosewater-double',
@@ -201,7 +201,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#6E0A2C',
     image: '/src/assets/images/product_macaron_ribbon_box_1795102538417.jpg',
     blurb:
-      'Two stacked tiers of rosewater, pistachio, and blood-orange macarons bound in hand-ironed silk satin.',
+      'Two tiers of rosewater, pistachio, and blood-orange macarons in silk satin.',
   },
   {
     id: 'provence-pantry',
@@ -222,7 +222,7 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#C23464',
     image: '/src/assets/images/product_curio_tea_tin_1795102538911.jpg',
     blurb:
-      'Crystalized English violet petals nestled beside two raw wildflower honey jars and botanical loose-leaf oolong.',
+      'Candied violet petals with two wildflower honey jars and botanical oolong.',
   },
   {
     id: 'atelier-reserve-trunk',
@@ -243,13 +243,13 @@ const SHELF_ITEMS: ShelfItem[] = [
     trimHex: '#2E0918',
     image: HERO_IMAGE,
     blurb:
-      'Our grandest linen archive box combining confections, botanical tea caddy, raw honey, and brass-sealed stationery.',
+      'Grand linen archive box with confections, tea caddy, honey, and stationery.',
   },
 ];
 
 const TAU = Math.PI * 2;
-const SANS = '"DM Sans",-apple-system,BlinkMacSystemFont,sans-serif';
-const SERIF = '"Cormorant Garamond",Georgia,serif';
+const SANS = '"Manrope",-apple-system,BlinkMacSystemFont,sans-serif';
+const SERIF = '"Jost",-apple-system,BlinkMacSystemFont,sans-serif';
 const MONO = 'ui-monospace,"SF Mono",Menlo,Monaco,Consolas,monospace';
 
 const clamp = (v: number, a: number, b: number) => (v < a ? a : v > b ? b : v);
@@ -710,7 +710,7 @@ export function CurioShelfShowcase({
         g.stroke();
       }
 
-      // Top Spec Header: Piece Count & Price Badge
+      // Top Spec Header: Piece Count & Reference Code
       g.fillStyle = accentInk;
       g.font = `700 ${W * 0.026}px ${SANS}`;
       g.textAlign = 'left';
@@ -718,8 +718,8 @@ export function CurioShelfShowcase({
 
       g.textAlign = 'right';
       g.fillStyle = ink;
-      g.globalAlpha = 0.8;
-      trackedText(g, `$${b.price}`, W * 0.915, H * 0.092, W * 0.003, 'right');
+      g.globalAlpha = 0.72;
+      trackedText(g, `REF ${b.code}`, W * 0.915, H * 0.092, W * 0.003, 'right');
       g.globalAlpha = 1;
 
       // Framed Presentation Label Window on Box Lid (art-directed around ribbon paths)
@@ -895,7 +895,7 @@ export function CurioShelfShowcase({
     g.fillText(`Packaged to Order · Keepsake Vessel`, W * 0.21, H * 0.875);
     g.globalAlpha = 1;
 
-    // Studio Batch Label & Price
+    // Studio Batch Seal Barcode
     const bx = W * 0.61;
     const by = H * 0.818;
     const bw = W * 0.29;
@@ -912,13 +912,6 @@ export function CurioShelfShowcase({
     g.font = `400 ${W * 0.017}px ${MONO}`;
     g.textAlign = 'center';
     g.fillText(`VR-BOX-${b.code}`, bx + bw / 2, by + bh * 0.92);
-
-    g.textAlign = 'right';
-    g.fillStyle = ink;
-    g.globalAlpha = 0.85;
-    g.font = `700 ${W * 0.024}px ${SANS}`;
-    g.fillText(`$${b.price}.00`, W * 0.9, H * 0.78);
-    g.globalAlpha = 1;
 
     addGrain(g, W, H, 7, 5);
     return c;
@@ -3203,20 +3196,14 @@ export function CurioShelfShowcase({
         {selectedItem && (
           <div className="max-w-[330px] space-y-4">
             <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#FF8FB3] tabular-nums">
-              {selectedItem.category} · {selectedItem.specTag} · ${selectedItem.price}
+              {selectedItem.category} · {selectedItem.specTag}
             </p>
-            <h3 className="font-serif-editorial text-3xl lg:text-[40px] font-semibold leading-[1.08] text-[#FFF0F5]">
+            <h3 className="font-serif-editorial text-4xl lg:text-[46px] font-light leading-[1.04] tracking-[-0.015em] text-[#FFF0F5]">
               {selectedItem.title}
             </h3>
-            <p className="text-sm lg:text-[15px] leading-relaxed text-[#E8B4C6]">
+            <p className="text-[13px] leading-relaxed text-[#C98DA4]">
               {selectedItem.blurb}
             </p>
-
-            {activeProduct?.craftNotes?.[0] && (
-              <p className="text-xs font-medium text-[#D996AE] border-t border-[#6E2440] pt-3">
-                {activeProduct.craftNotes[0]}
-              </p>
-            )}
 
             <div className="flex flex-wrap items-center gap-2.5 pt-2">
               <button
@@ -3236,7 +3223,7 @@ export function CurioShelfShowcase({
                     className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-xs font-bold bevel-letterpress cursor-pointer transition-transform duration-150 hover:-translate-y-0.5"
                   >
                     <ShoppingBag className="w-3.5 h-3.5 text-[#FFE6EF]" />
-                    <span>Add · ${selectedItem.price}</span>
+                    <span>Add to Bag</span>
                   </button>
 
                   {activeProduct.personalizable && (
@@ -3287,11 +3274,11 @@ export function CurioShelfShowcase({
         <div className="hidden md:flex items-center justify-between pointer-events-none absolute top-4 inset-x-6 z-10 text-xs font-semibold text-[#D996AE]">
           <span>
             {hoveredItem
-              ? `${hoveredItem.title} · $${hoveredItem.price} — Click to unbox & inspect`
-              : 'Hover any gift box or pack to lift · Click to inspect & turn'}
+              ? `${hoveredItem.title} — Click to inspect`
+              : 'Hover to lift · Click to inspect'}
           </span>
           <span className="tabular-nums text-[#FF8FB3] font-bold">
-            10 Curated Gift Boxes & Packs
+            10 Curated Editions
           </span>
         </div>
       )}
@@ -3333,7 +3320,7 @@ export function CurioShelfShowcase({
                       isSelected ? 'text-[#FFE6EF]' : 'text-[#FF8FB3]'
                     }`}
                   >
-                    {item.specTag} · ${item.price}
+                    {item.specTag}
                   </p>
                   <p className="text-xs font-semibold truncate max-w-[116px]">
                     {item.title}
@@ -3350,9 +3337,9 @@ export function CurioShelfShowcase({
         <div className="flex items-center justify-between gap-3 mb-3">
           <div className="min-w-0">
             <p className="text-[11px] font-bold uppercase tracking-wider text-[#FF8FB3] tabular-nums">
-              {mobileItem.specTag} · ${mobileItem.price}
+              {mobileItem.specTag}
             </p>
-            <h3 className="font-serif-editorial text-xl font-semibold text-[#FFF0F5] truncate">
+            <h3 className="font-serif-editorial text-2xl font-light text-[#FFF0F5] truncate">
               {mobileItem.title}
             </h3>
           </div>
@@ -3408,7 +3395,7 @@ export function CurioShelfShowcase({
               onClick={() => onQuickAdd(productMap.get(mobileItem.productId)!)}
               className="flex-1 py-2.5 px-3 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] text-[#FFF4F8] border border-[#FF9BBE]/35 text-xs font-bold cursor-pointer"
             >
-              Add · ${mobileItem.price}
+              Add to Bag
             </button>
           )}
         </div>

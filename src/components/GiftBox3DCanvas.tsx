@@ -396,7 +396,7 @@ function createVelvetWordTexture(renderer: THREE.WebGLRenderer) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const letters = ['V', 'E', 'L', 'V', 'E', 'T'];
-    ctx.font = '600 288px "Outfit", "DM Sans", sans-serif';
+    ctx.font = '500 284px "Jost", "Manrope", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 

@@ -81,13 +81,13 @@ export function HomeView({
             <GiftBox3DCanvas openProgress={smoothOpenProgress} mode="hero-open" />
           </div>
 
-          {/* Bottom Centered Hero Lockup: Scroll-Revealed Keepsakes Title (Cormorant Garamond) + Compact Small Buttons */}
+          {/* Bottom Centered Hero Lockup: Scroll-Revealed Keepsakes Title (Jost) + Compact Small Buttons */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#1B0610] via-[#1B0610]/80 to-transparent pt-20 pb-7 md:pb-10">
             <div className="max-w-[1380px] mx-auto px-4 sm:px-8 text-center">
               <div className="pointer-events-auto flex flex-col items-center">
                 <motion.h1
                   style={{ opacity: headingOpacity, y: headingY, textWrap: 'balance' }}
-                  className="font-display text-[56px] sm:text-[78px] md:text-[96px] lg:text-[114px] font-normal leading-[0.94] tracking-[-0.02em] text-[#FFF0F5] max-w-[1320px] will-change-[transform,opacity]"
+                  className="font-display text-[56px] sm:text-[78px] md:text-[96px] lg:text-[114px] font-light leading-[0.94] tracking-[-0.02em] text-[#FFF0F5] max-w-[1320px] will-change-[transform,opacity]"
                 >
                   Keepsakes
                 </motion.h1>
@@ -147,11 +147,11 @@ export function HomeView({
       >
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#FF8FB3] mb-2">
+            <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FF8FB3] mb-2">
               Seasonal Editions
             </p>
-            <h2 className="font-serif-editorial text-3xl md:text-[38px] font-semibold text-[#FFF0F5] leading-tight">
-              Curated Gift Boxes & Paper Packs
+            <h2 className="font-display text-4xl sm:text-5xl lg:text-[54px] font-light tracking-[-0.02em] text-[#FFF0F5] leading-[1.04]">
+              Curated Boxes & Paper
             </h2>
           </div>
 
@@ -169,7 +169,7 @@ export function HomeView({
                   aria-selected={selected}
                   type="button"
                   onClick={() => setActiveCategory(category)}
-                  className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap shrink-0 cursor-pointer transition-all duration-150 ${
+                  className={`px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap shrink-0 cursor-pointer transition-all duration-150 ${
                     selected
                       ? 'bg-gradient-to-r from-[#FCE4EC] to-[#F5B8CD] text-[#240814] shadow-atelier-rest'
                       : 'text-[#E3AFC3] hover:text-[#FFF0F5]'
@@ -193,9 +193,9 @@ export function HomeView({
           <button
             type="button"
             onClick={() => onNavigate('collections')}
-            className="inline-flex items-center gap-2 text-sm font-bold text-[#FCE7EF] hover:text-[#FF8FB3] border-b border-[#E84F82] pb-1 cursor-pointer transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-[#FCE7EF] hover:text-[#FF8FB3] border-b border-[#E84F82] pb-1 cursor-pointer transition-colors"
           >
-            <span>Browse Full Collection Catalog & Specifications</span>
+            <span>Browse Full Catalog</span>
             <ArrowRight className="w-4 h-4 text-[#FF8FB3]" />
           </button>
         </div>
@@ -208,75 +208,72 @@ export function HomeView({
             {/* Craftsmanship Pillars */}
             <div className="lg:col-span-7 space-y-8">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#FF8FB3] mb-2">
+                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FF8FB3] mb-2">
                   The Unboxing Ritual
                 </p>
                 <h2
-                  className="font-serif-editorial text-3xl md:text-[36px] font-semibold text-[#FFF0F5] leading-tight"
+                  className="font-display text-4xl sm:text-5xl lg:text-[52px] font-light tracking-[-0.02em] text-[#FFF0F5] leading-[1.04]"
                   style={{ textWrap: 'balance' }}
                 >
-                  Three tactile signatures in every parcel.
+                  Tactile Signatures
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#611736] to-[#3B0D20] border border-[#9E3B5E] flex items-center justify-center text-[#FF8FB3]">
                     <Package className="w-5 h-5" />
                   </div>
-                  <h3 className="font-serif-editorial text-xl font-semibold text-[#FFF0F5]">
+                  <h3 className="font-display text-xl font-normal text-[#FFF0F5]">
                     Cushioned Vessels
                   </h3>
-                  <p className="text-sm text-[#E8B4C6] leading-relaxed">
-                    Deep rose-pink Belgian linen boxes lined in pleated silk, built to outlast the
-                    confections inside.
+                  <p className="text-[13px] text-[#C98DA4] leading-relaxed">
+                    Rose Belgian linen wrapped over pleated silk.
                   </p>
                 </div>
 
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#611736] to-[#3B0D20] border border-[#9E3B5E] flex items-center justify-center text-[#FF8FB3]">
                     <BookOpen className="w-5 h-5" />
                   </div>
-                  <h3 className="font-serif-editorial text-xl font-semibold text-[#FFF0F5]">
+                  <h3 className="font-display text-xl font-normal text-[#FFF0F5]">
                     Letterpress Cotton
                   </h3>
-                  <p className="text-sm text-[#E8B4C6] leading-relaxed">
-                    600gsm deckle-edge rag cards debossed on heritage presses with crimson or
-                    champagne foil monograms.
+                  <p className="text-[13px] text-[#C98DA4] leading-relaxed">
+                    600gsm deckle rag pressed with foil crests.
                   </p>
                 </div>
 
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#611736] to-[#3B0D20] border border-[#9E3B5E] flex items-center justify-center text-[#FF8FB3]">
                     <Ribbon className="w-5 h-5" />
                   </div>
-                  <h3 className="font-serif-editorial text-xl font-semibold text-[#FFF0F5]">
+                  <h3 className="font-display text-xl font-normal text-[#FFF0F5]">
                     Silk Ribbon & Wax
                   </h3>
-                  <p className="text-sm text-[#E8B4C6] leading-relaxed">
-                    Hand-tied satin ribbons and botanical brass wax impressions poured individually
-                    to order.
+                  <p className="text-[13px] text-[#C98DA4] leading-relaxed">
+                    Hand-tied satin and poured brass wax seals.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Adjacent Attributable Client Proof */}
-            <div className="lg:col-span-5 flex flex-col justify-between gap-5">
+            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
               {CLIENT_STORIES.map((story) => (
                 <blockquote
                   key={story.author}
-                  className="bg-gradient-to-br from-[#390D1F] to-[#260815] border border-[#7D2B4B] rounded-2xl p-6"
+                  className="bg-gradient-to-br from-[#390D1F] to-[#260815] border border-[#7D2B4B] rounded-2xl p-5"
                 >
-                  <p className="text-sm md:text-[15px] text-[#FCE7EF] leading-relaxed">
+                  <p className="text-[13px] text-[#E8B4C6] leading-relaxed">
                     “{story.quote}”
                   </p>
-                  <footer className="mt-4 pt-3 border-t border-[#6E2440] flex items-center justify-between gap-3 text-xs">
+                  <footer className="mt-3 pt-3 border-t border-[#6E2440] flex items-center justify-between gap-3 text-xs">
                     <div>
-                      <span className="font-bold text-[#FFF0F5] block">{story.author}</span>
-                      <span className="text-[#D996AE]">{story.role}</span>
+                      <span className="font-medium text-[#FFF0F5] block">{story.author}</span>
+                      <span className="text-[#B67A91]">{story.role}</span>
                     </div>
-                    <span className="font-semibold text-[#FF8FB3] whitespace-nowrap">
+                    <span className="font-medium text-[#FF8FB3] whitespace-nowrap">
                       {story.detail}
                     </span>
                   </footer>

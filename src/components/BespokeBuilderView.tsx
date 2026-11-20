@@ -103,12 +103,11 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
         <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#FF8FB3] mb-2">
           Interactive Studio Configurator
         </p>
-        <h1 className="font-serif-editorial text-4xl md:text-[46px] font-semibold text-[#FFF0F5] leading-tight">
+        <h1 className="font-serif-editorial text-4xl sm:text-5xl lg:text-[56px] font-light tracking-[-0.02em] text-[#FFF0F5] leading-[1.06]">
           Compose a Custom Gift Box
         </h1>
-        <p className="mt-2 text-base text-[#E8B4C6] max-w-2xl">
-          Select a cushioned linen vessel, fill it with daily confections and pantry treats, tie
-          with satin ribbon, and seal a custom letterpress card.
+        <p className="mt-3 text-sm text-[#C98DA4] max-w-lg">
+          Pick a linen vessel, fill with daily confections, and finish with satin ribbon and wax.
         </p>
       </div>
 
@@ -158,11 +157,11 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
           {step === 0 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
-                  01. Choose Your Cushioned Vessel
+                <h2 className="font-serif-editorial text-3xl sm:text-[34px] font-light tracking-[-0.01em] text-[#FFF0F5]">
+                  01. Cushioned Vessel
                 </h2>
-                <p className="text-sm text-[#E8B4C6] mt-1">
-                  Each keepsake box is wrapped in archival cloth and lined with pressed satin.
+                <p className="text-[13px] text-[#C98DA4] mt-1.5">
+                  Archival cloth box lined with pressed satin.
                 </p>
               </div>
 
@@ -191,8 +190,8 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
                             style={{ backgroundColor: vessel.liningHex }}
                           />
                         </div>
-                        <span className="text-sm font-bold text-[#FF8FB3] tabular-nums">
-                          ${vessel.price}
+                        <span className="text-xs font-semibold text-[#D996AE] tabular-nums">
+                          Up to {vessel.capacity}
                         </span>
                       </div>
 
@@ -215,12 +214,11 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h2 className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
-                    02. Select Confections & Treats
+                  <h2 className="font-serif-editorial text-3xl sm:text-[34px] font-light tracking-[-0.01em] text-[#FFF0F5]">
+                    02. Confections & Treats
                   </h2>
-                  <p className="text-sm text-[#E8B4C6] mt-1">
-                    Select up to {selectedVessel.capacity} treats to nest inside your{' '}
-                    {selectedVessel.name}.
+                  <p className="text-[13px] text-[#C98DA4] mt-1.5">
+                    Select up to {selectedVessel.capacity} treats for your {selectedVessel.name}.
                   </p>
                 </div>
                 <div className="px-4 py-2 rounded-full bg-[#240814] border border-[#7D2B4B] text-xs font-bold text-[#FF8FB3] tabular-nums whitespace-nowrap self-start">
@@ -259,10 +257,7 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between sm:justify-end gap-4 shrink-0">
-                        <span className="text-sm font-bold text-[#FF8FB3] tabular-nums">
-                          ${addon.price}
-                        </span>
+                      <div className="flex items-center justify-end gap-4 shrink-0">
                         <div className="inline-flex items-center gap-2 p-1 rounded-full bg-[#240814] border border-[#6E2440]">
                           <button
                             type="button"
@@ -298,11 +293,11 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
           {step === 2 && (
             <div className="space-y-8">
               <div>
-                <h2 className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
-                  03. Satin Ribbon & Sealing Wax
+                <h2 className="font-serif-editorial text-3xl sm:text-[34px] font-light tracking-[-0.01em] text-[#FFF0F5]">
+                  03. Satin Ribbon & Wax Seal
                 </h2>
-                <p className="text-sm text-[#E8B4C6] mt-1">
-                  Every box is hand-tied in double-faced silk ribbon and stamped with warm wax.
+                <p className="text-[13px] text-[#C98DA4] mt-1.5">
+                  Hand-tied silk ribbon with a brass-stamped seal.
                 </p>
               </div>
 
@@ -377,11 +372,11 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
           {step === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
-                  04. Letterpress Card & Foil Monogram
+                <h2 className="font-serif-editorial text-3xl sm:text-[34px] font-light tracking-[-0.01em] text-[#FFF0F5]">
+                  04. Letterpress Card & Monogram
                 </h2>
-                <p className="text-sm text-[#E8B4C6] mt-1">
-                  Personalize your 600gsm cotton-rag enclosure card. Watch your proof update live.
+                <p className="text-[13px] text-[#C98DA4] mt-1.5">
+                  Customize your 600gsm cotton enclosure card.
                 </p>
               </div>
 
@@ -481,9 +476,7 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
                 className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-sm font-bold cursor-pointer bevel-letterpress disabled:opacity-50"
               >
                 <ShoppingBag className="w-4 h-4 text-[#FFE6EF]" />
-                <span>
-                  Add Custom Box — <span className="tabular-nums">${totalPrice}</span>
-                </span>
+                <span>Add Custom Box</span>
               </button>
             )}
           </div>
@@ -492,10 +485,12 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
         {/* Right Sticky Live Box Proof */}
         <aside className="lg:col-span-5 lg:sticky lg:top-28 bg-gradient-to-b from-[#340D1E] to-[#260814] border border-[#6E2440] rounded-3xl p-6 sm:p-8 space-y-6 shadow-atelier-rest">
           <div className="flex items-center justify-between gap-3">
-            <h2 className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
+            <h2 className="font-serif-editorial text-3xl font-light tracking-[-0.01em] text-[#FFF0F5]">
               Live Box Proof
             </h2>
-            <span className="text-xl font-bold text-[#FF8FB3] tabular-nums">${totalPrice}</span>
+            <span className="text-xs font-semibold text-[#FF8FB3] tabular-nums">
+              {totalCurioCount} / {selectedVessel.capacity} treats
+            </span>
           </div>
 
           {/* Interactive Tactile Box & Scalloped Card Visual */}
@@ -536,12 +531,12 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
           <div className="bg-[#240814] border border-[#6E2440] rounded-2xl p-5 space-y-3 text-sm">
             <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-[#6E2440]">
               <span className="text-[#E8B4C6]">{selectedVessel.name}</span>
-              <span className="font-bold text-[#FFF0F5] tabular-nums">${selectedVessel.price}</span>
+              <span className="text-xs font-medium text-[#C98DA4]">{selectedVessel.capacity} treats max</span>
             </div>
 
             {selectedCurios.length === 0 ? (
               <p className="text-xs text-[#FF8FB3] py-2">
-                Select at least 1 confection or treat in Step 02 to complete your box.
+                Select at least 1 confection or treat in Step 02.
               </p>
             ) : (
               <ul className="space-y-2">
@@ -550,8 +545,8 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
                     <span className="text-[#FCE7EF] truncate">
                       <strong className="tabular-nums">{c.count}×</strong> {c.name}
                     </span>
-                    <span className="font-semibold text-[#FFF0F5] tabular-nums">
-                      ${c.price * c.count}
+                    <span className="text-xs text-[#C98DA4] shrink-0">
+                      {c.weightOrCount}
                     </span>
                   </li>
                 ))}
@@ -574,9 +569,7 @@ export function BespokeBuilderView({ onAddCustomBox }: BespokeBuilderViewProps) 
             className="w-full inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-sm font-bold cursor-pointer bevel-letterpress disabled:opacity-50 transition-transform hover:scale-[1.01]"
           >
             <ShoppingBag className="w-4 h-4 text-[#FFE6EF]" />
-            <span>
-              Add Custom Box to Bag — <span className="tabular-nums">${totalPrice}</span>
-            </span>
+            <span>Add Custom Box to Bag</span>
           </button>
         </aside>
       </div>

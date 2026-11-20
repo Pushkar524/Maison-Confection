@@ -22,7 +22,7 @@
     background-image: linear-gradient(155deg, #270917 0%, #1d0711 48%, #350d1e 100%);
     background-attachment: fixed;
     color: var(--ink-noir);
-    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     scroll-behavior: smooth;
   }
@@ -38,7 +38,7 @@
   h3,
   .font-serif-editorial,
   .font-display {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: 'Jost', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 }
 

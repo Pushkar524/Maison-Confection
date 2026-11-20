@@ -77,12 +77,11 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
         <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#FF8FB3] mb-2">
           Heidelberg Letterpress & Paper Studio
         </p>
-        <h1 className="font-serif-editorial text-4xl md:text-[46px] font-semibold text-[#FFF0F5] leading-tight">
+        <h1 className="font-serif-editorial text-4xl sm:text-5xl lg:text-[56px] font-light tracking-[-0.02em] text-[#FFF0F5] leading-[1.06]">
           Custom Event Stationery Studio
         </h1>
-        <p className="mt-2 text-base text-[#E8B4C6] max-w-2xl">
-          Preview your wedding invitation, candlelit menu, or milestone card pressed onto 600gsm
-          deckle-edge cotton rag with silk ribbon and hand-poured wax.
+        <p className="mt-3 text-sm text-[#C98DA4] max-w-lg">
+          Letterpress suites on 600gsm cotton rag with satin ribbon and wax.
         </p>
       </div>
 
@@ -181,8 +180,8 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
 
         {/* Right: Typesetting & Order Controls */}
         <div className="lg:col-span-5 bg-gradient-to-b from-[#3A0F22] via-[#2F0B1B] to-[#250815] border border-[#6E2440] rounded-3xl p-6 sm:p-8 bevel-card space-y-5">
-          <h2 className="font-serif-editorial text-2xl font-semibold text-[#FFF0F5]">
-            Customize Suite Wording & Finish
+          <h2 className="font-serif-editorial text-3xl font-light tracking-[-0.01em] text-[#FFF0F5]">
+            Suite Wording & Finish
           </h2>
 
           <div className="space-y-4">
@@ -351,9 +350,7 @@ export function StationeryStudioView({ onAddSuite }: StationeryStudioViewProps) 
               className="w-full inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] border border-[#FF9BBE]/35 text-sm font-bold cursor-pointer bevel-letterpress transition-transform hover:scale-[1.01]"
             >
               <ShoppingBag className="w-4 h-4 text-[#FFE6EF]" />
-              <span>
-                Add Stationery Suite — <span className="tabular-nums">${computedPrice}</span>
-              </span>
+              <span>Add Stationery Suite</span>
             </button>
           </div>
         </div>

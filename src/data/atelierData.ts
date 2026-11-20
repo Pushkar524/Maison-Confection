@@ -327,16 +327,16 @@ export const STATIONERY_TEMPLATES: StationerySuiteTemplate[] = [
 export const CLIENT_STORIES = [
   {
     quote:
-      'Every guest kept their scalloped place card and crimson-ribbon rose box long after dessert. The blind-debossed cotton paper felt unmistakably personal.',
+      'Every guest kept their scalloped place card and crimson-ribbon box long after dessert.',
     author: 'Claire Whitaker',
-    role: 'Creative Director · Whitaker Events, London',
-    detail: '120 Custom Welcome Boxes',
+    role: 'Whitaker Events, London',
+    detail: '120 Welcome Boxes',
   },
   {
     quote:
-      'Our anniversary clients received the For You trunk with obsidian wax seals within 48 hours. Three wrote back just to praise the unboxing ritual.',
+      'Our anniversary trunks arrived sealed in wax within 48 hours and drew instant praise.',
     author: 'Julian Mercer',
-    role: 'Partner · Mercer & Vale Hospitality',
-    detail: '45 Bespoke Gift Trunks',
+    role: 'Mercer & Vale Hospitality',
+    detail: '45 Gift Trunks',
   },
 ];

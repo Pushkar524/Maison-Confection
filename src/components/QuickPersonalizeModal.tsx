@@ -55,7 +55,7 @@ export function QuickPersonalizeModal({
             <PenTool className="w-4 h-4 text-[#FF8FB3]" />
             <h2
               id="quick-personalize-heading"
-              className="font-serif-editorial text-xl sm:text-2xl font-semibold text-[#FFF0F5]"
+              className="font-serif-editorial text-2xl sm:text-[28px] font-light tracking-[-0.01em] text-[#FFF0F5]"
             >
               Personalize {product.title}
             </h2>
@@ -164,9 +164,9 @@ export function QuickPersonalizeModal({
             </button>
             <button
               type="submit"
-              className="px-7 py-3 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] text-sm font-bold cursor-pointer border border-[#FF9BBE]/35 bevel-letterpress transition-transform hover:scale-[1.02]"
+              className="px-7 py-3 rounded-full bg-gradient-to-r from-[#E84F82] to-[#B81D52] hover:from-[#F26694] hover:to-[#C9235B] text-[#FFF4F8] text-sm font-medium cursor-pointer border border-[#FF9BBE]/35 bevel-letterpress transition-transform hover:scale-[1.02]"
             >
-              Save & Add to Bag — <span className="tabular-nums">${product.price}</span>
+              Save & Add to Bag
             </button>
           </div>
         </form>
