@@ -4,18 +4,33 @@
  */
 
 import { Check } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { AmbientPetalsHeartsBackdrop } from './components/AmbientPetalsHeartsBackdrop';
-import { BespokeBuilderView } from './components/BespokeBuilderView';
-import { CatalogView } from './components/CatalogView';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Footer } from './components/Footer';
-import { GiftBagDrawer } from './components/GiftBagDrawer';
 import { Header } from './components/Header';
 import { HomeView } from './components/HomeView';
-import { QuickPersonalizeModal } from './components/QuickPersonalizeModal';
-import { StationeryStudioView } from './components/StationeryStudioView';
 import { ATELIER_PRODUCTS } from './data/atelierData';
 import { AtelierProduct, GiftBagItem, ScreenView } from './types/atelier';
+
+const AmbientPetalsHeartsBackdrop = lazy(() =>
+  import('./components/AmbientPetalsHeartsBackdrop').then((m) => ({
+    default: m.AmbientPetalsHeartsBackdrop,
+  }))
+);
+const BespokeBuilderView = lazy(() =>
+  import('./components/BespokeBuilderView').then((m) => ({ default: m.BespokeBuilderView }))
+);
+const CatalogView = lazy(() =>
+  import('./components/CatalogView').then((m) => ({ default: m.CatalogView }))
+);
+const GiftBagDrawer = lazy(() =>
+  import('./components/GiftBagDrawer').then((m) => ({ default: m.GiftBagDrawer }))
+);
+const QuickPersonalizeModal = lazy(() =>
+  import('./components/QuickPersonalizeModal').then((m) => ({ default: m.QuickPersonalizeModal }))
+);
+const StationeryStudioView = lazy(() =>
+  import('./components/StationeryStudioView').then((m) => ({ default: m.StationeryStudioView }))
+);
 
 const STORAGE_BAG_KEY = 'maison-confection-bag-v1';
 const STORAGE_FAV_KEY = 'maison-confection-fav-v1';
@@ -26,6 +41,17 @@ export default function App() {
   const [personalizeTarget, setPersonalizeTarget] = useState<AtelierProduct | null>(null);
   const [bagOpen, setBagOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [showAmbientBackdrop, setShowAmbientBackdrop] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 768 : false
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const sync = () => setShowAmbientBackdrop(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
 
   const [favorites, setFavorites] = useState<string[]>(() => {
     try {
@@ -157,7 +183,11 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-gradient-to-br from-[#270917] via-[#1D0711] to-[#350D1E] text-[#FCE7EF]">
-      <AmbientPetalsHeartsBackdrop />
+      {showAmbientBackdrop && (
+        <Suspense fallback={null}>
+          <AmbientPetalsHeartsBackdrop />
+        </Suspense>
+      )}
 
       <Header
         activeScreen={activeScreen}
@@ -178,58 +208,76 @@ export default function App() {
           />
         )}
 
-        {activeScreen === 'collections' && (
-          <CatalogView
-            selectedProduct={selectedProduct}
-            onSelectProduct={handleSelectProduct}
-            favorites={favorites}
-            onToggleFavorite={handleToggleFavorite}
-            onQuickPersonalize={setPersonalizeTarget}
-            onQuickAdd={handleQuickAdd}
-            onAddConfiguredItem={handleAddConfiguredItem}
-          />
-        )}
+        <Suspense
+          fallback={
+            activeScreen !== 'home' ? (
+              <div className="min-h-[60vh] flex items-center justify-center text-xs uppercase tracking-[0.2em] text-[#C98DA4]">
+                Loading atelier…
+              </div>
+            ) : null
+          }
+        >
+          {activeScreen === 'collections' && (
+            <CatalogView
+              selectedProduct={selectedProduct}
+              onSelectProduct={handleSelectProduct}
+              favorites={favorites}
+              onToggleFavorite={handleToggleFavorite}
+              onQuickPersonalize={setPersonalizeTarget}
+              onQuickAdd={handleQuickAdd}
+              onAddConfiguredItem={handleAddConfiguredItem}
+            />
+          )}
 
-        {activeScreen === 'bespoke-box' && (
-          <BespokeBuilderView
-            onAddCustomBox={(item) => {
-              handleAddConfiguredItem(item);
-              setBagOpen(true);
-            }}
-          />
-        )}
+          {activeScreen === 'bespoke-box' && (
+            <BespokeBuilderView
+              onAddCustomBox={(item) => {
+                handleAddConfiguredItem(item);
+                setBagOpen(true);
+              }}
+            />
+          )}
 
-        {activeScreen === 'stationery' && (
-          <StationeryStudioView
-            onAddSuite={(item) => {
-              handleAddConfiguredItem(item);
-              setBagOpen(true);
-            }}
-          />
-        )}
+          {activeScreen === 'stationery' && (
+            <StationeryStudioView
+              onAddSuite={(item) => {
+                handleAddConfiguredItem(item);
+                setBagOpen(true);
+              }}
+            />
+          )}
+        </Suspense>
       </main>
 
       <div className="relative z-10 mt-20 md:mt-24">
         <Footer onNavigate={handleNavigate} />
       </div>
 
-      <QuickPersonalizeModal
-        product={personalizeTarget}
-        onClose={() => setPersonalizeTarget(null)}
-        onConfirm={(item) => {
-          handleAddConfiguredItem(item);
-          setBagOpen(true);
-        }}
-      />
+      {personalizeTarget && (
+        <Suspense fallback={null}>
+          <QuickPersonalizeModal
+            product={personalizeTarget}
+            onClose={() => setPersonalizeTarget(null)}
+            onConfirm={(item) => {
+              handleAddConfiguredItem(item);
+              setBagOpen(true);
+            }}
+          />
+        </Suspense>
+      )}
 
-      <GiftBagDrawer
-        isOpen={bagOpen}
-        onClose={() => setBagOpen(false)}
-        items={bagItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onClearBag={() => setBagItems([])}
-      />
+      {bagOpen && (
+        <Suspense fallback={null}>
+          <GiftBagDrawer
+            isOpen={bagOpen}
+            onClose={() => setBagOpen(false)}
+            items={bagItems}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemoveItem={handleRemoveItem}
+            onClearBag={() => setBagItems([])}
+          />
+        </Suspense>
+      )}
 
       {/* Celebratory Confirmation Toast */}
       {toastMessage && (

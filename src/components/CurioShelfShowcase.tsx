@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { ATELIER_PRODUCTS, HERO_IMAGE } from '../data/atelierData';
 import { AtelierProduct, ProductCategory } from '../types/atelier';
+import { getOptimalPixelRatio, isSoftwareWebGL } from '../utils/graphicsPerf';
 
 interface CurioShelfShowcaseProps {
   activeCategory: ProductCategory;
@@ -376,21 +377,6 @@ function isLightColor(hex: string) {
   return (r * 0.299 + g * 0.587 + b * 0.114) / 255 > 0.54;
 }
 
-function detectSoftwareWebGL(): boolean {
-  try {
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-    if (!gl) return true;
-    const ext = gl.getExtension('WEBGL_debug_renderer_info');
-    const param = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
-    const gpu = String(gl.getParameter(param) || '');
-    gl.getExtension('WEBGL_lose_context')?.loseContext();
-    return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
-  } catch {
-    return true;
-  }
-}
-
 /* ---- Procedural Torn-Paper Mask Helpers ---- */
 function hash1(i: number) {
   const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
@@ -592,7 +578,7 @@ export function CurioShelfShowcase({
     const washEl = washRef.current;
     if (!stageEl || !canvas || !washEl) return;
 
-    const isSoftwareGl = detectSoftwareWebGL();
+    const isSoftwareGl = isSoftwareWebGL();
     const disposables: { dispose: () => void }[] = [];
 
     // Box & Pack Boutique Dimensions (wider, chunkier coffret & parcel proportions — NOT books)
@@ -654,9 +640,13 @@ export function CurioShelfShowcase({
     let MOBILE = MOBILE_Q.matches;
 
     let stageVisible = true;
+    let wakeLoop = () => {};
     const io = new IntersectionObserver(
       ([entry]) => {
         stageVisible = entry?.isIntersecting ?? true;
+        if (stageVisible && !document.hidden) {
+          wakeLoop();
+        }
       },
       { rootMargin: '180px' }
     );
@@ -1149,11 +1139,11 @@ export function CurioShelfShowcase({
     /* ---- Renderer & Scene ---- */
     const renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: !isSoftwareGl,
+      antialias: !isSoftwareGl && !MOBILE,
       alpha: false,
       powerPreference: 'high-performance',
     });
-    renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(getOptimalPixelRatio(isSoftwareGl, MOBILE, 1.75, 1.25));
     renderer.setClearColor(0x220813, 1);
     renderer.toneMapping = THREE.NoToneMapping;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -2099,27 +2089,31 @@ export function CurioShelfShowcase({
       gTilt.add(gScl);
       scene.add(gRoot);
 
-      const coverCanvas = paintBoxLid(data, 512, 608);
+      const texW = MOBILE ? 256 : 512;
+      const texH = MOBILE ? 304 : 608;
+      const texAniso = MOBILE ? 2 : 6;
+
+      const coverCanvas = paintBoxLid(data, texW, texH);
       const coverTex = new THREE.CanvasTexture(coverCanvas);
       coverTex.colorSpace = THREE.SRGBColorSpace;
-      coverTex.anisotropy = 8;
+      coverTex.anisotropy = texAniso;
 
-      const backCanvas = makeCanvas(512, 608);
+      const backCanvas = makeCanvas(texW, texH);
       const backTex = new THREE.CanvasTexture(backCanvas);
       backTex.colorSpace = THREE.SRGBColorSpace;
-      backTex.anisotropy = 8;
+      backTex.anisotropy = texAniso;
 
       let backReady = false;
       const loadBack = () => {
         if (backReady) return;
         backReady = true;
-        const c = paintBoxUnderside(data, 512, 608);
+        const c = paintBoxUnderside(data, texW, texH);
         backTex.image = c;
         backTex.needsUpdate = true;
       };
 
       const refreshCover = () => {
-        const c = paintBoxLid(data, 512, 608);
+        const c = paintBoxLid(data, texW, texH);
         coverTex.image = c;
         coverTex.needsUpdate = true;
         if (backReady) {
@@ -2463,12 +2457,12 @@ export function CurioShelfShowcase({
     }
 
     const rt = new THREE.WebGLRenderTarget(2, 2, {
-      type: renderer.capabilities.isWebGL2 ? THREE.HalfFloatType : THREE.UnsignedByteType,
+      type: !MOBILE && renderer.capabilities.isWebGL2 ? THREE.HalfFloatType : THREE.UnsignedByteType,
       minFilter: THREE.LinearFilter,
       magFilter: THREE.LinearFilter,
       depthBuffer: true,
       stencilBuffer: false,
-      samples: isSoftwareGl || !renderer.capabilities.isWebGL2 ? 0 : 4,
+      samples: isSoftwareGl || MOBILE || !renderer.capabilities.isWebGL2 ? 0 : 4,
     });
     disposables.push(rt);
 
@@ -2496,7 +2490,7 @@ export function CurioShelfShowcase({
         noiseScale: { value: 6 },
         intensity: { value: 0 },
         ignoreBlur: { value: true },
-        samples: { value: isSoftwareGl ? 12 : 28 },
+        samples: { value: isSoftwareGl || MOBILE ? 10 : 28 },
         resolution: { value: new THREE.Vector2(1, 1) },
       },
       vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }`,
@@ -2951,10 +2945,14 @@ export function CurioShelfShowcase({
       if (!stageEl) return;
       VW = Math.max(1, stageEl.clientWidth);
       VH = Math.max(1, stageEl.clientHeight);
+      const pr = getOptimalPixelRatio(isSoftwareGl, MOBILE, 1.75, 1.25);
+      renderer.setPixelRatio(pr);
       renderer.setSize(VW, VH, false);
-      const pr = renderer.getPixelRatio();
-      rt.setSize(Math.round(VW * pr), Math.round(VH * pr));
-      passMat.uniforms.resolution.value.set(VW * pr, VH * pr);
+      const rtScale = MOBILE ? 0.5 : 1;
+      const rtW = Math.max(1, Math.round(VW * pr * rtScale));
+      const rtH = Math.max(1, Math.round(VH * pr * rtScale));
+      rt.setSize(rtW, rtH);
+      passMat.uniforms.resolution.value.set(rtW, rtH);
       frameCamera();
       washResize();
     }
@@ -3114,32 +3112,33 @@ export function CurioShelfShowcase({
       const act =
         S.anim === 'animatingForward' || S.anim === 'active' || S.anim === 'animatingBackward';
 
-      camera.layers.set(LAY_BG);
-      renderer.setRenderTarget(rt);
-      renderer.clear(true, true, false);
-      renderer.render(scene, camera);
-      renderer.setRenderTarget(null);
+      if (!act) {
+        camera.layers.set(LAY_BG);
+        renderer.clear(true, true, false);
+        renderer.render(scene, camera);
+      } else {
+        camera.layers.set(LAY_BG);
+        renderer.setRenderTarget(rt);
+        renderer.clear(true, true, false);
+        renderer.render(scene, camera);
+        renderer.setRenderTarget(null);
 
-      passMat.uniforms.ignoreBlur.value = !act;
-      passMat.uniforms.intensity.value = blurTw.i.v[0];
-      passMat.uniforms.noiseScale.value = blurTw.n.v[0];
-      renderer.clear(true, true, false);
-      renderer.render(quadScene, quadCam);
+        passMat.uniforms.ignoreBlur.value = false;
+        passMat.uniforms.intensity.value = blurTw.i.v[0];
+        passMat.uniforms.noiseScale.value = blurTw.n.v[0];
+        renderer.clear(true, true, false);
+        renderer.render(quadScene, quadCam);
 
-      if (act) {
         renderer.clearDepth();
         camera.layers.set(LAY_FG);
         renderer.render(scene, camera);
       }
     }
 
-    function tick(now: number) {
+    let loopRunning = false;
+
+    function scheduleNextTick() {
       if (disposed) return;
-      if (stageVisible || S.anim === 'intro') {
-        renderFrame(now);
-      } else {
-        last = now;
-      }
       if (isSoftwareGl) {
         frameId = window.setTimeout(() => tick(performance.now()), 70);
       } else {
@@ -3147,14 +3146,46 @@ export function CurioShelfShowcase({
       }
     }
 
-    frameId = requestAnimationFrame(tick);
+    function tick(now: number) {
+      if (disposed) {
+        loopRunning = false;
+        return;
+      }
+      if (document.hidden || (!stageVisible && S.anim !== 'intro')) {
+        loopRunning = false;
+        return;
+      }
+      renderFrame(now);
+      scheduleNextTick();
+    }
+
+    function startLoop() {
+      if (disposed || loopRunning) return;
+      if (document.hidden || (!stageVisible && S.anim !== 'intro')) return;
+      loopRunning = true;
+      last = performance.now();
+      frameId = requestAnimationFrame(tick);
+    }
+
+    wakeLoop = startLoop;
+
+    const onVisibilityChange = () => {
+      if (!document.hidden && (stageVisible || S.anim === 'intro')) {
+        startLoop();
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    startLoop();
 
     return () => {
       disposed = true;
+      loopRunning = false;
       io.disconnect();
       ro.disconnect();
       cancelAnimationFrame(frameId);
       clearTimeout(frameId);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       MOBILE_Q.removeEventListener('change', onMediaChange);
       canvas.removeEventListener('pointermove', onPointerMove);
       canvas.removeEventListener('pointerdown', onPointerDown);

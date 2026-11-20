@@ -2,6 +2,7 @@ import { MotionValue } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { getOptimalPixelRatio, isMobileViewport, isSoftwareWebGL } from '../utils/graphicsPerf';
 
 interface GiftBox3DCanvasProps {
   openProgress: MotionValue<number>;
@@ -21,21 +22,6 @@ interface BurstPiece {
 
 const _vec3 = new THREE.Vector3();
 const _targetPos = new THREE.Vector3();
-
-function detectSoftwareWebGL(): boolean {
-  try {
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-    if (!gl) return true;
-    const ext = gl.getExtension('WEBGL_debug_renderer_info');
-    const param = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
-    const gpu = String(gl.getParameter(param) || '');
-    gl.getExtension('WEBGL_lose_context')?.loseContext();
-    return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
-  } catch {
-    return true;
-  }
-}
 
 function createLinenTextures(renderer: THREE.WebGLRenderer) {
   const albedoCanvas = document.createElement('canvas');
@@ -385,22 +371,23 @@ function createDarkVelvetBackdropTexture(): THREE.CanvasTexture {
   return tex;
 }
 
-function createVelvetWordTexture(renderer: THREE.WebGLRenderer) {
+function createVelvetWordTexture(renderer: THREE.WebGLRenderer, isMobile: boolean) {
   const canvas = document.createElement('canvas');
-  canvas.width = 2048;
-  canvas.height = 512;
+  canvas.width = isMobile ? 1024 : 2048;
+  canvas.height = isMobile ? 256 : 512;
   const ctx = canvas.getContext('2d');
+  const scale = isMobile ? 0.5 : 1;
 
   const paint = () => {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const letters = ['V', 'E', 'L', 'V', 'E', 'T'];
-    ctx.font = '500 284px "Jost", "Manrope", sans-serif';
+    ctx.font = `500 ${Math.round(284 * scale)}px "Jost", "Manrope", sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    const grad = ctx.createLinearGradient(0, 96, 0, 412);
+    const grad = ctx.createLinearGradient(0, 96 * scale, 0, 412 * scale);
     grad.addColorStop(0, 'rgba(255, 242, 247, 0.94)');
     grad.addColorStop(0.55, 'rgba(246, 212, 226, 0.88)');
     grad.addColorStop(1, 'rgba(216, 148, 176, 0.46)');
@@ -408,13 +395,13 @@ function createVelvetWordTexture(renderer: THREE.WebGLRenderer) {
     ctx.save();
     ctx.fillStyle = grad;
     ctx.shadowColor = 'rgba(255, 165, 198, 0.16)';
-    ctx.shadowBlur = 18;
+    ctx.shadowBlur = 18 * scale;
 
-    const startX = 190;
-    const endX = 1858;
+    const startX = 190 * scale;
+    const endX = 1858 * scale;
     const step = (endX - startX) / (letters.length - 1);
     for (let i = 0; i < letters.length; i++) {
-      ctx.fillText(letters[i], startX + i * step, 258);
+      ctx.fillText(letters[i], startX + i * step, 258 * scale);
     }
     ctx.restore();
   };
@@ -422,7 +409,7 @@ function createVelvetWordTexture(renderer: THREE.WebGLRenderer) {
   paint();
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  tex.anisotropy = Math.min(isMobile ? 2 : 6, renderer.capabilities.getMaxAnisotropy());
   return { tex, paint };
 }
 
@@ -570,9 +557,11 @@ function getHeartContourPoint(theta: number, scale: number): { x: number; y: num
  * Watertight convex 3D pillow heart with verified outward-facing winding (a, b, c, a, c, d)
  * so normals face strictly outward across front, equator, and back.
  */
-function createSculptedPillowHeartGeometry(scale = 1): THREE.BufferGeometry {
-  const radialSegs = 56;
-  const rings = 24;
+function createSculptedPillowHeartGeometry(
+  scale = 1,
+  radialSegs = 56,
+  rings = 24
+): THREE.BufferGeometry {
   const depthScale = 0.24 * scale;
 
   const positions: number[] = [];
@@ -743,8 +732,8 @@ function createTruffleBonbonGroup(
   return group;
 }
 
-function createBotanicalPetalGeometry(scale = 1): THREE.BufferGeometry {
-  const geo = new THREE.PlaneGeometry(0.64 * scale, 0.8 * scale, 20, 24);
+function createBotanicalPetalGeometry(scale = 1, segX = 20, segY = 24): THREE.BufferGeometry {
+  const geo = new THREE.PlaneGeometry(0.64 * scale, 0.8 * scale, segX, segY);
   const pos = geo.attributes.position;
   const uv = geo.attributes.uv;
 
@@ -765,8 +754,8 @@ function createBotanicalPetalGeometry(scale = 1): THREE.BufferGeometry {
   return geo;
 }
 
-function createSilkCushionGeometry(width: number, depth: number): THREE.BufferGeometry {
-  const geo = new THREE.PlaneGeometry(width, depth, 52, 52);
+function createSilkCushionGeometry(width: number, depth: number, segs = 52): THREE.BufferGeometry {
+  const geo = new THREE.PlaneGeometry(width, depth, segs, segs);
   geo.rotateX(-Math.PI / 2);
   const pos = geo.attributes.position;
   const tufts = [
@@ -847,7 +836,9 @@ export function GiftBox3DCanvas({
     const container = mountRef.current;
     if (!container) return;
 
-    const isSoftwareGl = detectSoftwareWebGL();
+    const isSoftwareGl = isSoftwareWebGL();
+    const isMobile = isMobileViewport();
+    const enableShadows = !isSoftwareGl && !isMobile;
     const disposables: { dispose: () => void }[] = [];
 
     const scene = new THREE.Scene();
@@ -865,17 +856,19 @@ export function GiftBox3DCanvas({
     camera.lookAt(0, 0.58, 0);
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: !isSoftwareGl,
+      antialias: !isSoftwareGl && !isMobile,
       powerPreference: 'high-performance',
       alpha: false,
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(getOptimalPixelRatio(isSoftwareGl, isMobile, 1.75, 1.25));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.08;
-    renderer.shadowMap.enabled = !isSoftwareGl;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.enabled = enableShadows;
+    if (enableShadows) {
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    }
     container.appendChild(renderer.domElement);
 
     const onContextLost = (e: Event) => {
@@ -898,18 +891,20 @@ export function GiftBox3DCanvas({
 
     const keyLight = new THREE.DirectionalLight(0xfff5f2, 2.2);
     keyLight.position.set(5.4, 8.6, 5.2);
-    keyLight.castShadow = !isSoftwareGl;
-    keyLight.shadow.mapSize.set(1024, 1024);
-    keyLight.shadow.camera.near = 1;
-    keyLight.shadow.camera.far = 22;
-    const d = 4.6;
-    keyLight.shadow.camera.left = -d;
-    keyLight.shadow.camera.right = d;
-    keyLight.shadow.camera.top = d;
-    keyLight.shadow.camera.bottom = -d;
-    keyLight.shadow.bias = -0.0005;
-    keyLight.shadow.normalBias = 0.02;
-    keyLight.shadow.radius = 4;
+    keyLight.castShadow = enableShadows;
+    if (enableShadows) {
+      keyLight.shadow.mapSize.set(1024, 1024);
+      keyLight.shadow.camera.near = 1;
+      keyLight.shadow.camera.far = 22;
+      const d = 4.6;
+      keyLight.shadow.camera.left = -d;
+      keyLight.shadow.camera.right = d;
+      keyLight.shadow.camera.top = d;
+      keyLight.shadow.camera.bottom = -d;
+      keyLight.shadow.bias = -0.0005;
+      keyLight.shadow.normalBias = 0.02;
+      keyLight.shadow.radius = 4;
+    }
     scene.add(keyLight);
 
     const fillLight = new THREE.DirectionalLight(0xffcde0, 1.05);
@@ -1293,7 +1288,11 @@ export function GiftBox3DCanvas({
     disposables.push(rimFBGeo, rimLRGeo);
 
     // Tufted & Pleated Rose Silk Cushioning Inside Box
-    const silkBedGeo = createSilkCushionGeometry(boxW - wallT * 2.05, boxD - wallT * 2.05);
+    const silkBedGeo = createSilkCushionGeometry(
+      boxW - wallT * 2.05,
+      boxD - wallT * 2.05,
+      isMobile ? 28 : 52
+    );
     const silkBed = new THREE.Mesh(silkBedGeo, silkLiningMat);
     silkBed.position.y = 0.62;
     silkBed.receiveShadow = !isSoftwareGl;
@@ -1512,8 +1511,12 @@ export function GiftBox3DCanvas({
     disposables.push(knotGeo);
 
     // 3. Sculpted 3D Pillowed Velvet & Rose-Foil Hearts + Satin Coils + Veined Rose Petals (Poised, Calm Motion)
-    const pillowHeartGeo = createSculptedPillowHeartGeometry(0.76);
-    const petalGeo = createBotanicalPetalGeometry(0.95);
+    const pillowHeartGeo = createSculptedPillowHeartGeometry(
+      0.76,
+      isMobile ? 28 : 56,
+      isMobile ? 12 : 24
+    );
+    const petalGeo = createBotanicalPetalGeometry(0.95, isMobile ? 10 : 20, isMobile ? 12 : 24);
 
     const makeCoilCurve = (turns: number, rad: number, h: number) => {
       const pts: THREE.Vector3[] = [];
@@ -1708,7 +1711,7 @@ export function GiftBox3DCanvas({
     }[] = [];
 
     if (mode === 'hero-open') {
-      const velvetWord = createVelvetWordTexture(renderer);
+      const velvetWord = createVelvetWordTexture(renderer, isMobile);
       const wordGeo = new THREE.PlaneGeometry(11.2, 2.75);
       const wordMat = new THREE.MeshBasicMaterial({
         map: velvetWord.tex,
@@ -1972,7 +1975,9 @@ export function GiftBox3DCanvas({
       pointerTargetX = THREE.MathUtils.clamp(((e.clientX - rect.left) / rect.width) * 2 - 1, -1, 1);
       pointerTargetY = THREE.MathUtils.clamp(((e.clientY - rect.top) / rect.height) * 2 - 1, -1, 1);
     };
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    if (!isMobile) {
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+    }
 
     const onResize = () => {
       if (!container) return;
@@ -1989,6 +1994,8 @@ export function GiftBox3DCanvas({
 
     let frameId = 0;
     let disposed = false;
+    let isRunning = false;
+    let isInView = true;
     let smoothOpen = progressRef.current;
     const clock = new THREE.Clock();
 
@@ -2085,11 +2092,19 @@ export function GiftBox3DCanvas({
       frameId = window.setTimeout(poll, 5);
     }
 
+    let elapsedAccum = 0;
+
     function tick() {
       if (disposed) return;
+      if (document.hidden || !isInView) {
+        isRunning = false;
+        return;
+      }
+      isRunning = true;
+      if (!clock.running) clock.start();
       const delta = Math.min(clock.getDelta(), 0.05);
-      const elapsed = clock.getElapsedTime();
-      updateScene(delta, elapsed);
+      elapsedAccum += delta;
+      updateScene(delta, elapsedAccum);
       renderer.render(scene, camera);
 
       if (isSoftwareGl) {
@@ -2099,13 +2114,38 @@ export function GiftBox3DCanvas({
       }
     }
 
+    const startLoop = () => {
+      if (!disposed && !isRunning && !document.hidden && isInView) {
+        clock.getDelta();
+        tick();
+      }
+    };
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        isInView = entry?.isIntersecting ?? true;
+        if (isInView) startLoop();
+      },
+      { rootMargin: '100px' }
+    );
+    io.observe(container);
+
+    const onVisChange = () => {
+      if (!document.hidden && isInView) startLoop();
+    };
+    document.addEventListener('visibilitychange', onVisChange);
+
     tick();
 
     return () => {
       disposed = true;
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisChange);
       cancelAnimationFrame(frameId);
       clearTimeout(frameId);
-      window.removeEventListener('pointermove', onPointerMove);
+      if (!isMobile) {
+        window.removeEventListener('pointermove', onPointerMove);
+      }
       window.removeEventListener('resize', onResize);
       renderer.domElement.removeEventListener('webglcontextlost', onContextLost);
       renderer.domElement.removeEventListener('webglcontextrestored', onContextRestored);

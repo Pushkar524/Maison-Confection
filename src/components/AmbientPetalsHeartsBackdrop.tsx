@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { getOptimalPixelRatio, isSoftwareWebGL } from '../utils/graphicsPerf';
 
 type PieceKind = 'heart' | 'petal' | 'ribbon';
 
@@ -57,21 +58,6 @@ function seededRand(seed: number) {
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
-}
-
-function detectSoftwareWebGL(): boolean {
-  try {
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-    if (!gl) return true;
-    const ext = gl.getExtension('WEBGL_debug_renderer_info');
-    const param = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
-    const gpu = String(gl.getParameter(param) || '');
-    gl.getExtension('WEBGL_lose_context')?.loseContext();
-    return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
-  } catch {
-    return true;
-  }
 }
 
 /* ---- Procedural Micro-Textures ---- */
@@ -392,7 +378,7 @@ export function AmbientPetalsHeartsBackdrop() {
     const container = containerRef.current;
     if (!container) return;
 
-    const isSoftwareGl = detectSoftwareWebGL();
+    const isSoftwareGl = isSoftwareWebGL();
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const disposables: { dispose: () => void }[] = [];
 
@@ -410,7 +396,7 @@ export function AmbientPetalsHeartsBackdrop() {
     });
     renderer.setClearColor(0x1f0712, 0);
     renderer.setSize(width, height);
-    renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 1.75));
+    renderer.setPixelRatio(getOptimalPixelRatio(isSoftwareGl, false, 1.5, 1.25));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.1;
@@ -756,6 +742,11 @@ export function AmbientPetalsHeartsBackdrop() {
     let viewHalfW = 7;
     let viewHalfH = 4;
     let isMobile = window.innerWidth < 768;
+    let cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - (window.innerHeight || 720));
+
+    const refreshMaxScroll = () => {
+      cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - (window.innerHeight || 720));
+    };
 
     const updateBounds = () => {
       const w = window.innerWidth || 1280;
@@ -766,8 +757,12 @@ export function AmbientPetalsHeartsBackdrop() {
       renderer.setSize(w, h);
       viewHalfH = Math.tan(THREE.MathUtils.degToRad(camera.fov * 0.5)) * camera.position.z;
       viewHalfW = viewHalfH * camera.aspect;
+      refreshMaxScroll();
     };
     updateBounds();
+
+    const docRo = new ResizeObserver(refreshMaxScroll);
+    docRo.observe(document.documentElement);
 
     /* ---- Interactive Window Pointer Listeners (Zero UI Occlusion) ---- */
     let pointerActive = false;
@@ -886,7 +881,7 @@ export function AmbientPetalsHeartsBackdrop() {
       lastTime = now;
       if (!prefersReducedMotion) elapsed += dt;
 
-      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const maxScroll = cachedMaxScroll;
       const scrollNorm = THREE.MathUtils.clamp(window.scrollY / maxScroll, 0, 1);
 
       const cornerMarginScale = isMobile ? 0.92 : 1.0;
@@ -999,16 +994,28 @@ export function AmbientPetalsHeartsBackdrop() {
 
       renderer.render(scene, camera);
 
+      if (prefersReducedMotion) return;
       if (isSoftwareGl) afterDraw(() => tick(performance.now()));
       else frameId = requestAnimationFrame(tick);
     };
+
+    const onReducedScroll = () => {
+      if (prefersReducedMotion && !disposed) tick(performance.now());
+    };
+    if (prefersReducedMotion) {
+      window.addEventListener('scroll', onReducedScroll, { passive: true });
+    }
 
     frameId = requestAnimationFrame(tick);
 
     return () => {
       disposed = true;
+      docRo.disconnect();
       cancelAnimationFrame(frameId);
       clearTimeout(frameId);
+      if (prefersReducedMotion) {
+        window.removeEventListener('scroll', onReducedScroll);
+      }
       window.removeEventListener('resize', updateBounds);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerdown', onPointerDown);

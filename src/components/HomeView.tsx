@@ -1,10 +1,13 @@
-import { ArrowRight, BookOpen, Package, Ribbon } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
-import { useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { CLIENT_STORIES } from '../data/atelierData';
 import { AtelierProduct, ProductCategory, ScreenView } from '../types/atelier';
-import { CurioShelfShowcase } from './CurioShelfShowcase';
 import { GiftBox3DCanvas } from './GiftBox3DCanvas';
+
+const CurioShelfShowcase = lazy(() =>
+  import('./CurioShelfShowcase').then((m) => ({ default: m.CurioShelfShowcase }))
+);
 
 interface HomeViewProps {
   favorites: string[];
@@ -31,7 +34,29 @@ export function HomeView({
   onQuickAdd,
 }: HomeViewProps) {
   const [activeCategory, setActiveCategory] = useState<ProductCategory>('All Collections');
+  const [mountShelf, setMountShelf] = useState(false);
   const heroRef = useRef<HTMLElement | null>(null);
+  const shelfGateRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (mountShelf) return;
+    const target = shelfGateRef.current;
+    if (!target || typeof IntersectionObserver === 'undefined') {
+      setMountShelf(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setMountShelf(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: '500px 0px' }
+    );
+    io.observe(target);
+    return () => io.disconnect();
+  }, [mountShelf]);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -182,12 +207,28 @@ export function HomeView({
           </div>
         </div>
 
-        <CurioShelfShowcase
-          activeCategory={activeCategory}
-          onQuickPersonalize={onQuickPersonalize}
-          onQuickAdd={onQuickAdd}
-          onSelectProduct={onSelectProduct}
-        />
+        <div ref={shelfGateRef}>
+          {mountShelf ? (
+            <Suspense
+              fallback={
+                <div className="w-full h-[610px] sm:h-[670px] lg:h-[740px] rounded-3xl border border-[#6E2440] bg-gradient-to-br from-[#2B0A18] via-[#220813] to-[#360E1F] flex items-center justify-center text-xs uppercase tracking-[0.18em] text-[#C98DA4]">
+                  Loading showcase…
+                </div>
+              }
+            >
+              <CurioShelfShowcase
+                activeCategory={activeCategory}
+                onQuickPersonalize={onQuickPersonalize}
+                onQuickAdd={onQuickAdd}
+                onSelectProduct={onSelectProduct}
+              />
+            </Suspense>
+          ) : (
+            <div className="w-full h-[610px] sm:h-[670px] lg:h-[740px] rounded-3xl border border-[#6E2440] bg-gradient-to-br from-[#2B0A18] via-[#220813] to-[#360E1F] flex items-center justify-center text-xs uppercase tracking-[0.18em] text-[#C98DA4]">
+              Scroll to explore editions
+            </div>
+          )}
+        </div>
 
         <div className="mt-10 flex justify-center">
           <button
@@ -201,85 +242,82 @@ export function HomeView({
         </div>
       </section>
 
-      {/* Section 3: Luminous Crimson-Velvet Showcase — Tactile Craftsmanship & Client Proof */}
-      <section className="max-w-[1360px] mx-auto px-5 md:px-8 lg:px-12">
-        <div className="bg-gradient-to-br from-[#4D122B] via-[#370C1F] to-[#260815] text-[#FCE7EF] border border-[#822E4F] rounded-3xl p-8 md:p-12 lg:p-14 shadow-atelier-modal">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
-            {/* Craftsmanship Pillars */}
-            <div className="lg:col-span-7 space-y-8">
-              <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#FF8FB3] mb-2">
-                  The Unboxing Ritual
+      {/* Section 3: Unboxed Editorial Craftsmanship & Client Proof directly on the velvet canvas */}
+      <section className="max-w-[1360px] mx-auto px-5 md:px-8 lg:px-12 py-4 md:py-8">
+        <div className="border-b border-[#6E2440]/55 pb-8 md:pb-12">
+          <p className="text-[11px] sm:text-xs font-medium uppercase tracking-[0.22em] text-[#FF8FB3] mb-3 md:mb-4">
+            The Unboxing Ritual
+          </p>
+          <h2
+            className="font-display text-[52px] sm:text-[74px] md:text-[92px] lg:text-[106px] xl:text-[118px] font-light tracking-[-0.03em] text-[#FFF0F5] leading-[0.94]"
+            style={{ textWrap: 'balance' }}
+          >
+            Tactile Signatures
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 pt-10 md:pt-12">
+          {/* Craftsmanship Pillars — pure editorial typography with hairline separators */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10">
+            <div className="border-t border-[#6E2440]/45 pt-4 space-y-2.5">
+              <span className="block text-[11px] font-medium tracking-[0.2em] text-[#FF8FB3] tabular-nums">
+                01
+              </span>
+              <h3 className="font-display text-2xl font-light text-[#FFF0F5] leading-snug">
+                Cushioned Vessels
+              </h3>
+              <p className="text-[13px] text-[#C98DA4] leading-relaxed">
+                Rose Belgian linen wrapped over pleated silk.
+              </p>
+            </div>
+
+            <div className="border-t border-[#6E2440]/45 pt-4 space-y-2.5">
+              <span className="block text-[11px] font-medium tracking-[0.2em] text-[#FF8FB3] tabular-nums">
+                02
+              </span>
+              <h3 className="font-display text-2xl font-light text-[#FFF0F5] leading-snug">
+                Letterpress Cotton
+              </h3>
+              <p className="text-[13px] text-[#C98DA4] leading-relaxed">
+                600gsm deckle rag pressed with foil crests.
+              </p>
+            </div>
+
+            <div className="border-t border-[#6E2440]/45 pt-4 space-y-2.5">
+              <span className="block text-[11px] font-medium tracking-[0.2em] text-[#FF8FB3] tabular-nums">
+                03
+              </span>
+              <h3 className="font-display text-2xl font-light text-[#FFF0F5] leading-snug">
+                Silk Ribbon & Wax
+              </h3>
+              <p className="text-[13px] text-[#C98DA4] leading-relaxed">
+                Hand-tied satin and poured brass wax seals.
+              </p>
+            </div>
+          </div>
+
+          {/* Adjacent Attributable Client Proof — open editorial pull-quotes */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-8 lg:pl-4">
+            {CLIENT_STORIES.map((story) => (
+              <blockquote
+                key={story.author}
+                className="border-t border-[#6E2440]/45 pt-4 space-y-3"
+              >
+                <p className="font-display text-lg md:text-[19px] font-light text-[#FCE7EF] leading-relaxed">
+                  “{story.quote}”
                 </p>
-                <h2
-                  className="font-display text-4xl sm:text-5xl lg:text-[52px] font-light tracking-[-0.02em] text-[#FFF0F5] leading-[1.04]"
-                  style={{ textWrap: 'balance' }}
-                >
-                  Tactile Signatures
-                </h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#611736] to-[#3B0D20] border border-[#9E3B5E] flex items-center justify-center text-[#FF8FB3]">
-                    <Package className="w-5 h-5" />
+                <footer className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs">
+                  <div className="flex flex-wrap items-center gap-x-2 text-[#B67A91]">
+                    <span className="font-medium text-[#FFF0F5]">{story.author}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{story.role}</span>
                   </div>
-                  <h3 className="font-display text-xl font-normal text-[#FFF0F5]">
-                    Cushioned Vessels
-                  </h3>
-                  <p className="text-[13px] text-[#C98DA4] leading-relaxed">
-                    Rose Belgian linen wrapped over pleated silk.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#611736] to-[#3B0D20] border border-[#9E3B5E] flex items-center justify-center text-[#FF8FB3]">
-                    <BookOpen className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-display text-xl font-normal text-[#FFF0F5]">
-                    Letterpress Cotton
-                  </h3>
-                  <p className="text-[13px] text-[#C98DA4] leading-relaxed">
-                    600gsm deckle rag pressed with foil crests.
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#611736] to-[#3B0D20] border border-[#9E3B5E] flex items-center justify-center text-[#FF8FB3]">
-                    <Ribbon className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-display text-xl font-normal text-[#FFF0F5]">
-                    Silk Ribbon & Wax
-                  </h3>
-                  <p className="text-[13px] text-[#C98DA4] leading-relaxed">
-                    Hand-tied satin and poured brass wax seals.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Adjacent Attributable Client Proof */}
-            <div className="lg:col-span-5 flex flex-col justify-between gap-4">
-              {CLIENT_STORIES.map((story) => (
-                <blockquote
-                  key={story.author}
-                  className="bg-gradient-to-br from-[#390D1F] to-[#260815] border border-[#7D2B4B] rounded-2xl p-5"
-                >
-                  <p className="text-[13px] text-[#E8B4C6] leading-relaxed">
-                    “{story.quote}”
-                  </p>
-                  <footer className="mt-3 pt-3 border-t border-[#6E2440] flex items-center justify-between gap-3 text-xs">
-                    <div>
-                      <span className="font-medium text-[#FFF0F5] block">{story.author}</span>
-                      <span className="text-[#B67A91]">{story.role}</span>
-                    </div>
-                    <span className="font-medium text-[#FF8FB3] whitespace-nowrap">
-                      {story.detail}
-                    </span>
-                  </footer>
-                </blockquote>
-              ))}
-            </div>
+                  <span className="font-medium text-[#FF8FB3] whitespace-nowrap tabular-nums">
+                    {story.detail}
+                  </span>
+                </footer>
+              </blockquote>
+            ))}
           </div>
         </div>
       </section>

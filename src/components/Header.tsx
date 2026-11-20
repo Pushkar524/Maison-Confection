@@ -46,7 +46,7 @@ export function Header({ activeScreen, onNavigate, bagCount, onOpenBag }: Header
           : 'opacity-0 -translate-y-4 pointer-events-none'
       }`}
     >
-      <div className="relative max-w-[1280px] mx-auto rounded-2xl backdrop-blur-2xl bg-gradient-to-b from-[#591634]/55 via-[#360B1E]/50 to-[#240714]/60 border border-[#FF9BBE]/25 shadow-[inset_0_1px_0_rgba(255,228,238,0.34),inset_0_-1px_0_rgba(255,143,179,0.1),0_18px_42px_-10px_rgba(14,3,8,0.65)] overflow-hidden">
+      <div className="relative max-w-[1280px] mx-auto rounded-2xl backdrop-blur-md md:backdrop-blur-2xl bg-gradient-to-b from-[#591634]/82 via-[#360B1E]/78 to-[#240714]/86 md:from-[#591634]/55 md:via-[#360B1E]/50 md:to-[#240714]/60 border border-[#FF9BBE]/25 shadow-[inset_0_1px_0_rgba(255,228,238,0.34),inset_0_-1px_0_rgba(255,143,179,0.1),0_18px_42px_-10px_rgba(14,3,8,0.65)] overflow-hidden">
         {/* Top specular crystal gloss highlight */}
         <div
           aria-hidden="true"
@@ -129,7 +129,7 @@ export function Header({ activeScreen, onNavigate, bagCount, onOpenBag }: Header
 
       {/* Glossy Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden max-w-[1280px] mx-auto mt-2 rounded-2xl backdrop-blur-2xl border border-[#FF9BBE]/25 bg-gradient-to-b from-[#3A0E21]/90 to-[#230713]/92 px-4 py-3 space-y-1 shadow-[inset_0_1px_0_rgba(255,224,236,0.22),0_18px_36px_-10px_rgba(14,3,8,0.75)]">
+        <div className="md:hidden max-w-[1280px] mx-auto mt-2 rounded-2xl backdrop-blur-md border border-[#FF9BBE]/25 bg-gradient-to-b from-[#3A0E21]/94 to-[#230713]/96 px-4 py-3 space-y-1 shadow-[inset_0_1px_0_rgba(255,224,236,0.22),0_18px_36px_-10px_rgba(14,3,8,0.75)]">
           {NAV_ITEMS.map((item) => {
             const isActive = activeScreen === item.id;
             return (
